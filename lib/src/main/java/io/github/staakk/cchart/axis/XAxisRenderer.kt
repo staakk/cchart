@@ -3,10 +3,13 @@ package io.github.staakk.cchart.axis
 import android.graphics.Paint
 import android.graphics.Typeface
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import io.github.staakk.cchart.renderer.RendererContext
@@ -32,7 +35,6 @@ class XAxisRenderer(
             start = Offset(0f, size.height),
             end = Offset(size.width, size.height)
         )
-
     }
 
     override fun DrawScope.renderLabels(context: RendererContext) {
@@ -43,12 +45,16 @@ class XAxisRenderer(
         }
         drawIntoCanvas { canvas ->
             labelsProvider.createLabels(context.bounds.minX, context.bounds.maxX).forEach { (text, offset) ->
-                canvas.nativeCanvas.drawText(
-                    text,
-                    context.dataToRendererCoordX(offset) - paint.measureText(text) / 2,
-                    size.height - paint.fontMetrics.top * text.countLines(),
-                    paint
-                )
+                val textWidth = paint.measureText(text)
+                val x = context.dataToRendererCoordX(offset) - textWidth / 2
+                if (x > 0 && x + textWidth < size.width) {
+                    canvas.nativeCanvas.drawText(
+                        text,
+                        context.dataToRendererCoordX(offset) - paint.measureText(text) / 2,
+                        size.height - paint.fontMetrics.top * text.countLines(),
+                        paint
+                    )
+                }
             }
         }
     }
