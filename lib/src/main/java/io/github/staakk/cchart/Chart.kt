@@ -80,9 +80,7 @@ fun Chart(
                 ) {
                     scope.series
                         .forEach { (series, renderer) ->
-                            series.forEach {
-                                renderer.apply { this@drawScope.render(rendererContext, it) }
-                            }
+                            renderer.apply { this@drawScope.render(rendererContext, series) }
                         }
                 }
             }
@@ -167,7 +165,7 @@ fun PreviewCoordinatePlane() {
                         pointOf(3f, 3f),
                         pointOf(4f, 4f),
                     ),
-                    renderer = BarRenderer(SolidColor(Color.Red), 15f)
+                    renderer = BarRenderer({ SolidColor(Color.Red) }, 15f)
                 )
             }
 

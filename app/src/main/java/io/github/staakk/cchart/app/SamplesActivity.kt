@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 const val LINE_CHART_ID = 0
 const val POINT_CHART_ID = 1
 const val COMBINED_CHART_ID = 2
+const val BAR_CHART_ID = 3
 
 class SamplesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,33 +31,7 @@ class SamplesActivity : AppCompatActivity() {
         setContent {
             Surface(modifier = Modifier.fillMaxSize()) {
                 Column {
-                    val selectedIndex = remember { mutableStateOf(0) }
-                    when (selectedIndex.value) {
-                        LINE_CHART_ID -> LineChartScreen()
-                        POINT_CHART_ID -> PointChartScreen()
-                        COMBINED_CHART_ID -> CombinedChartScreen()
-                    }
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(16.dp),
-                        text = "Select on of the samples below",
-                        style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                    )
-                    LazyColumn {
-                        item { MenuItem(LINE_CHART_ID, "Line chart") { selectedIndex.value = it } }
-                        item {
-                            MenuItem(POINT_CHART_ID, "Point chart") {
-                                selectedIndex.value = it
-                            }
-                        }
-                        item {
-                            MenuItem(
-                                COMBINED_CHART_ID,
-                                "Point & line chart"
-                            ) { selectedIndex.value = it }
-                        }
-                    }
+                    Content()
                 }
             }
         }
@@ -64,12 +39,41 @@ class SamplesActivity : AppCompatActivity() {
 }
 
 @Composable
-fun MenuItem(index: Int, text: String, onSelected: (Int) -> Unit) {
+fun Content() {
+    val selected = remember { mutableStateOf(0) }
+    when (selected.value) {
+        LINE_CHART_ID -> LineChartScreen()
+        POINT_CHART_ID -> PointChartScreen()
+        COMBINED_CHART_ID -> CombinedChartScreen()
+        BAR_CHART_ID -> BarChart()
+    }
+
+    MenuHeader()
+    LazyColumn {
+        item { Item(LINE_CHART_ID, "Line chart") { selected.value = it } }
+        item { Item(POINT_CHART_ID, "Point chart") { selected.value = it } }
+        item { Item(COMBINED_CHART_ID, "Point & line chart") { selected.value = it } }
+        item { Item(BAR_CHART_ID, "Bar chart") { selected.value = it } }
+    }
+}
+
+@Composable
+fun MenuHeader() {
+    Text(
+        modifier = Modifier.fillMaxWidth()
+            .padding(16.dp),
+        text = "Select on of the examples below",
+        style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold)
+    )
+}
+
+@Composable
+fun Item(index: Int, text: String, onSelected: (Int) -> Unit) {
     Text(
         modifier = Modifier.fillMaxWidth()
             .clickable { onSelected(index) }
             .padding(16.dp),
         text = text,
-        style = TextStyle(fontSize = 18.sp)
+        style = TextStyle(fontSize = 14.sp)
     )
 }

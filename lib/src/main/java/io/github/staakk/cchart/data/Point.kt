@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 data class Point(
     val x: Float,
-    val y: Float,
+    val y: Float
 )
 
 fun pointOf(x: Float, y: Float) = Point(x, y)

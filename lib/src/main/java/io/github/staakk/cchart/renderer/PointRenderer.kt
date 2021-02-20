@@ -8,18 +8,20 @@ import io.github.staakk.cchart.data.Series
 class PointRenderer(
     private val brush: Brush,
     private val radius: Float,
-): SeriesRenderer {
+) : SeriesRenderer {
 
-    override fun DrawScope.render(context: RendererContext, series: Series) {
-        series.points.forEach { point ->
-            drawCircle(
-                brush = brush,
-                radius = radius,
-                center = Offset(
-                    context.dataToRendererCoordX(point.x),
-                    context.dataToRendererCoordY(point.y)
+    override fun DrawScope.render(context: RendererContext, series: List<Series>) {
+        series.forEach { s ->
+            s.points.forEach { point ->
+                drawCircle(
+                    brush = brush,
+                    radius = radius,
+                    center = Offset(
+                        context.dataToRendererCoordX(point.x),
+                        context.dataToRendererCoordY(point.y)
+                    )
                 )
-            )
+            }
         }
     }
 }
