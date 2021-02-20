@@ -1,14 +1,9 @@
 package io.github.staakk.cchart.data
 
-import kotlin.math.abs
-
 data class ChartData(
     val series: List<Series>
 ) {
-    val maxXValue: Int
-    val minXValue: Int
-    val maxYValue: Int
-    val minYValue: Int
+    val bounds: DataBounds
 
     init {
         var maxX = Int.MIN_VALUE
@@ -25,12 +20,11 @@ data class ChartData(
             }
         }
 
-        maxXValue = maxX
-        minXValue = minX
-        maxYValue = maxY
-        minYValue = minY
+        bounds = DataBounds(
+            maxX = maxX.toFloat(),
+            minX = minX.toFloat(),
+            maxY = maxY.toFloat(),
+            minY = minY.toFloat(),
+        )
     }
-
-    val xSpan = abs(maxXValue - minXValue)
-    val ySpan = abs(maxYValue - minYValue)
 }

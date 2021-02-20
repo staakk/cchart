@@ -25,20 +25,25 @@ import io.github.staakk.cchart.axis.AxisRenderer
 import io.github.staakk.cchart.axis.XAxisRenderer
 import io.github.staakk.cchart.axis.YAxisRenderer
 import io.github.staakk.cchart.data.ChartData
+import io.github.staakk.cchart.data.DataBounds
 import io.github.staakk.cchart.data.DataPoint
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.renderer.*
+import io.github.staakk.cchart.util.OffsetRange
+import io.github.staakk.cchart.util.coerceIn
 
 @Composable
 fun Chart(
     modifier: Modifier = Modifier,
-    bounds: Bounds? = null,
+    bounds: DataBounds? = null,
     panRange: OffsetRange = OffsetRange(0f..0f, 0f..0f),
     zoomRange: ClosedFloatingPointRange<Float> = 0.5f..1.5f,
     content: ChartScope.() -> Unit
 ) {
     val scope = ChartScopeImpl()
     scope.apply(content)
+
+    val dataBounds = scope.chartData.bounds
 
     val density = LocalDensity.current
     val panState = remember { mutableStateOf(Offset(0f, 0f)) }
@@ -58,18 +63,14 @@ fun Chart(
                     }
                 }
         ) drawScope@{
+            val dataAdjustedPan = panState.value.let {
+                Offset(
+                    -it.x / (size.width / dataBounds.width),
+                    it.y / (size.height / dataBounds.height)
+                )
+            }
             val rendererContext = rendererContext(
-                (bounds ?: Bounds(
-                    scope.chartData.minXValue.toFloat(),
-                    scope.chartData.maxXValue.toFloat(),
-                    scope.chartData.minYValue.toFloat(),
-                    scope.chartData.maxYValue.toFloat()
-                ) + panState.value.let {
-                    Offset(
-                        -it.x / (size.width / scope.chartData.xSpan),
-                        it.y / (size.height / scope.chartData.ySpan)
-                    )
-                }).withZoom(zoomState.value),
+                ((bounds ?: dataBounds) + dataAdjustedPan).withZoom(zoomState.value),
                 density,
                 Size(width = size.width, height = size.height)
             )

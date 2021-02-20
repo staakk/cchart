@@ -2,7 +2,7 @@ package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.Density
-import io.github.staakk.cchart.Bounds
+import io.github.staakk.cchart.data.DataBounds
 import kotlin.math.abs
 
 data class RendererContext(
@@ -10,7 +10,7 @@ data class RendererContext(
     val density: Density,
     val scaleX: Float,
     val scaleY: Float,
-    val bounds: Bounds,
+    val bounds: DataBounds,
 ) {
     fun dataToRendererCoordX(x: Float) = (x - bounds.minX) * scaleX
 
@@ -22,7 +22,7 @@ data class RendererContext(
 }
 
 fun rendererContext(
-    bounds: Bounds,
+    bounds: DataBounds,
     density: Density,
     canvasSize: Size,
 ) = RendererContext(

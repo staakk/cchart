@@ -1,4 +1,4 @@
-package io.github.staakk.cchart
+package io.github.staakk.cchart.util
 
 import androidx.compose.ui.geometry.Offset
 
