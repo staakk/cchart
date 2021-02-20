@@ -35,4 +35,24 @@ data class DataBounds(
             maxY = maxY - ddy
         )
     }
+
+    companion object {
+        fun Iterable<Series>.getBounds(): DataBounds {
+            var maxX = Float.MIN_VALUE
+            var minX = Float.MAX_VALUE
+            var maxY = Float.MIN_VALUE
+            var minY = Float.MAX_VALUE
+
+            forEach { s ->
+                s.points.forEach { p ->
+                    if (p.x > maxX) maxX = p.x
+                    if (p.x < minX) minX = p.x
+                    if (p.y > maxY) maxY = p.y
+                    if (p.y < minY) minY = p.y
+                }
+            }
+
+            return DataBounds(maxX = maxX, minX = minX, maxY = maxY, minY = minY)
+        }
+    }
 }

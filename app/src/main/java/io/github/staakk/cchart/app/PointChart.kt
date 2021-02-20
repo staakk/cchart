@@ -18,7 +18,7 @@ fun PointChartScreen() {
         modifier = Modifier.aspectRatio(1f, false),
         bounds = DataBounds(0f, 10f, 0f, 5f)
     ) {
-        data(
+        series(
             seriesOf(
                 "Data",
                 pointOf(0f, 1f),
@@ -30,11 +30,7 @@ fun PointChartScreen() {
                 pointOf(7f, 4f),
                 pointOf(8f, 4.5f),
                 pointOf(9f, 4.7f),
-            )
-        )
-
-        seriesRendererFor(
-            "Data",
+            ),
             renderer = PointRenderer(brush = SolidColor(Color.Red), radius = 10f)
         )
     }

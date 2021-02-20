@@ -24,6 +24,7 @@ import io.github.staakk.cchart.axis.AxisRenderer
 import io.github.staakk.cchart.axis.XAxisRenderer
 import io.github.staakk.cchart.axis.YAxisRenderer
 import io.github.staakk.cchart.data.*
+import io.github.staakk.cchart.data.DataBounds.Companion.getBounds
 import io.github.staakk.cchart.renderer.*
 
 @Composable
@@ -37,12 +38,15 @@ fun Chart(
     val scope = ChartScopeImpl()
     scope.apply(content)
 
-    val dataBounds = scope.data.bounds
+    val dataBounds = scope.series.keys
+        .flatten()
+        .getBounds()
 
     val density = LocalDensity.current
     val panState = remember { mutableStateOf(Offset(0f, 0f)) }
     val zoomState = remember { mutableStateOf(1f) }
 
+    // TODO should be calculated from data and axis renderer settings
     val padding = 32.dp
     val paddingPx = with(density) { padding.toPx() }
     Box(modifier = modifier) {
@@ -74,11 +78,11 @@ fun Chart(
                     0f,
                     size.height - rendererContext.dataToRendererCoordY(rendererContext.bounds.minY)
                 ) {
-                    scope.data
-                        .series
-                        .forEach { series ->
-                            (scope.seriesRenderers[series.name] ?: scope.renderer)
-                                .apply { this@drawScope.render(rendererContext, series) }
+                    scope.series
+                        .forEach { (series, renderer) ->
+                            series.forEach {
+                                renderer.apply { this@drawScope.render(rendererContext, it) }
+                            }
                         }
                 }
             }
@@ -102,11 +106,7 @@ interface ChartScope {
 
     fun yAxis(axisRenderer: AxisRenderer)
 
-    fun data(vararg series: Series)
-
-    fun renderer(renderer: SeriesRenderer)
-
-    fun seriesRendererFor(vararg seriesName: String, renderer: SeriesRenderer)
+    fun series(vararg series: Series, renderer: SeriesRenderer)
 }
 
 private class ChartScopeImpl : ChartScope {
@@ -115,11 +115,7 @@ private class ChartScopeImpl : ChartScope {
 
     var drawYAxis: AxisRenderer = YAxisRenderer(SolidColor(Color.Black), strokeWidth = 2f)
 
-    var data: Data = Data(emptyList())
-
-    val seriesRenderers: MutableMap<String, SeriesRenderer> = mutableMapOf()
-
-    var renderer: SeriesRenderer = LineRenderer(SolidColor(Color.Black))
+    val series: MutableMap<List<Series>, SeriesRenderer> = mutableMapOf()
 
     override fun xAxis(axisRenderer: AxisRenderer) {
         drawXAxis = axisRenderer
@@ -129,18 +125,8 @@ private class ChartScopeImpl : ChartScope {
         drawYAxis = axisRenderer
     }
 
-    override fun data(vararg series: Series) {
-        data = Data(series.toList())
-    }
-
-    override fun renderer(renderer: SeriesRenderer) {
-        this.renderer = renderer
-    }
-
-    override fun seriesRendererFor(vararg seriesName: String, renderer: SeriesRenderer) {
-        seriesName.forEach {
-            seriesRenderers[it] = renderer
-        }
+    override fun series(vararg series: Series, renderer: SeriesRenderer) {
+        this.series[series.toList()] = renderer
     }
 }
 
@@ -153,7 +139,7 @@ fun PreviewCoordinatePlane() {
                 modifier = Modifier.weight(1f),
                 bounds = DataBounds(-1f, 5f, 0f, 9f)
             ) {
-                data(
+                series(
                     seriesOf(
                         "First",
                         pointOf(0f, 1f),
@@ -161,6 +147,9 @@ fun PreviewCoordinatePlane() {
                         pointOf(3f, 3f),
                         pointOf(4f, 4f),
                     ),
+                    renderer = PointRenderer(SolidColor(Color.Blue), 10f)
+                )
+                series(
                     seriesOf(
                         "Second",
                         pointOf(0f, 0f),
@@ -168,23 +157,18 @@ fun PreviewCoordinatePlane() {
                         pointOf(3f, 3f),
                         pointOf(4f, 4f),
                     ),
+                    renderer = LineRenderer(SolidColor(Color.Green), strokeWidth = 5f)
+                )
+                series(
                     seriesOf(
                         "Third",
                         pointOf(0f, 1f),
                         pointOf(2f, 8f),
                         pointOf(3f, 3f),
                         pointOf(4f, 4f),
-                    )
+                    ),
+                    renderer = BarRenderer(SolidColor(Color.Red), 15f)
                 )
-
-                seriesRendererFor("First", renderer = PointRenderer(SolidColor(Color.Blue), 10f))
-                seriesRendererFor(
-                    "Second", renderer = LineRenderer(
-                        SolidColor(Color.Green),
-                        strokeWidth = 5f,
-                    )
-                )
-                seriesRendererFor("Third", renderer = BarRenderer(SolidColor(Color.Red), 15f))
             }
 
             Text(modifier = Modifier.weight(1f), text = "Another fine chart")
