@@ -15,10 +15,10 @@ class BarRenderer(
             drawRect(
                 brush = brush,
                 topLeft = Offset(
-                    context.dataToRendererCoordX(it.x.toFloat()) - barWidth / 2f,
+                    context.dataToRendererCoordX(it.x) - barWidth / 2f,
                     context.dataToRendererCoordY(0f)
                 ),
-                size = Size(barWidth, context.dataToRendererSizeY(it.y.toFloat()))
+                size = Size(barWidth, context.dataToRendererSizeY(it.y))
             )
         }
     }

@@ -23,12 +23,12 @@ class LineRenderer(
                 pathEffect = pathEffect,
                 cap = cap,
                 start = Offset(
-                    context.dataToRendererCoordX(it[0].x.toFloat()),
-                    context.dataToRendererCoordY((it[0].y.toFloat()))
+                    context.dataToRendererCoordX(it[0].x),
+                    context.dataToRendererCoordY((it[0].y))
                 ),
                 end = Offset(
-                    context.dataToRendererCoordX(it[1].x.toFloat()),
-                    context.dataToRendererCoordY(it[1].y.toFloat()),
+                    context.dataToRendererCoordX(it[1].x),
+                    context.dataToRendererCoordY(it[1].y),
                 ),
             )
         }

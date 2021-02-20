@@ -1,15 +1,15 @@
 package io.github.staakk.cchart.data
 
-data class ChartData(
+data class Data(
     val series: List<Series>
 ) {
     val bounds: DataBounds
 
     init {
-        var maxX = Int.MIN_VALUE
-        var minX = Int.MAX_VALUE
-        var maxY = Int.MIN_VALUE
-        var minY = Int.MAX_VALUE
+        var maxX = Float.MIN_VALUE
+        var minX = Float.MAX_VALUE
+        var maxY = Float.MIN_VALUE
+        var minY = Float.MAX_VALUE
 
         series.forEach { s ->
             s.points.forEach { p ->
@@ -21,10 +21,10 @@ data class ChartData(
         }
 
         bounds = DataBounds(
-            maxX = maxX.toFloat(),
-            minX = minX.toFloat(),
-            maxY = maxY.toFloat(),
-            minY = minY.toFloat(),
+            maxX = maxX,
+            minX = minX,
+            maxY = maxY,
+            minY = minY,
         )
     }
 }
