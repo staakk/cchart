@@ -25,15 +25,13 @@ import io.github.staakk.cchart.axis.XAxisRenderer
 import io.github.staakk.cchart.axis.YAxisRenderer
 import io.github.staakk.cchart.data.*
 import io.github.staakk.cchart.renderer.*
-import io.github.staakk.cchart.util.OffsetRange
-import io.github.staakk.cchart.util.coerceIn
 
 @Composable
 fun Chart(
     modifier: Modifier = Modifier,
     bounds: DataBounds? = null,
-    panRange: OffsetRange = OffsetRange(0f..0f, 0f..0f),
-    zoomRange: ClosedFloatingPointRange<Float> = 0.5f..1.5f,
+    panRange: PanRange = PanRange.NoPan,
+    zoomRange: ClosedFloatingPointRange<Float> = Zoom.NoZoom,
     content: ChartScope.() -> Unit
 ) {
     val scope = ChartScopeImpl()
