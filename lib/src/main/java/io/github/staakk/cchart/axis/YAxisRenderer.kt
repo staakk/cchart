@@ -20,6 +20,7 @@ class YAxisRenderer(
     private val strokeWidth: Float = Stroke.HairlineWidth,
     private val pathEffect: PathEffect? = null,
     private val cap: StrokeCap = Stroke.DefaultCap,
+    private val alpha: Float = 0.2f,
     private val labelsTextSize: TextUnit = 12.sp,
     private val labelsTypeface: Typeface = Typeface.DEFAULT,
     private val labelsProvider: LabelsProvider = INT_LABELS_PROVIDER,
@@ -31,6 +32,7 @@ class YAxisRenderer(
             strokeWidth = strokeWidth,
             pathEffect = pathEffect,
             cap = cap,
+            alpha = alpha,
             start = Offset(0f, 0f),
             end = Offset(0f, size.height)
         )

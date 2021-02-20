@@ -21,6 +21,7 @@ class XAxisRenderer(
     private val strokeWidth: Float = Stroke.HairlineWidth,
     private val pathEffect: PathEffect? = null,
     private val cap: StrokeCap = Stroke.DefaultCap,
+    private val alpha: Float = 0.2f,
     private val labelsTextSize: TextUnit = 12.sp,
     private val labelsTypeface: Typeface = Typeface.DEFAULT,
     private val labelsProvider: LabelsProvider = INT_LABELS_PROVIDER,
@@ -32,6 +33,7 @@ class XAxisRenderer(
             strokeWidth = strokeWidth,
             pathEffect = pathEffect,
             cap = cap,
+            alpha = alpha,
             start = Offset(0f, size.height),
             end = Offset(size.width, size.height)
         )

@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.translate
@@ -80,8 +79,8 @@ fun Chart(
                     scope.data
                         .series
                         .forEach { series ->
-                            scope.seriesRenderers[series.name]
-                                ?.apply { this@drawScope.render(rendererContext, series) }
+                            (scope.seriesRenderers[series.name] ?: scope.renderer)
+                                .apply { this@drawScope.render(rendererContext, series) }
                         }
                 }
             }
@@ -107,18 +106,22 @@ interface ChartScope {
 
     fun data(vararg series: Series)
 
+    fun renderer(renderer: SeriesRenderer)
+
     fun seriesRendererFor(vararg seriesName: String, renderer: SeriesRenderer)
 }
 
 private class ChartScopeImpl : ChartScope {
 
-    var drawXAxis: AxisRenderer = XAxisRenderer(SolidColor(Color.Black))
+    var drawXAxis: AxisRenderer = XAxisRenderer(SolidColor(Color.Black), strokeWidth = 2f)
 
-    var drawYAxis: AxisRenderer = YAxisRenderer(SolidColor(Color.Black))
+    var drawYAxis: AxisRenderer = YAxisRenderer(SolidColor(Color.Black), strokeWidth = 2f)
 
     var data: Data = Data(emptyList())
 
     val seriesRenderers: MutableMap<String, SeriesRenderer> = mutableMapOf()
+
+    var renderer: SeriesRenderer = LineRenderer(SolidColor(Color.Black))
 
     override fun xAxis(axisRenderer: AxisRenderer) {
         drawXAxis = axisRenderer
@@ -130,6 +133,10 @@ private class ChartScopeImpl : ChartScope {
 
     override fun data(vararg series: Series) {
         data = Data(series.toList())
+    }
+
+    override fun renderer(renderer: SeriesRenderer) {
+        this.renderer = renderer
     }
 
     override fun seriesRendererFor(vararg seriesName: String, renderer: SeriesRenderer) {
@@ -177,8 +184,6 @@ fun PreviewCoordinatePlane() {
                     "Second", renderer = LineRenderer(
                         SolidColor(Color.Green),
                         strokeWidth = 5f,
-                        pathEffect = PathEffect.dashPathEffect(
-                            FloatArray(2) { 20f })
                     )
                 )
                 seriesRendererFor("Third", renderer = BarRenderer(SolidColor(Color.Red), 15f))
