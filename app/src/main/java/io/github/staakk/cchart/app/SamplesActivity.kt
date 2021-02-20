@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 const val LINE_CHART_ID = 0
+const val POINT_CHART_ID = 1
+const val COMBINED_CHART_ID = 2
 
 class SamplesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +33,8 @@ class SamplesActivity : AppCompatActivity() {
                     val selectedIndex = remember { mutableStateOf(0) }
                     when (selectedIndex.value) {
                         LINE_CHART_ID -> LineChartScreen()
+                        POINT_CHART_ID -> PointChartScreen()
+                        COMBINED_CHART_ID -> CombinedChartScreen()
                     }
 
                     Text(
@@ -41,6 +45,17 @@ class SamplesActivity : AppCompatActivity() {
                     )
                     LazyColumn {
                         item { MenuItem(LINE_CHART_ID, "Line chart") { selectedIndex.value = it } }
+                        item {
+                            MenuItem(POINT_CHART_ID, "Point chart") {
+                                selectedIndex.value = it
+                            }
+                        }
+                        item {
+                            MenuItem(
+                                COMBINED_CHART_ID,
+                                "Point & line chart"
+                            ) { selectedIndex.value = it }
+                        }
                     }
                 }
             }
