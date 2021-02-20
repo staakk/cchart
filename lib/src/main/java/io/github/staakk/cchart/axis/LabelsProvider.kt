@@ -1,4 +1,4 @@
-package io.github.staakk.composechart.axis
+package io.github.staakk.cchart.axis
 
 fun interface LabelsProvider {
     fun createLabels(min: Float, max: Float): List<Pair<String, Float>>

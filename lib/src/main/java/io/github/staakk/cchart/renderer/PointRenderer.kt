@@ -1,9 +1,9 @@
-package io.github.staakk.composechart.renderer
+package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import io.github.staakk.composechart.data.Series
+import io.github.staakk.cchart.data.Series
 
 class PointRenderer(
     private val brush: Brush,

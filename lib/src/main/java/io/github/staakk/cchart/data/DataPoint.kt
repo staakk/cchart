@@ -1,4 +1,4 @@
-package io.github.staakk.composechart.data
+package io.github.staakk.cchart.data
 
 data class DataPoint(
     val x: Int,

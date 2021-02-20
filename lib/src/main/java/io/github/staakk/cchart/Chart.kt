@@ -1,4 +1,4 @@
-package io.github.staakk.composechart
+package io.github.staakk.cchart
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTransformGestures
@@ -21,13 +21,13 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.staakk.composechart.axis.AxisRenderer
-import io.github.staakk.composechart.axis.XAxisRenderer
-import io.github.staakk.composechart.axis.YAxisRenderer
-import io.github.staakk.composechart.data.ChartData
-import io.github.staakk.composechart.data.DataPoint
-import io.github.staakk.composechart.data.Series
-import io.github.staakk.composechart.renderer.*
+import io.github.staakk.cchart.axis.AxisRenderer
+import io.github.staakk.cchart.axis.XAxisRenderer
+import io.github.staakk.cchart.axis.YAxisRenderer
+import io.github.staakk.cchart.data.ChartData
+import io.github.staakk.cchart.data.DataPoint
+import io.github.staakk.cchart.data.Series
+import io.github.staakk.cchart.renderer.*
 
 @Composable
 fun Chart(

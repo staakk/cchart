@@ -1,4 +1,4 @@
-package io.github.staakk.composechart.data
+package io.github.staakk.cchart.data
 
 import kotlin.math.abs
 

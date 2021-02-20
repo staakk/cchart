@@ -1,12 +1,10 @@
-package io.github.staakk.composechart.renderer
+package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import io.github.staakk.composechart.data.Series
-import kotlin.math.max
+import io.github.staakk.cchart.data.Series
 
 class BarRenderer(
     private val brush: Brush,

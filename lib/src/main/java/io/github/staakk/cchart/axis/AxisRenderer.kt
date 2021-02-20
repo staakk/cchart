@@ -1,7 +1,7 @@
-package io.github.staakk.composechart.axis
+package io.github.staakk.cchart.axis
 
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import io.github.staakk.composechart.renderer.RendererContext
+import io.github.staakk.cchart.renderer.RendererContext
 
 interface AxisRenderer {
 

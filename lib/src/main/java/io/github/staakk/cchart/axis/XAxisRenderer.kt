@@ -1,4 +1,4 @@
-package io.github.staakk.composechart.axis
+package io.github.staakk.cchart.axis
 
 import android.graphics.Paint
 import android.graphics.Typeface
@@ -9,10 +9,11 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import io.github.staakk.composechart.renderer.RendererContext
+import io.github.staakk.cchart.renderer.RendererContext
+import io.github.staakk.cchart.util.countLines
 
 
-class YAxisRenderer(
+class XAxisRenderer(
     private val brush: Brush,
     private val strokeWidth: Float = Stroke.HairlineWidth,
     private val pathEffect: PathEffect? = null,
@@ -28,9 +29,10 @@ class YAxisRenderer(
             strokeWidth = strokeWidth,
             pathEffect = pathEffect,
             cap = cap,
-            start = Offset(0f, 0f),
-            end = Offset(0f, size.height)
+            start = Offset(0f, size.height),
+            end = Offset(size.width, size.height)
         )
+
     }
 
     override fun DrawScope.renderLabels(context: RendererContext) {
@@ -40,11 +42,11 @@ class YAxisRenderer(
             isAntiAlias = true
         }
         drawIntoCanvas { canvas ->
-            labelsProvider.createLabels(context.bounds.minY, context.bounds.maxY).forEach { (text, offset) ->
+            labelsProvider.createLabels(context.bounds.minX, context.bounds.maxX).forEach { (text, offset) ->
                 canvas.nativeCanvas.drawText(
                     text,
-                    0f - paint.measureText(text) - 10f,
-                    size.height + context.dataToRendererCoordY(offset) - paint.fontMetrics.top / 2,
+                    context.dataToRendererCoordX(offset) - paint.measureText(text) / 2,
+                    size.height - paint.fontMetrics.top * text.countLines(),
                     paint
                 )
             }

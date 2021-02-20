@@ -1,7 +1,8 @@
-package io.github.staakk.composechart.app
+package io.github.staakk.cchart.app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
@@ -11,16 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.setContent
-import io.github.staakk.composechart.Chart
-import io.github.staakk.composechart.data.ChartData
-import io.github.staakk.composechart.data.DataPoint
-import io.github.staakk.composechart.data.Series
-import io.github.staakk.composechart.renderer.BarRenderer
-import io.github.staakk.composechart.renderer.LineRenderer
-import io.github.staakk.composechart.renderer.PointRenderer
+import io.github.staakk.cchart.Chart
+import io.github.staakk.cchart.data.ChartData
+import io.github.staakk.cchart.data.DataPoint
+import io.github.staakk.cchart.data.Series
+import io.github.staakk.cchart.renderer.BarRenderer
+import io.github.staakk.cchart.renderer.LineRenderer
+import io.github.staakk.cchart.renderer.PointRenderer
 
-class MainActivity : AppCompatActivity() {
+class SamplesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

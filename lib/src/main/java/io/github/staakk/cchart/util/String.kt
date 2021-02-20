@@ -1,4 +1,4 @@
-package io.github.staakk.composechart.util
+package io.github.staakk.cchart.util
 
 fun String.countLines(): Int {
     var count = 1

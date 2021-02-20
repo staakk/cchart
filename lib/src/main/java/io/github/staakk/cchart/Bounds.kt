@@ -1,4 +1,4 @@
-package io.github.staakk.composechart
+package io.github.staakk.cchart
 
 import androidx.compose.ui.geometry.Offset
 import kotlin.math.abs

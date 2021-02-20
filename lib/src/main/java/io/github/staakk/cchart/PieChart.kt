@@ -1,4 +1,4 @@
-package io.github.staakk.composechart
+package io.github.staakk.cchart
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.staakk.composechart.util.angleToVec
+import io.github.staakk.cchart.util.angleToVec
 import kotlin.math.round
 
 @Composable

@@ -1,4 +1,4 @@
-package io.github.staakk.composechart.util
+package io.github.staakk.cchart.util
 
 import kotlin.math.cos
 import kotlin.math.sin

@@ -1,4 +1,4 @@
-package io.github.staakk.composechart.renderer
+package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -6,8 +6,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.translate
-import io.github.staakk.composechart.data.Series
+import io.github.staakk.cchart.data.Series
 
 class LineRenderer(
     private val brush: Brush,

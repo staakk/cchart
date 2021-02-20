@@ -4,6 +4,6 @@ dependencyResolutionManagement {
         jcenter()
     }
 }
-rootProject.name = "composechart"
+rootProject.name = "cchart"
 include ':lib'
 include ':app'

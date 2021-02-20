@@ -1,8 +1,8 @@
-package io.github.staakk.composechart.renderer
+package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.Density
-import io.github.staakk.composechart.Bounds
+import io.github.staakk.cchart.Bounds
 import kotlin.math.abs
 
 data class RendererContext(
