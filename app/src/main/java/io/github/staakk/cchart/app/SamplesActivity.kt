@@ -62,7 +62,7 @@ fun MenuHeader() {
     Text(
         modifier = Modifier.fillMaxWidth()
             .padding(16.dp),
-        text = "Select on of the examples below",
+        text = "Select one of the examples below",
         style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold)
     )
 }

@@ -23,6 +23,9 @@ import io.github.staakk.cchart.axis.HorizontalAxisRenderer
 import io.github.staakk.cchart.axis.VerticalAxisRenderer
 import io.github.staakk.cchart.data.*
 import io.github.staakk.cchart.data.DataBounds.Companion.getBounds
+import io.github.staakk.cchart.grid.GridRenderer
+import io.github.staakk.cchart.grid.SimpleGridRenderer
+import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.label.*
 import io.github.staakk.cchart.renderer.*
 
@@ -95,10 +98,13 @@ fun Chart(
                     0f,
                     size.height - rendererContext.dataToRendererCoordY(rendererContext.bounds.minY)
                 ) {
-                    scope.series
-                        .forEach { (series, renderer) ->
-                            renderer.apply { this@drawScope.render(rendererContext, series) }
-                        }
+                    scope.gridRenderers.forEach { renderer ->
+                        with(renderer) { this@drawScope.render(rendererContext) }
+                    }
+
+                    scope.series.forEach { (series, renderer) ->
+                        renderer.apply { this@drawScope.render(rendererContext, series) }
+                    }
                 }
             }
 
@@ -116,6 +122,8 @@ fun Chart(
 }
 
 interface ChartScope {
+
+    fun grid(gridRenderer: GridRenderer)
 
     fun topAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer)
 
@@ -155,7 +163,13 @@ private class ChartScopeImpl(
             strokeWidth = 2f
         )
 
+    var gridRenderers: MutableList<GridRenderer> = mutableListOf()
+
     val series: MutableMap<List<Series>, SeriesRenderer> = mutableMapOf()
+
+    override fun grid(gridRenderer: GridRenderer) {
+        gridRenderers.add(gridRenderer)
+    }
 
     override fun topAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer) {
         topAxisRenderer = axisRenderer
@@ -221,6 +235,19 @@ private fun PreviewCoordinatePlane() {
                     ),
                     renderer = BarRenderer({ SolidColor(Color.Red) }, 15f)
                 )
+
+                grid(
+                    gridRenderer(
+                        orientation = SimpleGridRenderer.Orientation.VERTICAL,
+                        gridLinesProvider = { min, max ->
+                            (min.toInt()..max.toInt()).map { it }
+                                .filter { it % 2 == 1 }
+                                .map { it.toFloat() }
+                        },
+                        alpha = 1.0f
+                    )
+                )
+                grid(gridRenderer(orientation = SimpleGridRenderer.Orientation.HORIZONTAL))
             }
 
             Text(modifier = Modifier.weight(1f), text = "Another fine chart")
