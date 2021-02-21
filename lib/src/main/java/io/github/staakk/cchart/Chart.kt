@@ -25,6 +25,9 @@ import io.github.staakk.cchart.axis.XAxisRenderer
 import io.github.staakk.cchart.axis.YAxisRenderer
 import io.github.staakk.cchart.data.*
 import io.github.staakk.cchart.data.DataBounds.Companion.getBounds
+import io.github.staakk.cchart.label.LabelRenderer
+import io.github.staakk.cchart.label.horizontalLabelRenderer
+import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.*
 
 @Composable
@@ -33,10 +36,13 @@ fun Chart(
     bounds: DataBounds? = null,
     panRange: PanRange = PanRange.NoPan,
     zoomRange: ClosedFloatingPointRange<Float> = Zoom.NoZoom,
-    content: ChartScope.() -> Unit
+    content: @Composable ChartScope.() -> Unit
 ) {
-    val scope = ChartScopeImpl()
-    scope.apply(content)
+    val scope = ChartScopeImpl(
+        bottomLabelRenderer = horizontalLabelRenderer(),
+        leftLabelRenderer = verticalLabelRenderer()
+    )
+    scope.content()
 
     val dataBounds = scope.series.keys
         .flatten()
@@ -69,7 +75,6 @@ fun Chart(
             }
             val rendererContext = rendererContext(
                 ((bounds ?: dataBounds) + dataAdjustedPan).withZoom(zoomState.value),
-                density,
                 Size(width = size.width, height = size.height)
             )
 
@@ -86,41 +91,46 @@ fun Chart(
             }
 
             clipRect(top = -paddingPx, bottom = size.height + paddingPx) {
-                with(scope.drawXAxis) { this@drawScope.renderLabels(rendererContext) }
+                with(scope.bottomLabelRenderer) { this@drawScope.render(rendererContext) }
             }
             clipRect(left = -paddingPx, right = size.width + paddingPx) {
-                with(scope.drawYAxis) { this@drawScope.renderLabels(rendererContext) }
+                with(scope.leftLabelRenderer) { this@drawScope.render(rendererContext) }
             }
 
-            with(scope.drawXAxis) { this@drawScope.renderAxis(rendererContext) }
-            with(scope.drawYAxis) { this@drawScope.renderAxis(rendererContext) }
+            with(scope.bottomAxisRenderer) { this@drawScope.render(rendererContext) }
+            with(scope.leftAxisRenderer) { this@drawScope.render(rendererContext) }
         }
     }
 }
 
 interface ChartScope {
 
-    fun xAxis(axisRenderer: AxisRenderer)
+    fun bottomAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer)
 
-    fun yAxis(axisRenderer: AxisRenderer)
+    fun leftAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer)
 
     fun series(vararg series: Series, renderer: SeriesRenderer)
 }
 
-private class ChartScopeImpl : ChartScope {
+private class ChartScopeImpl(
+    var bottomLabelRenderer: LabelRenderer,
+    var leftLabelRenderer: LabelRenderer,
+) : ChartScope {
 
-    var drawXAxis: AxisRenderer = XAxisRenderer(SolidColor(Color.Black), strokeWidth = 2f)
+    var bottomAxisRenderer: AxisRenderer = XAxisRenderer(SolidColor(Color.Black), strokeWidth = 2f)
 
-    var drawYAxis: AxisRenderer = YAxisRenderer(SolidColor(Color.Black), strokeWidth = 2f)
+    var leftAxisRenderer: AxisRenderer = YAxisRenderer(SolidColor(Color.Black), strokeWidth = 2f)
 
     val series: MutableMap<List<Series>, SeriesRenderer> = mutableMapOf()
 
-    override fun xAxis(axisRenderer: AxisRenderer) {
-        drawXAxis = axisRenderer
+    override fun bottomAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer) {
+        bottomAxisRenderer = axisRenderer
+        bottomLabelRenderer = labelRenderer
     }
 
-    override fun yAxis(axisRenderer: AxisRenderer) {
-        drawYAxis = axisRenderer
+    override fun leftAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer) {
+        leftAxisRenderer = axisRenderer
+        leftLabelRenderer = labelRenderer
     }
 
     override fun series(vararg series: Series, renderer: SeriesRenderer) {
