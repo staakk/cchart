@@ -10,7 +10,7 @@ import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.DataBounds
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
-import io.github.staakk.cchart.renderer.LineRenderer
+import io.github.staakk.cchart.renderer.lineRenderer
 
 @Composable
 fun LineChartScreen() {
@@ -31,7 +31,7 @@ fun LineChartScreen() {
                 pointOf(8f, 4.5f),
                 pointOf(9f, 4.7f),
             ),
-            renderer = LineRenderer(brush = SolidColor(Color.Blue), strokeWidth = 10f)
+            renderer = lineRenderer(brush = SolidColor(Color.Blue))
         )
     }
 }

@@ -14,17 +14,13 @@ import io.github.staakk.cchart.renderer.RendererContext
 import io.github.staakk.cchart.util.countLines
 import io.github.staakk.cchart.util.lineHeight
 
-class VerticalLabelRenderer(
+private class VerticalLabelRenderer(
     private val paint: Paint,
-    private val location: Location,
-    private val side: Side,
+    private val location: VerticalLabelLocation,
+    private val side: VerticalLabelSide,
     private val axisDistance: Float,
     private val labelsProvider: LabelsProvider,
 ) : LabelRenderer {
-
-    enum class Location { RIGHT, LEFT }
-
-    enum class Side { RIGHT, LEFT }
 
     override fun DrawScope.render(context: RendererContext) {
         drawIntoCanvas { canvas ->
@@ -51,25 +47,31 @@ class VerticalLabelRenderer(
 
     private fun getXPosition(drawScope: DrawScope, textWidth: Float): Float {
         val position = when (location) {
-            Location.RIGHT -> drawScope.size.width
-            Location.LEFT -> 0f
+            VerticalLabelLocation.RIGHT -> drawScope.size.width
+            VerticalLabelLocation.LEFT -> 0f
         }
         return position + when (side) {
-            Side.RIGHT -> axisDistance
-            Side.LEFT -> -textWidth - axisDistance
+            VerticalLabelSide.RIGHT -> axisDistance
+            VerticalLabelSide.LEFT -> -textWidth - axisDistance
         }
     }
 }
+
+
+enum class VerticalLabelLocation { RIGHT, LEFT }
+
+enum class VerticalLabelSide { RIGHT, LEFT }
+
 
 @Composable
 fun verticalLabelRenderer(
     labelsTextSize: TextUnit = 12.sp,
     labelsTypeface: Typeface = Typeface.DEFAULT,
-    location: VerticalLabelRenderer.Location = VerticalLabelRenderer.Location.LEFT,
-    side: VerticalLabelRenderer.Side = VerticalLabelRenderer.Side.LEFT,
+    location: VerticalLabelLocation = VerticalLabelLocation.LEFT,
+    side: VerticalLabelSide = VerticalLabelSide.LEFT,
     axisDistance: Float = 12f,
     labelsProvider: LabelsProvider = IntLabelsProvider,
-): VerticalLabelRenderer {
+): LabelRenderer {
     val density = LocalDensity.current
     val paint = Paint().apply {
         typeface = labelsTypeface
@@ -81,9 +83,8 @@ fun verticalLabelRenderer(
 
 fun verticalLabelRenderer(
     paint: Paint,
-    location: VerticalLabelRenderer.Location = VerticalLabelRenderer.Location.LEFT,
-    side: VerticalLabelRenderer.Side = VerticalLabelRenderer.Side.LEFT,
+    location: VerticalLabelLocation = VerticalLabelLocation.LEFT,
+    side: VerticalLabelSide = VerticalLabelSide.LEFT,
     axisDistance: Float = 12f,
     labelsProvider: LabelsProvider = IntLabelsProvider
-) =
-    VerticalLabelRenderer(paint, location, side, axisDistance, labelsProvider)
+): LabelRenderer = VerticalLabelRenderer(paint, location, side, axisDistance, labelsProvider)

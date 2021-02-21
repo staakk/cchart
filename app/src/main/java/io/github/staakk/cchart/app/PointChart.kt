@@ -10,7 +10,7 @@ import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.DataBounds
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
-import io.github.staakk.cchart.renderer.PointRenderer
+import io.github.staakk.cchart.renderer.pointRenderer
 
 @Composable
 fun PointChartScreen() {
@@ -31,7 +31,7 @@ fun PointChartScreen() {
                 pointOf(8f, 4.5f),
                 pointOf(9f, 4.7f),
             ),
-            renderer = PointRenderer(brush = SolidColor(Color.Red), radius = 10f)
+            renderer = pointRenderer(brush = SolidColor(Color.Red), radius = 10f)
         )
     }
 }

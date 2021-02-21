@@ -1,29 +1,27 @@
 package io.github.staakk.cchart.axis
 
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import io.github.staakk.cchart.renderer.RendererContext
 
 
-class VerticalAxisRenderer(
+private class VerticalAxisRenderer(
     private val brush: Brush,
-    private val location: Location = Location.LEFT,
+    private val location: VerticalAxisLocation = VerticalAxisLocation.LEFT,
     private val strokeWidth: Float = Stroke.HairlineWidth,
     private val pathEffect: PathEffect? = null,
     private val cap: StrokeCap = Stroke.DefaultCap,
     private val alpha: Float = 0.2f,
+    private val colorFilter: ColorFilter? = null,
+    private val blendMode: BlendMode = DrawScope.DefaultBlendMode,
 ) : AxisRenderer {
-
-    enum class Location { RIGHT, LEFT }
 
     override fun DrawScope.render(context: RendererContext) {
         val xPos = when (location) {
-            Location.RIGHT -> size.width
-            Location.LEFT -> 0f
+            VerticalAxisLocation.RIGHT -> size.width
+            VerticalAxisLocation.LEFT -> 0f
         }
         drawLine(
             brush = brush,
@@ -32,7 +30,31 @@ class VerticalAxisRenderer(
             cap = cap,
             alpha = alpha,
             start = Offset(xPos, 0f),
-            end = Offset(xPos, size.height)
+            end = Offset(xPos, size.height),
+            colorFilter = colorFilter,
+            blendMode = blendMode
         )
     }
 }
+
+enum class VerticalAxisLocation { RIGHT, LEFT }
+
+fun verticalAxisRenderer(
+    brush: Brush = SolidColor(Color.Black),
+    location: VerticalAxisLocation = VerticalAxisLocation.LEFT,
+    strokeWidth: Float = Stroke.HairlineWidth,
+    pathEffect: PathEffect? = null,
+    cap: StrokeCap = Stroke.DefaultCap,
+    alpha: Float = 0.2f,
+    colorFilter: ColorFilter? = null,
+    blendMode: BlendMode = DrawScope.DefaultBlendMode,
+): AxisRenderer = VerticalAxisRenderer(
+    brush,
+    location,
+    strokeWidth,
+    pathEffect,
+    cap,
+    alpha,
+    colorFilter,
+    blendMode
+)

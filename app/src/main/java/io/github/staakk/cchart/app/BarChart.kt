@@ -10,7 +10,7 @@ import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.DataBounds
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
-import io.github.staakk.cchart.renderer.BarRenderer
+import io.github.staakk.cchart.renderer.barRenderer
 
 @Composable
 fun BarChart() {
@@ -36,7 +36,7 @@ fun BarChart() {
                 pointOf(4f, 3.5f),
                 pointOf(5f, 1f)
             ),
-            renderer = BarRenderer(
+            renderer = barRenderer(
                 brushProvider = {
                     SolidColor(
                         when (it) {
@@ -46,7 +46,7 @@ fun BarChart() {
                         }
                     )
                 },
-                preferredWidth = 64f
+                preferredWidth = 64f,
             )
         )
     }

@@ -1,6 +1,6 @@
 package io.github.staakk.cchart.util
 
-fun String.countLines(): Int {
+internal fun String.countLines(): Int {
     var count = 1
     var wasReturn = false
     val iterator = iterator()

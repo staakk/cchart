@@ -2,16 +2,24 @@ package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.DrawStyle
+import androidx.compose.ui.graphics.drawscope.Fill
 import io.github.staakk.cchart.data.Point
 import io.github.staakk.cchart.data.Series
 import kotlin.math.abs
 
-class BarRenderer(
+private class BarRenderer(
     private val brushProvider: (String) -> Brush,
     private val preferredWidth: Float,
     private val minimalSpacing: Float = 10f,
+    private val style: DrawStyle,
+    private val alpha: Float,
+    private val colorFilter: ColorFilter?,
+    private val blendMode: BlendMode,
     private val isSameX: (Float, Float) -> Boolean = { a, b -> abs(a - b) < 0.01f },
 ) : SeriesRenderer {
 
@@ -30,7 +38,11 @@ class BarRenderer(
                         context.dataToRendererCoordX(point.x) - unitOffset * width - (1 + (1 - groupSize % 2)) * width / 2f,
                         context.dataToRendererCoordY(0f)
                     ),
-                    size = Size(width, context.dataToRendererSizeY(point.y))
+                    size = Size(width, -context.dataToRendererSizeY(point.y)),
+                    style = style,
+                    alpha = alpha,
+                    colorFilter = colorFilter,
+                    blendMode = blendMode
                 )
             }
         }
@@ -75,3 +87,23 @@ private data class SeriesPoint(
     val y: Float
         get() = point.y
 }
+
+fun barRenderer(
+    brushProvider: (String) -> Brush,
+    preferredWidth: Float,
+    minimalSpacing: Float = 10f,
+    style: DrawStyle = Fill,
+    alpha: Float = 1.0f,
+    colorFilter: ColorFilter? = null,
+    blendMode: BlendMode = DrawScope.DefaultBlendMode,
+    isSameX: (Float, Float) -> Boolean = { a, b -> abs(a - b) < 0.01f },
+): SeriesRenderer = BarRenderer(
+    brushProvider,
+    preferredWidth,
+    minimalSpacing,
+    style,
+    alpha,
+    colorFilter,
+    blendMode,
+    isSameX
+)

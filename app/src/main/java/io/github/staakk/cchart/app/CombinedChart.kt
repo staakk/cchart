@@ -10,9 +10,9 @@ import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.DataBounds
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
-import io.github.staakk.cchart.renderer.LineRenderer
-import io.github.staakk.cchart.renderer.PointRenderer
 import io.github.staakk.cchart.renderer.combine
+import io.github.staakk.cchart.renderer.lineRenderer
+import io.github.staakk.cchart.renderer.pointRenderer
 
 @Composable
 fun CombinedChartScreen() {
@@ -34,8 +34,8 @@ fun CombinedChartScreen() {
                 pointOf(9f, 4.7f),
             ),
             renderer = combine(
-                LineRenderer(brush = SolidColor(Color.Pink), strokeWidth = 10f),
-                PointRenderer(brush = SolidColor(Color.Indigo), radius = 10f)
+                lineRenderer(brush = SolidColor(Color.Pink)),
+                pointRenderer(brush = SolidColor(Color.Indigo), radius = 10f)
             )
         )
     }

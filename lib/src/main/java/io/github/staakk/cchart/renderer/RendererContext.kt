@@ -16,7 +16,7 @@ data class RendererContext(
 
     fun dataToRendererSizeX(x: Float) = x * scaleX
 
-    fun dataToRendererSizeY(y: Float) = -y * scaleY
+    fun dataToRendererSizeY(y: Float) = y * scaleY
 }
 
 fun rendererContext(

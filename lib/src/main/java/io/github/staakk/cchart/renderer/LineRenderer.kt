@@ -1,16 +1,16 @@
 package io.github.staakk.cchart.renderer
 
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Stroke
 import io.github.staakk.cchart.data.Series
 
-class LineRenderer(
+private class LineRenderer(
     private val brush: Brush,
-    private val strokeWidth: Float = Stroke.HairlineWidth,
-    private val cap: StrokeCap = StrokeCap.Round,
+    private val style: DrawStyle,
+    private val colorFilter: ColorFilter?,
+    private val blendMode: BlendMode,
 ) : SeriesRenderer {
 
     override fun DrawScope.render(context: RendererContext, series: List<Series>) {
@@ -31,11 +31,17 @@ class LineRenderer(
                 },
                 alpha = 1.0f,
                 brush = brush,
-                style = Stroke(
-                    width = strokeWidth,
-                    cap = cap
-                ),
+                style = style,
+                colorFilter = colorFilter,
+                blendMode = blendMode
             )
         }
     }
 }
+
+fun lineRenderer(
+    brush: Brush = SolidColor(Color.Black),
+    style: DrawStyle = Stroke(width = 10f),
+    colorFilter: ColorFilter? = null,
+    blendMode: BlendMode = DrawScope.DefaultBlendMode,
+): SeriesRenderer = LineRenderer(brush, style, colorFilter, blendMode)

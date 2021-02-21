@@ -18,13 +18,11 @@ import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
-import io.github.staakk.cchart.axis.AxisRenderer
-import io.github.staakk.cchart.axis.HorizontalAxisRenderer
-import io.github.staakk.cchart.axis.VerticalAxisRenderer
+import io.github.staakk.cchart.axis.*
 import io.github.staakk.cchart.data.*
 import io.github.staakk.cchart.data.DataBounds.Companion.getBounds
+import io.github.staakk.cchart.grid.GridOrientation
 import io.github.staakk.cchart.grid.GridRenderer
-import io.github.staakk.cchart.grid.SimpleGridRenderer
 import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.label.*
 import io.github.staakk.cchart.renderer.*
@@ -39,14 +37,14 @@ fun Chart(
 ) {
     val scope = ChartScopeImpl(
         topLabelRenderer = horizontalLabelRenderer(
-            location = HorizontalLabelRenderer.Location.TOP,
-            side = HorizontalLabelRenderer.Side.ABOVE
+            location = HorizontalLabelLocation.TOP,
+            side = HorizontalLabelSide.ABOVE
         ),
         bottomLabelRenderer = horizontalLabelRenderer(),
         leftLabelRenderer = verticalLabelRenderer(),
         rightLabelRenderer = verticalLabelRenderer(
-            location = VerticalLabelRenderer.Location.RIGHT,
-            side = VerticalLabelRenderer.Side.RIGHT
+            location = VerticalLabelLocation.RIGHT,
+            side = VerticalLabelSide.RIGHT
         )
     )
     scope.content()
@@ -143,24 +141,23 @@ private class ChartScopeImpl(
     var rightLabelRenderer: LabelRenderer,
 ) : ChartScope {
 
-    var topAxisRenderer: AxisRenderer =
-        HorizontalAxisRenderer(
-            SolidColor(Color.Black),
-            location = HorizontalAxisRenderer.Location.TOP,
-            strokeWidth = 2f
-        )
+    var topAxisRenderer: AxisRenderer = horizontalAxisRenderer(
+        SolidColor(Color.Black),
+        location = HorizontalAxisLocation.TOP,
+        strokeWidth = 2f,
+    )
 
     var bottomAxisRenderer: AxisRenderer =
-        HorizontalAxisRenderer(SolidColor(Color.Black), strokeWidth = 2f)
+        horizontalAxisRenderer(SolidColor(Color.Black), strokeWidth = 2f)
 
     var leftAxisRenderer: AxisRenderer =
-        VerticalAxisRenderer(SolidColor(Color.Black), strokeWidth = 2f)
+        verticalAxisRenderer(SolidColor(Color.Black), strokeWidth = 2f)
 
     var rightAxisRenderer: AxisRenderer =
-        VerticalAxisRenderer(
+        verticalAxisRenderer(
             SolidColor(Color.Black),
-            location = VerticalAxisRenderer.Location.RIGHT,
-            strokeWidth = 2f
+            location = VerticalAxisLocation.RIGHT,
+            strokeWidth = 2f,
         )
 
     var gridRenderers: MutableList<GridRenderer> = mutableListOf()
@@ -213,7 +210,7 @@ private fun PreviewCoordinatePlane() {
                         pointOf(3f, 3f),
                         pointOf(4f, 4f),
                     ),
-                    renderer = PointRenderer(SolidColor(Color.Blue), 10f)
+                    renderer = pointRenderer(SolidColor(Color.Blue), 10f)
                 )
                 series(
                     seriesOf(
@@ -223,7 +220,7 @@ private fun PreviewCoordinatePlane() {
                         pointOf(3f, 3f),
                         pointOf(4f, 4f),
                     ),
-                    renderer = LineRenderer(SolidColor(Color.Green), strokeWidth = 5f)
+                    renderer = lineRenderer(SolidColor(Color.Green))
                 )
                 series(
                     seriesOf(
@@ -233,12 +230,12 @@ private fun PreviewCoordinatePlane() {
                         pointOf(3f, 3f),
                         pointOf(4f, 4f),
                     ),
-                    renderer = BarRenderer({ SolidColor(Color.Red) }, 15f)
+                    renderer = barRenderer({ SolidColor(Color.Red) }, 15f)
                 )
 
                 grid(
                     gridRenderer(
-                        orientation = SimpleGridRenderer.Orientation.VERTICAL,
+                        orientation = GridOrientation.VERTICAL,
                         gridLinesProvider = { min, max ->
                             (min.toInt()..max.toInt()).map { it }
                                 .filter { it % 2 == 1 }
@@ -247,7 +244,7 @@ private fun PreviewCoordinatePlane() {
                         alpha = 1.0f
                     )
                 )
-                grid(gridRenderer(orientation = SimpleGridRenderer.Orientation.HORIZONTAL))
+                grid(gridRenderer(orientation = GridOrientation.HORIZONTAL))
             }
 
             Text(modifier = Modifier.weight(1f), text = "Another fine chart")
