@@ -38,8 +38,24 @@ private class HorizontalAxisRenderer(
     }
 }
 
-enum class HorizontalAxisLocation { TOP, BOTTOM }
+/**
+ * Determines horizontal axis location.
+ */
+enum class HorizontalAxisLocation {
+    /**
+     * Draw axis above the chart.
+     */
+    TOP,
 
+    /**
+     * Draw axis below the chart.
+     */
+    BOTTOM
+}
+
+/**
+ * Creates renderer for horizontal axis.
+ */
 fun horizontalAxisRenderer(
     brush: Brush = SolidColor(Color.Black),
     location: HorizontalAxisLocation = HorizontalAxisLocation.BOTTOM,

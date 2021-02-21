@@ -2,27 +2,44 @@ package io.github.staakk.cchart
 
 import androidx.compose.ui.geometry.Offset
 
-
+/**
+ * Allows to provide panning boundaries for [Chart].
+ *
+ * @param x Horizontal pan range in pixels.
+ * @param y Vertical pan range in pixels.
+ */
 data class PanRange(
     val x: ClosedFloatingPointRange<Float>,
     val y: ClosedFloatingPointRange<Float>
 ) {
 
     companion object {
-        private val ZeroRange = 0f..0f
+        private val None = 0f..0f
 
-        val NoPan = PanRange(ZeroRange, ZeroRange)
+        /**
+         * No panning.
+         */
+        val NoPan = PanRange(None, None)
 
+        /**
+         * Unrestricted panning.
+         */
         val Unrestricted =
             PanRange(Float.MIN_VALUE..Float.MAX_VALUE, Float.MIN_VALUE..Float.MAX_VALUE)
 
-        fun horizontal(range: ClosedFloatingPointRange<Float>) = PanRange(range, ZeroRange)
+        /**
+         * Allows panning the [Chart] in horizontal direction.
+         */
+        fun horizontal(range: ClosedFloatingPointRange<Float>) = PanRange(range, None)
 
-        fun vertical(range: ClosedFloatingPointRange<Float>) = PanRange(ZeroRange, range)
+        /**
+         * Allows panning the [Chart] in vertical direction.
+         */
+        fun vertical(range: ClosedFloatingPointRange<Float>) = PanRange(None, range)
     }
 }
 
-fun Offset.coerceIn(range: PanRange) = Offset(
+internal fun Offset.coerceIn(range: PanRange) = Offset(
     x.coerceIn(range.x),
     y.coerceIn(range.y)
 )

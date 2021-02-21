@@ -27,12 +27,22 @@ import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.label.*
 import io.github.staakk.cchart.renderer.*
 
+/**
+ * Creates chart for visualising data.
+ *
+ * @param modifier Modifier to apply to this layout node.
+ * @param bounds The initial bounds for the layout. Should be expressed int the same coordinate
+ * system as the data series provided for the chart via [ChartScope.series].
+ * @param panRange Pan range expressed in pixels.
+ * @param zoomRange Zoom range.
+ * @param content A black that describes the contents of the chart.
+ */
 @Composable
 fun Chart(
     modifier: Modifier = Modifier,
     bounds: DataBounds? = null,
     panRange: PanRange = PanRange.NoPan,
-    zoomRange: ClosedFloatingPointRange<Float> = Zoom.NoZoom,
+    zoomRange: ClosedFloatingPointRange<Float> = ZoomRange.None,
     content: @Composable ChartScope.() -> Unit
 ) {
     val scope = ChartScopeImpl(
@@ -119,18 +129,45 @@ fun Chart(
     }
 }
 
+/**
+ * Receiver scope which is used by the [Chart].
+ */
 interface ChartScope {
 
+    /**
+     * Sets the grid renderer for this chart. Calling this function multiple times results in
+     * multiple renderers being added.
+     *
+     * @param gridRenderer Renderer to be set.
+     *
+     * @see [io.github.staakk.cchart.grid.gridRenderer]
+     */
     fun grid(gridRenderer: GridRenderer)
 
+    // TODO the functions setting axis and label should be replaced with one function per each.
+    /**
+     * Sets the axis and labels renderer for the top axis.
+     */
     fun topAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer)
 
+    /**
+     * Sets the axis and labels renderer for the bottom axis.
+     */
     fun bottomAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer)
 
+    /**
+     * Sets the axis and labels renderer for the left axis.
+     */
     fun leftAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer)
 
+    /**
+     * Sets the axis and labels renderer for the right axis.
+     */
     fun rightAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer)
 
+    /**
+     * Adds series of data to the chart.
+     */
     fun series(vararg series: Series, renderer: SeriesRenderer)
 }
 

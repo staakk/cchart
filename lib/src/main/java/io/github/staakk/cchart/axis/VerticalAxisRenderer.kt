@@ -37,7 +37,20 @@ private class VerticalAxisRenderer(
     }
 }
 
-enum class VerticalAxisLocation { RIGHT, LEFT }
+/**
+ * Determines vertical axis location.
+ */
+enum class VerticalAxisLocation {
+    /**
+     * Draws axis on the right side of the chart.
+     */
+    RIGHT,
+
+    /**
+     * Draw axis on the left side of the chart.
+     */
+    LEFT
+}
 
 fun verticalAxisRenderer(
     brush: Brush = SolidColor(Color.Black),

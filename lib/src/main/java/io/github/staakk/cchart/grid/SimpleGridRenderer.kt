@@ -39,28 +39,9 @@ private class SimpleGridRenderer(
     }
 }
 
-fun gridRenderer(
-    brush: Brush = SolidColor(Color.Black),
-    orientation: GridOrientation = GridOrientation.HORIZONTAL,
-    gridLinesProvider: GridLinesProvider = IntGridLinesProvider,
-    strokeWidth: Float = Stroke.HairlineWidth,
-    cap: StrokeCap = Stroke.DefaultCap,
-    pathEffect: PathEffect? = null,
-    alpha: Float = 0.2f,
-    colorFilter: ColorFilter? = null,
-    blendMode: BlendMode = DrawScope.DefaultBlendMode,
-): GridRenderer = SimpleGridRenderer(
-    brush,
-    orientation,
-    strokeWidth,
-    cap,
-    pathEffect,
-    alpha,
-    colorFilter,
-    blendMode,
-    gridLinesProvider
-)
-
+/**
+ * Orientation of the grid.
+ */
 enum class GridOrientation {
     HORIZONTAL {
         override fun getMin(bounds: DataBounds) = bounds.minY
@@ -93,3 +74,28 @@ enum class GridOrientation {
 
     abstract fun getEnd(drawScope: DrawScope, context: RendererContext, value: Float): Offset
 }
+
+/**
+ * Creates renderer for the grid.
+ */
+fun gridRenderer(
+    brush: Brush = SolidColor(Color.Black),
+    orientation: GridOrientation = GridOrientation.HORIZONTAL,
+    gridLinesProvider: GridLinesProvider = IntGridLinesProvider,
+    strokeWidth: Float = Stroke.HairlineWidth,
+    cap: StrokeCap = Stroke.DefaultCap,
+    pathEffect: PathEffect? = null,
+    alpha: Float = 0.2f,
+    colorFilter: ColorFilter? = null,
+    blendMode: BlendMode = DrawScope.DefaultBlendMode,
+): GridRenderer = SimpleGridRenderer(
+    brush,
+    orientation,
+    strokeWidth,
+    cap,
+    pathEffect,
+    alpha,
+    colorFilter,
+    blendMode,
+    gridLinesProvider
+)

@@ -3,7 +3,10 @@ package io.github.staakk.cchart.data
 import androidx.compose.ui.geometry.Offset
 import kotlin.math.abs
 
-
+/**
+ * Specifies bounds for rendering the chart. Those values should correspond to the [Point]s provided
+ * in the [Series] set for the [io.github.staakk.cchart.Chart]
+ */
 data class DataBounds(
     val minX: Float,
     val maxX: Float,

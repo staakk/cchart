@@ -12,5 +12,8 @@ private class CompositeSeriesRenderer(
     }
 }
 
+/**
+ * Combines multiple renderers.
+ */
 fun combine(vararg renderers: SeriesRenderer): SeriesRenderer =
     CompositeSeriesRenderer(renderers.toList())

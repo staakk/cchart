@@ -1,6 +1,9 @@
 package io.github.staakk.cchart.data
 
 
+/**
+ * Point to be represented by the chart.
+ */
 data class Point(
     val x: Float,
     val y: Float
