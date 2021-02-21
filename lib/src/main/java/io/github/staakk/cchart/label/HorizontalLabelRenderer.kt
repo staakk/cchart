@@ -11,17 +11,19 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import io.github.staakk.cchart.renderer.RendererContext
+import io.github.staakk.cchart.util.lineHeight
 
 class HorizontalLabelRenderer(
     private val paint: Paint,
-    private val location: Location = Location.BOTTOM,
-    private val side: Side = Side.UNDER,
-    private val labelsProvider: LabelsProvider = IntLabelsProvider,
+    private val location: Location,
+    private val side: Side,
+    private val axisDistance: Float,
+    private val labelsProvider: LabelsProvider,
 ) : LabelRenderer {
 
     enum class Location { BOTTOM, TOP }
 
-    enum class Side { UNDER, OVER }
+    enum class Side { BELOW, ABOVE }
 
     override fun DrawScope.render(context: RendererContext) {
         drawIntoCanvas { canvas ->
@@ -41,18 +43,20 @@ class HorizontalLabelRenderer(
         }
     }
 
-    override fun getMaxLabelSize(): Size = labelsProvider.getMaxLabelSize(paint)
+    override fun getMaxLabelSize(): Size = labelsProvider.getMaxLabelSize(paint).let {
+        it.copy(height = it.height + axisDistance)
+    }
 
     private fun getYPosition(drawScope: DrawScope): Float {
-        val op: Float.(Float) -> Float = when (side) {
-            Side.UNDER -> Float::minus
-            Side.OVER -> Float::plus
-        }
         val position = when (location) {
             Location.BOTTOM -> drawScope.size.height
             Location.TOP -> 0f
         }
-        return position.op(paint.fontMetrics.top * labelsProvider.getMaxLines())
+        val textHeight = paint.fontMetrics.lineHeight * labelsProvider.getMaxLines()
+        return position + when (side) {
+            Side.BELOW -> -textHeight + axisDistance + paint.fontMetrics.bottom
+            Side.ABOVE -> textHeight - axisDistance
+        }
     }
 }
 
@@ -61,7 +65,8 @@ fun horizontalLabelRenderer(
     labelsTextSize: TextUnit = 12.sp,
     labelsTypeface: Typeface = Typeface.DEFAULT,
     location: HorizontalLabelRenderer.Location = HorizontalLabelRenderer.Location.BOTTOM,
-    side: HorizontalLabelRenderer.Side = HorizontalLabelRenderer.Side.UNDER,
+    side: HorizontalLabelRenderer.Side = HorizontalLabelRenderer.Side.BELOW,
+    axisDistance: Float = 12f,
     labelsProvider: LabelsProvider = IntLabelsProvider,
 ): HorizontalLabelRenderer {
     val density = LocalDensity.current
@@ -70,12 +75,13 @@ fun horizontalLabelRenderer(
         textSize = with(density) { labelsTextSize.toPx() }
         isAntiAlias = true
     }
-    return HorizontalLabelRenderer(paint, location, side, labelsProvider)
+    return HorizontalLabelRenderer(paint, location, side, axisDistance, labelsProvider)
 }
 
 fun horizontalLabelRenderer(
     paint: Paint,
     location: HorizontalLabelRenderer.Location = HorizontalLabelRenderer.Location.BOTTOM,
-    side: HorizontalLabelRenderer.Side = HorizontalLabelRenderer.Side.UNDER,
+    side: HorizontalLabelRenderer.Side = HorizontalLabelRenderer.Side.BELOW,
+    axisDistance: Float = 12f,
     labelsProvider: LabelsProvider = IntLabelsProvider
-) = HorizontalLabelRenderer(paint, location, side, labelsProvider)
+) = HorizontalLabelRenderer(paint, location, side, axisDistance, labelsProvider)

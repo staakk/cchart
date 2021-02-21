@@ -2,6 +2,7 @@ package io.github.staakk.cchart.label
 
 import android.graphics.Paint
 import androidx.compose.ui.geometry.Size
+import io.github.staakk.cchart.util.lineHeight
 
 interface LabelsProvider {
 
@@ -27,6 +28,6 @@ fun LabelsProvider.getMaxLabelSize(paint: Paint): Size {
     val maxLetterSize = ('0'..'9').maxByOrNull { paint.measureText(it.toString()) } ?: '0'
     return Size(
         width = paint.measureText(String((0..getMaxLength()).map { maxLetterSize }.toCharArray())),
-        height = getMaxLines() * paint.fontMetrics.top
+        height = getMaxLines() * paint.fontMetrics.lineHeight
     )
 }

@@ -37,7 +37,7 @@ fun Chart(
     val scope = ChartScopeImpl(
         topLabelRenderer = horizontalLabelRenderer(
             location = HorizontalLabelRenderer.Location.TOP,
-            side = HorizontalLabelRenderer.Side.OVER
+            side = HorizontalLabelRenderer.Side.ABOVE
         ),
         bottomLabelRenderer = horizontalLabelRenderer(),
         leftLabelRenderer = verticalLabelRenderer(),
