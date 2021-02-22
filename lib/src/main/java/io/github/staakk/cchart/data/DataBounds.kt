@@ -5,7 +5,7 @@ import kotlin.math.abs
 
 /**
  * Specifies bounds for rendering the chart. Those values should correspond to the [Point]s provided
- * in the [Series] set for the [io.github.staakk.cchart.Chart]
+ * in the [Series] set for the [io.github.staakk.cchart.Chart].
  */
 data class DataBounds(
     val minX: Float,
@@ -13,6 +13,9 @@ data class DataBounds(
     val minY: Float,
     val maxY: Float
 ) {
+
+    constructor(minX: Number, maxX: Number, minY: Number, maxY: Number)
+            : this(minX.toFloat(), maxX.toFloat(), minY.toFloat(), maxY.toFloat())
 
     val width = abs(maxX - minX)
     val height = abs(maxY - minY)

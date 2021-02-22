@@ -9,10 +9,4 @@ data class Point(
     val y: Float
 )
 
-fun pointOf(x: Float, y: Float) = Point(x, y)
-
-fun pointOf(x: Int, y: Int) = Point(x.toFloat(), y.toFloat())
-
-fun pointOf(x: Long, y: Long) = Point(x.toFloat(), y.toFloat())
-
-fun pointOf(x: Double, y: Double) = Point(x.toFloat(), y.toFloat())
+fun pointOf(x: Number, y: Number) = Point(x.toFloat(), y.toFloat())

@@ -16,8 +16,7 @@ import io.github.staakk.cchart.renderer.barRenderer
 fun BarChart() {
     Chart(
         modifier = Modifier.aspectRatio(1f, false),
-        bounds = DataBounds(0f, 6f, 0f, 5f),
-        zoomRange = 0.5f..1.5f
+        bounds = DataBounds(0f, 6f, 0f, 5f)
     ) {
         series(
             seriesOf(
