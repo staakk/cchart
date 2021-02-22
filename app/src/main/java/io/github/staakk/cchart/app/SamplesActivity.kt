@@ -25,6 +25,7 @@ const val POINT_CHART_ID = 1
 const val COMBINED_CHART_ID = 2
 const val BAR_CHART_ID = 3
 const val DATE_LABELS_CHART = 4
+const val GRID_CHART = 5
 
 class SamplesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,8 +47,9 @@ fun Content() {
         LINE_CHART_ID -> LineChartScreen()
         POINT_CHART_ID -> PointChartScreen()
         COMBINED_CHART_ID -> CombinedChartScreen()
-        BAR_CHART_ID -> BarChart()
-        DATE_LABELS_CHART -> DateLabelsChart()
+        BAR_CHART_ID -> BarChartScreen()
+        DATE_LABELS_CHART -> DateLabelsChartScreen()
+        GRID_CHART -> GridChartScreen()
     }
 
     MenuHeader()
@@ -57,6 +59,7 @@ fun Content() {
         item { Item(COMBINED_CHART_ID, "Point & line chart") { selected.value = it } }
         item { Item(BAR_CHART_ID, "Bar chart") { selected.value = it } }
         item { Item(DATE_LABELS_CHART, "Chart with date labels") { selected.value = it } }
+        item { Item(GRID_CHART, "Chart with grid") { selected.value = it } }
     }
 }
 

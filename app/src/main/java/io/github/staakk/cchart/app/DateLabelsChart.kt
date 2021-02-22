@@ -20,7 +20,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun DateLabelsChart() {
+fun DateLabelsChartScreen() {
     Chart(
         modifier = Modifier.aspectRatio(1f, false),
         bounds = DataBounds(
@@ -92,6 +92,6 @@ object DateLabelsProvider : LabelsProvider {
 @Composable
 fun PreviewDateLabelsChart() {
     Surface {
-        DateLabelsChart()
+        DateLabelsChartScreen()
     }
 }
