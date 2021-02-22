@@ -11,12 +11,23 @@ interface AxisRenderer {
      * Function called when axis needs to be drawn.
      */
     fun DrawScope.render(context: RendererContext)
+
+    /**
+     * @return position of this axis.
+     */
+    fun getNormalisedPosition(): Float
 }
+
+interface HorizontalAxisRenderer : AxisRenderer
+
+interface VerticalAxisRenderer : AxisRenderer
 
 /**
  * Setting this as axis renderer will result in no axis being drawn.
  */
-object NullAxisRenderer : AxisRenderer {
+object NullAxisRenderer : VerticalAxisRenderer, HorizontalAxisRenderer {
     override fun DrawScope.render(context: RendererContext) {
     }
+
+    override fun getNormalisedPosition(): Float = 0f
 }

@@ -7,9 +7,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.staakk.cchart.Chart
+import io.github.staakk.cchart.axis.horizontalAxisRenderer
+import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.DataBounds
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
+import io.github.staakk.cchart.label.horizontalLabelRenderer
+import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.barRenderer
 
 @Composable
@@ -48,6 +52,14 @@ fun BarChart() {
                 preferredWidth = 64f,
             )
         )
+
+        horizontalAxis(horizontalAxisRenderer())
+
+        horizontalLabel(horizontalLabelRenderer())
+
+        verticalAxis(verticalAxisRenderer())
+
+        verticalLabel(verticalLabelRenderer())
     }
 }
 

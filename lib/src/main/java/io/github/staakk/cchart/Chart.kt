@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.clipRect
@@ -45,18 +46,7 @@ fun Chart(
     zoomRange: ClosedFloatingPointRange<Float> = ZoomRange.None,
     content: @Composable ChartScope.() -> Unit
 ) {
-    val scope = ChartScopeImpl(
-        topLabelRenderer = horizontalLabelRenderer(
-            location = HorizontalLabelLocation.TOP,
-            side = HorizontalLabelSide.ABOVE
-        ),
-        bottomLabelRenderer = horizontalLabelRenderer(),
-        leftLabelRenderer = verticalLabelRenderer(),
-        rightLabelRenderer = verticalLabelRenderer(
-            location = VerticalLabelLocation.RIGHT,
-            side = VerticalLabelSide.RIGHT
-        )
-    )
+    val scope = ChartScopeImpl()
     scope.content()
 
     val dataBounds = scope.series.keys
@@ -67,15 +57,16 @@ fun Chart(
     val panState = remember { mutableStateOf(Offset(0f, 0f)) }
     val zoomState = remember { mutableStateOf(1f) }
 
-    val leftLabelSize = scope.leftLabelRenderer.getMaxLabelSize()
-    val rightLabelSize = scope.rightLabelRenderer.getMaxLabelSize()
-    val topLabelSize = scope.topLabelRenderer.getMaxLabelSize()
-    val bottomLabelSize = scope.bottomLabelRenderer.getMaxLabelSize()
+    val leftLabelSize = scope.verticalLabelRenderers.getMinLabelMaxSize()
+    val rightLabelSize = scope.verticalLabelRenderers.getMaxLabelMaxSize()
+    val topLabelSize = scope.horizontalLabelRenderers.getMinLabelMaxSize()
+    val bottomLabelSize = scope.horizontalLabelRenderers.getMaxLabelMaxSize()
+
     val paddingValues = PaddingValues(
         start = with(density) { leftLabelSize.width.toDp() },
         end = with(density) { rightLabelSize.width.toDp() },
-        top = with(density) { topLabelSize.width.toDp() },
-        bottom = with(density) { bottomLabelSize.width.toDp() },
+        top = with(density) { topLabelSize.height.toDp() },
+        bottom = with(density) { bottomLabelSize.height.toDp() },
     )
 
     Box(modifier = modifier) {
@@ -96,6 +87,7 @@ fun Chart(
                     it.y / (size.height / dataBounds.height)
                 )
             }
+
             val rendererContext = rendererContext(
                 ((bounds ?: dataBounds) + dataAdjustedPan).withZoom(zoomState.value),
                 size
@@ -116,18 +108,30 @@ fun Chart(
                 }
             }
 
-            with(scope.topLabelRenderer) { this@drawScope.render(rendererContext) }
-            with(scope.bottomLabelRenderer) { this@drawScope.render(rendererContext) }
-            with(scope.rightLabelRenderer) { this@drawScope.render(rendererContext) }
-            with(scope.leftLabelRenderer) { this@drawScope.render(rendererContext) }
+            scope.horizontalAxisRenderers.forEach {
+                with(it) { this@drawScope.render(rendererContext) }
+            }
+            scope.verticalAxisRenderer.forEach {
+                with(it) { this@drawScope.render(rendererContext) }
+            }
 
-            with(scope.topAxisRenderer) { this@drawScope.render(rendererContext) }
-            with(scope.bottomAxisRenderer) { this@drawScope.render(rendererContext) }
-            with(scope.leftAxisRenderer) { this@drawScope.render(rendererContext) }
-            with(scope.rightAxisRenderer) { this@drawScope.render(rendererContext) }
+            scope.horizontalLabelRenderers.forEach {
+                with(it) { this@drawScope.render(rendererContext) }
+            }
+            scope.verticalLabelRenderers.forEach {
+                with(it) { this@drawScope.render(rendererContext) }
+            }
         }
     }
 }
+
+private fun List<LabelRenderer>.getMinLabelMaxSize() = filter { it.getNormalisedPosition() < 0.5f }
+    .minByOrNull { it.getNormalisedPosition() }
+    ?.getMaxLabelSize() ?: Size.Zero
+
+private fun List<LabelRenderer>.getMaxLabelMaxSize() = filter { it.getNormalisedPosition() > 0.5f }
+    .maxByOrNull { it.getNormalisedPosition() }
+    ?.getMaxLabelSize() ?: Size.Zero
 
 /**
  * Receiver scope which is used by the [Chart].
@@ -135,7 +139,7 @@ fun Chart(
 interface ChartScope {
 
     /**
-     * Sets the grid renderer for this chart. Calling this function multiple times results in
+     * Adds the [gridRenderer] for this chart. Calling this function multiple times results in
      * multiple renderers being added.
      *
      * @param gridRenderer Renderer to be set.
@@ -144,26 +148,29 @@ interface ChartScope {
      */
     fun grid(gridRenderer: GridRenderer)
 
-    // TODO the functions setting axis and label should be replaced with one function per each.
     /**
-     * Sets the axis and labels renderer for the top axis.
+     * Adds [axisRenderer] for this chart. Calling this function multiple times results in
+     * multiple renderers being added.
      */
-    fun topAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer)
+    fun horizontalAxis(axisRenderer: HorizontalAxisRenderer = horizontalAxisRenderer())
 
     /**
-     * Sets the axis and labels renderer for the bottom axis.
+     * Adds [axisRenderer] for this chart. Calling this function multiple times results in
+     * multiple renderers being added.
      */
-    fun bottomAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer)
+    fun verticalAxis(axisRenderer: VerticalAxisRenderer = verticalAxisRenderer())
 
     /**
-     * Sets the axis and labels renderer for the left axis.
+     * Adds [labelRenderer] for this chart. Calling this function multiple times results in
+     * multiple renderers being added.
      */
-    fun leftAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer)
+    fun horizontalLabel(labelRenderer: HorizontalLabelRenderer)
 
     /**
-     * Sets the axis and labels renderer for the right axis.
+     * Adds [labelRenderer] for this chart. Calling this function multiple times results in
+     * multiple renderers being added.
      */
-    fun rightAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer)
+    fun verticalLabel(labelRenderer: VerticalLabelRenderer)
 
     /**
      * Adds series of data to the chart.
@@ -171,31 +178,15 @@ interface ChartScope {
     fun series(vararg series: Series, renderer: SeriesRenderer)
 }
 
-private class ChartScopeImpl(
-    var topLabelRenderer: LabelRenderer,
-    var bottomLabelRenderer: LabelRenderer,
-    var leftLabelRenderer: LabelRenderer,
-    var rightLabelRenderer: LabelRenderer,
-) : ChartScope {
+private class ChartScopeImpl : ChartScope {
 
-    var topAxisRenderer: AxisRenderer = horizontalAxisRenderer(
-        SolidColor(Color.Black),
-        location = HorizontalAxisLocation.TOP,
-        strokeWidth = 2f,
-    )
+    var horizontalAxisRenderers = mutableListOf<HorizontalAxisRenderer>()
 
-    var bottomAxisRenderer: AxisRenderer =
-        horizontalAxisRenderer(SolidColor(Color.Black), strokeWidth = 2f)
+    var verticalAxisRenderer = mutableListOf<VerticalAxisRenderer>()
 
-    var leftAxisRenderer: AxisRenderer =
-        verticalAxisRenderer(SolidColor(Color.Black), strokeWidth = 2f)
+    var horizontalLabelRenderers = mutableListOf<HorizontalLabelRenderer>()
 
-    var rightAxisRenderer: AxisRenderer =
-        verticalAxisRenderer(
-            SolidColor(Color.Black),
-            location = VerticalAxisLocation.RIGHT,
-            strokeWidth = 2f,
-        )
+    var verticalLabelRenderers = mutableListOf<VerticalLabelRenderer>()
 
     var gridRenderers: MutableList<GridRenderer> = mutableListOf()
 
@@ -205,24 +196,20 @@ private class ChartScopeImpl(
         gridRenderers.add(gridRenderer)
     }
 
-    override fun topAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer) {
-        topAxisRenderer = axisRenderer
-        topLabelRenderer = labelRenderer
+    override fun horizontalAxis(axisRenderer: HorizontalAxisRenderer) {
+        horizontalAxisRenderers.add(axisRenderer)
     }
 
-    override fun bottomAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer) {
-        bottomAxisRenderer = axisRenderer
-        bottomLabelRenderer = labelRenderer
+    override fun verticalAxis(axisRenderer: VerticalAxisRenderer) {
+        verticalAxisRenderer.add(axisRenderer)
     }
 
-    override fun leftAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer) {
-        leftAxisRenderer = axisRenderer
-        leftLabelRenderer = labelRenderer
+    override fun horizontalLabel(labelRenderer: HorizontalLabelRenderer) {
+        horizontalLabelRenderers.add(labelRenderer)
     }
 
-    override fun rightAxis(axisRenderer: AxisRenderer, labelRenderer: LabelRenderer) {
-        rightAxisRenderer = axisRenderer
-        rightLabelRenderer = labelRenderer
+    override fun verticalLabel(labelRenderer: VerticalLabelRenderer) {
+        verticalLabelRenderers.add(labelRenderer)
     }
 
     override fun series(vararg series: Series, renderer: SeriesRenderer) {
@@ -282,6 +269,22 @@ private fun PreviewCoordinatePlane() {
                     )
                 )
                 grid(gridRenderer(orientation = GridOrientation.HORIZONTAL))
+
+                horizontalAxis(horizontalAxisRenderer())
+
+                horizontalLabel(horizontalLabelRenderer())
+
+                verticalAxis(verticalAxisRenderer())
+
+                verticalLabel(verticalLabelRenderer())
+
+                horizontalLabel(
+                    horizontalLabelRenderer(
+                        location = HorizontalLabelLocation.TOP,
+                        side = HorizontalLabelSide.ABOVE
+                    )
+                )
+
             }
 
             Text(modifier = Modifier.weight(1f), text = "Another fine chart")

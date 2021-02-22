@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import io.github.staakk.cchart.renderer.RendererContext
 
 
-private class HorizontalAxisRenderer(
+private class HorizontalAxisRendererImpl(
     private val brush: Brush,
     private val location: HorizontalAxisLocation = HorizontalAxisLocation.BOTTOM,
     private val strokeWidth: Float = Stroke.HairlineWidth,
@@ -16,13 +16,10 @@ private class HorizontalAxisRenderer(
     private val cap: StrokeCap = Stroke.DefaultCap,
     private val colorFilter: ColorFilter? = null,
     private val blendMode: BlendMode = DrawScope.DefaultBlendMode,
-) : AxisRenderer {
+) : HorizontalAxisRenderer {
 
     override fun DrawScope.render(context: RendererContext) {
-        val yPos = when (location) {
-            HorizontalAxisLocation.TOP -> 0f
-            HorizontalAxisLocation.BOTTOM -> size.height
-        }
+        val yPos = getNormalisedPosition() * size.height
 
         drawLine(
             brush = brush,
@@ -35,6 +32,11 @@ private class HorizontalAxisRenderer(
             colorFilter = colorFilter,
             blendMode = blendMode
         )
+    }
+
+    override fun getNormalisedPosition() = when (location) {
+        HorizontalAxisLocation.TOP -> 0f
+        HorizontalAxisLocation.BOTTOM -> 1f
     }
 }
 
@@ -65,7 +67,7 @@ fun horizontalAxisRenderer(
     cap: StrokeCap = Stroke.DefaultCap,
     colorFilter: ColorFilter? = null,
     blendMode: BlendMode = DrawScope.DefaultBlendMode,
-): AxisRenderer = HorizontalAxisRenderer(
+): HorizontalAxisRenderer = HorizontalAxisRendererImpl(
     brush,
     location,
     strokeWidth,

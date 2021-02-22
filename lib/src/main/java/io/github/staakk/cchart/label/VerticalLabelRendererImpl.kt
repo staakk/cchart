@@ -14,22 +14,21 @@ import io.github.staakk.cchart.renderer.RendererContext
 import io.github.staakk.cchart.util.countLines
 import io.github.staakk.cchart.util.lineHeight
 
-private class VerticalLabelRenderer(
+private class VerticalLabelRendererImpl(
     private val paint: Paint,
     private val location: VerticalLabelLocation,
     private val side: VerticalLabelSide,
     private val axisDistance: Float,
     private val labelsProvider: LabelsProvider,
-) : LabelRenderer {
+) : VerticalLabelRenderer {
 
     override fun DrawScope.render(context: RendererContext) {
         drawIntoCanvas { canvas ->
             labelsProvider.provide(context.bounds.minY, context.bounds.maxY)
                 .forEach { (text, offset) ->
-                    val textHeight =
-                        paint.fontMetrics.lineHeight * text.countLines()
+                    val textHeight = paint.fontMetrics.lineHeight * text.countLines()
                     val y = size.height + context.dataToRendererCoordY(offset) - textHeight / 2
-                    if (y + textHeight > 0f && y < size.height) {
+                    if (y - textHeight > 0f && y < size.height) {
                         canvas.nativeCanvas.drawText(
                             text,
                             getXPosition(this, paint.measureText(text)),
@@ -41,19 +40,21 @@ private class VerticalLabelRenderer(
         }
     }
 
-    override fun getMaxLabelSize(): Size = labelsProvider.getMaxLabelSize(paint).let {
+    override fun getMaxLabelSize(): Size = labelsProvider.getMaxLabelMaxSize(paint).let {
         it.copy(width = it.width + axisDistance)
     }
 
     private fun getXPosition(drawScope: DrawScope, textWidth: Float): Float {
-        val position = when (location) {
-            VerticalLabelLocation.RIGHT -> drawScope.size.width
-            VerticalLabelLocation.LEFT -> 0f
-        }
+        val position = getNormalisedPosition() * drawScope.size.width
         return position + when (side) {
             VerticalLabelSide.RIGHT -> axisDistance
             VerticalLabelSide.LEFT -> -textWidth - axisDistance
         }
+    }
+
+    override fun getNormalisedPosition() = when (location) {
+        VerticalLabelLocation.RIGHT -> 1f
+        VerticalLabelLocation.LEFT -> 0f
     }
 }
 
@@ -71,14 +72,14 @@ fun verticalLabelRenderer(
     side: VerticalLabelSide = VerticalLabelSide.LEFT,
     axisDistance: Float = 12f,
     labelsProvider: LabelsProvider = IntLabelsProvider,
-): LabelRenderer {
+): VerticalLabelRenderer {
     val density = LocalDensity.current
     val paint = Paint().apply {
         typeface = labelsTypeface
         textSize = with(density) { labelsTextSize.toPx() }
         isAntiAlias = true
     }
-    return VerticalLabelRenderer(paint, location, side, axisDistance, labelsProvider)
+    return VerticalLabelRendererImpl(paint, location, side, axisDistance, labelsProvider)
 }
 
 fun verticalLabelRenderer(
@@ -87,4 +88,5 @@ fun verticalLabelRenderer(
     side: VerticalLabelSide = VerticalLabelSide.LEFT,
     axisDistance: Float = 12f,
     labelsProvider: LabelsProvider = IntLabelsProvider
-): LabelRenderer = VerticalLabelRenderer(paint, location, side, axisDistance, labelsProvider)
+): VerticalLabelRenderer =
+    VerticalLabelRendererImpl(paint, location, side, axisDistance, labelsProvider)

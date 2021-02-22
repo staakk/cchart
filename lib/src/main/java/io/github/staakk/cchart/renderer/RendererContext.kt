@@ -2,7 +2,6 @@ package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.geometry.Size
 import io.github.staakk.cchart.data.DataBounds
-import kotlin.math.abs
 
 data class RendererContext(
     val canvasSize: Size,
@@ -24,7 +23,7 @@ fun rendererContext(
     canvasSize: Size,
 ) = RendererContext(
     canvasSize = canvasSize,
-    scaleX = canvasSize.width / abs(bounds.maxX - bounds.minX),
-    scaleY = canvasSize.height / abs(bounds.maxY - bounds.minY),
+    scaleX = canvasSize.width / bounds.width,
+    scaleY = canvasSize.height / bounds.height,
     bounds = bounds
 )

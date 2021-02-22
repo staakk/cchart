@@ -24,7 +24,7 @@ object IntLabelsProvider : LabelsProvider {
     override fun getMaxLines(): Int = 1
 }
 
-fun LabelsProvider.getMaxLabelSize(paint: Paint): Size {
+fun LabelsProvider.getMaxLabelMaxSize(paint: Paint): Size {
     val maxLetterSize = ('0'..'9').maxByOrNull { paint.measureText(it.toString()) } ?: '0'
     return Size(
         width = paint.measureText(String((0..getMaxLength()).map { maxLetterSize }.toCharArray())),

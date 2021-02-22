@@ -8,11 +8,16 @@ interface LabelRenderer {
     fun DrawScope.render(context: RendererContext)
 
     fun getMaxLabelSize(): Size
+
+    fun getNormalisedPosition(): Float
 }
 
-object NullLabelRenderer : LabelRenderer {
-    override fun DrawScope.render(context: RendererContext) {
-    }
+interface HorizontalLabelRenderer : LabelRenderer
 
+interface VerticalLabelRenderer : LabelRenderer
+
+object NullLabelRenderer : HorizontalLabelRenderer, VerticalLabelRenderer {
+    override fun DrawScope.render(context: RendererContext) = Unit
     override fun getMaxLabelSize(): Size = Size.Zero
+    override fun getNormalisedPosition(): Float = 0f
 }
