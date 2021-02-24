@@ -7,3 +7,4 @@ dependencyResolutionManagement {
 rootProject.name = "cchart"
 include ':lib'
 include ':app'
+include ':viewtest'
