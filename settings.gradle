@@ -1,9 +1,3 @@
-dependencyResolutionManagement {
-    repositories {
-        google()
-        jcenter()
-    }
-}
 rootProject.name = "cchart"
 include ':lib'
 include ':app'
