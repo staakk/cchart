@@ -17,5 +17,19 @@ fun interface GridLinesProvider {
  */
 object IntGridLinesProvider : GridLinesProvider {
 
-    override fun provide(min: Float, max: Float) = (min.toInt()..max.toInt()).map { it.toFloat() }
+    override fun provide(min: Float, max: Float) = (min.toInt()..max.toInt()).map(Int::toFloat)
+}
+
+object GridLinesProviders {
+
+    fun intGrid() = IntGridLinesProvider
+
+    fun fraction(value: Int) = GridLinesProvider { min, max ->
+        (min.toInt()..max.toInt())
+            .flatMap { intValue -> (1..value).map { intValue + it.toFloat() / value } }
+    }
+
+    fun multiple(value: Int) = GridLinesProvider { min, max ->
+        (min.toInt()..max.toInt()).filter { it % value != 0 }.map(Int::toFloat)
+    }
 }
