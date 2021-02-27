@@ -1,6 +1,4 @@
-import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -42,29 +40,8 @@ class CommonConfigurationPlugin : Plugin<Project> {
                     kotlinCompilerExtensionVersion = Libs.Compose.version
                 }
 
-                val proguardFile = "proguard-rules.pro"
-                when (this) {
-                    is LibraryExtension -> defaultConfig {
-                        consumerProguardFiles(proguardFile)
-                    }
-                    is AppExtension -> buildTypes {
-                        getByName("release") {
-                            isMinifyEnabled = true
-                            isShrinkResources = true
-                            proguardFiles(
-                                getDefaultProguardFile("proguard-android-optimize.txt"),
-                                proguardFile
-                            )
-                        }
-                    }
-                }
-
                 target.dependencies {
                     add("coreLibraryDesugaring", Libs.desugar)
-                }
-
-                packagingOptions {
-                    resources.excludes += "META-INF/**"
                 }
             }
         }

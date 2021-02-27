@@ -60,5 +60,6 @@ fun BarChartScreen() {
 
 ![Image of the chart](images/simple_bar_chart.png)
 
-For more examples check out [the samples](samples/src/main/java/io/github/staakk/cchart/samples)
+For more examples check out [the samples](samples/src/main/java/io/github/staakk/cchart/samples).
+
 

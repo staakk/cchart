@@ -16,6 +16,8 @@ allprojects {
         google()
         mavenCentral()
         maven("https://kotlin.bintray.com/kotlinx/")
+        @Suppress("JcenterRepositoryObsolete") // Required by dokka plugin
+        jcenter()
     }
 }
 
