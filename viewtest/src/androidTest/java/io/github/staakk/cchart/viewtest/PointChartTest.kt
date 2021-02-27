@@ -1,28 +1,25 @@
 package io.github.staakk.cchart.viewtest
 
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.unit.dp
 import androidx.test.rule.GrantPermissionRule
 import com.karumi.shot.ScreenshotTest
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.axis.HorizontalAxisLocation
-import io.github.staakk.cchart.axis.VerticalAxisLocation
 import io.github.staakk.cchart.axis.horizontalAxisRenderer
 import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.DataBounds
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
-import io.github.staakk.cchart.renderer.lineRenderer
+import io.github.staakk.cchart.label.horizontalLabelRenderer
+import io.github.staakk.cchart.label.verticalLabelRenderer
+import io.github.staakk.cchart.renderer.pointRenderer
 import org.junit.Rule
 import org.junit.Test
 
-class AxisTest : ScreenshotTest {
-
+class PointChartTest : ScreenshotTest {
     @Rule
     @JvmField
     var permission: GrantPermissionRule = GrantPermissionRule.grant(
@@ -34,12 +31,11 @@ class AxisTest : ScreenshotTest {
     var composeRule = createAndroidComposeRule<MainActivity>()
 
     @Test
-    fun axis() {
+    fun pointChart() {
         composeRule.setContent {
             Chart(
                 modifier = Modifier
-                    .aspectRatio(1f, false)
-                    .padding(16.dp),
+                    .aspectRatio(1f, false),
                 bounds = DataBounds(0f, 10f, 0f, 5f)
             ) {
                 series(
@@ -55,20 +51,19 @@ class AxisTest : ScreenshotTest {
                         pointOf(8f, 4.5f),
                         pointOf(9f, 4.7f),
                     ),
-                    renderer = lineRenderer(brush = SolidColor(Color.Blue))
+                    renderer = pointRenderer(brush = SolidColor(Color.Blue))
                 )
 
                 verticalAxis(verticalAxisRenderer())
 
-                verticalAxis(verticalAxisRenderer(location = VerticalAxisLocation.RIGHT))
-
                 horizontalAxis(horizontalAxisRenderer())
 
-                horizontalAxis(horizontalAxisRenderer(location = HorizontalAxisLocation.TOP))
+                verticalLabel(verticalLabelRenderer())
+
+                horizontalLabel(horizontalLabelRenderer())
             }
         }
 
         compareScreenshot(composeRule)
     }
-
 }

@@ -33,7 +33,7 @@ class LabelsTest : ScreenshotTest {
     var composeRule = createAndroidComposeRule<MainActivity>()
 
     @Test
-    fun axisTest() {
+    fun labels() {
         composeRule.setContent {
             Chart(
                 modifier = Modifier
