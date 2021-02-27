@@ -1,4 +1,4 @@
-package io.github.staakk.cchart.app
+package io.github.staakk.cchart.samples
 
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material.Surface
@@ -14,10 +14,10 @@ import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
-import io.github.staakk.cchart.renderer.pointRenderer
+import io.github.staakk.cchart.renderer.lineRenderer
 
 @Composable
-fun PointChartScreen() {
+fun LineChartScreen() {
     Chart(
         modifier = Modifier.aspectRatio(1f, false),
         bounds = DataBounds(0f, 10f, 0f, 5f)
@@ -35,7 +35,7 @@ fun PointChartScreen() {
                 pointOf(8f, 4.5f),
                 pointOf(9f, 4.7f),
             ),
-            renderer = pointRenderer(brush = SolidColor(Color.Red), radius = 10f)
+            renderer = lineRenderer(brush = SolidColor(Color.Blue))
         )
 
         horizontalAxis(horizontalAxisRenderer())
@@ -50,8 +50,8 @@ fun PointChartScreen() {
 
 @Preview
 @Composable
-fun PointLineChartScreen() {
+fun PreviewLineChartScreen() {
     Surface {
-        PointChartScreen()
+        LineChartScreen()
     }
 }

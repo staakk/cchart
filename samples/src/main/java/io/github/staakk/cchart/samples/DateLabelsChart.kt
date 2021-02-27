@@ -1,4 +1,4 @@
-package io.github.staakk.cchart.app
+package io.github.staakk.cchart.samples
 
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material.Surface

@@ -1,4 +1,4 @@
-package io.github.staakk.cchart.app
+package io.github.staakk.cchart.samples
 
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material.Surface
@@ -14,43 +14,28 @@ import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
-import io.github.staakk.cchart.renderer.barRenderer
+import io.github.staakk.cchart.renderer.pointRenderer
 
 @Composable
-fun BarChartScreen() {
+fun PointChartScreen() {
     Chart(
         modifier = Modifier.aspectRatio(1f, false),
-        bounds = DataBounds(0f, 6f, 0f, 5f)
+        bounds = DataBounds(0f, 10f, 0f, 5f)
     ) {
         series(
             seriesOf(
-                "Data I",
-                pointOf(1f, 1f),
+                "Data",
+                pointOf(0f, 1f),
                 pointOf(2f, 1.5f),
                 pointOf(3f, 4f),
                 pointOf(4f, 3.5f),
-                pointOf(5f, 2f)
+                pointOf(5f, 2f),
+                pointOf(6f, 1.3f),
+                pointOf(7f, 4f),
+                pointOf(8f, 4.5f),
+                pointOf(9f, 4.7f),
             ),
-            seriesOf(
-                "Data II",
-                pointOf(1f, 1.5f),
-                pointOf(2f, 1f),
-                pointOf(3f, 4.5f),
-                pointOf(4f, 3.5f),
-                pointOf(5f, 1f)
-            ),
-            renderer = barRenderer(
-                brushProvider = {
-                    SolidColor(
-                        when (it) {
-                            "Data I" -> Color.DeepPurple
-                            "Data II" -> Color.Green
-                            else -> Color.Pink
-                        }
-                    )
-                },
-                preferredWidth = 64f,
-            )
+            renderer = pointRenderer(brush = SolidColor(Color.Red), radius = 10f)
         )
 
         horizontalAxis(horizontalAxisRenderer())
@@ -65,8 +50,8 @@ fun BarChartScreen() {
 
 @Preview
 @Composable
-fun PreviewBarChart() {
+fun PointLineChartScreen() {
     Surface {
-        BarChartScreen()
+        PointChartScreen()
     }
 }

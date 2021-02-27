@@ -1,4 +1,4 @@
-package io.github.staakk.cchart.app
+package io.github.staakk.cchart.samples
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -66,7 +66,8 @@ fun Content() {
 @Composable
 fun MenuHeader() {
     Text(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(16.dp),
         text = "Select one of the examples below",
         style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -76,7 +77,8 @@ fun MenuHeader() {
 @Composable
 fun Item(index: Int, text: String, onSelected: (Int) -> Unit) {
     Text(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .clickable { onSelected(index) }
             .padding(16.dp),
         text = text,

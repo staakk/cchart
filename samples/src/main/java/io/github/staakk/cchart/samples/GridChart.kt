@@ -1,4 +1,4 @@
-package io.github.staakk.cchart.app
+package io.github.staakk.cchart.samples
 
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material.Surface
@@ -12,14 +12,14 @@ import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.DataBounds
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
+import io.github.staakk.cchart.grid.GridOrientation
+import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
-import io.github.staakk.cchart.renderer.combine
 import io.github.staakk.cchart.renderer.lineRenderer
-import io.github.staakk.cchart.renderer.pointRenderer
 
 @Composable
-fun CombinedChartScreen() {
+fun GridChartScreen() {
     Chart(
         modifier = Modifier.aspectRatio(1f, false),
         bounds = DataBounds(0f, 10f, 0f, 5f)
@@ -37,10 +37,7 @@ fun CombinedChartScreen() {
                 pointOf(8f, 4.5f),
                 pointOf(9f, 4.7f),
             ),
-            renderer = combine(
-                lineRenderer(brush = SolidColor(Color.Pink)),
-                pointRenderer(brush = SolidColor(Color.Indigo), radius = 10f)
-            )
+            renderer = lineRenderer(brush = SolidColor(Color.Blue))
         )
 
         horizontalAxis(horizontalAxisRenderer())
@@ -50,13 +47,17 @@ fun CombinedChartScreen() {
         verticalAxis(verticalAxisRenderer())
 
         verticalLabel(verticalLabelRenderer())
+
+        grid(gridRenderer(orientation = GridOrientation.HORIZONTAL))
+
+        grid(gridRenderer(orientation = GridOrientation.VERTICAL))
     }
 }
 
 @Preview
 @Composable
-fun PreviewCombinedChartScreen() {
+fun PreviewGridChartScreen() {
     Surface {
-        CombinedChartScreen()
+        GridChartScreen()
     }
 }

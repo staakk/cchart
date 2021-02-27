@@ -1,4 +1,4 @@
 rootProject.name = "cchart"
 include ':lib'
-include ':app'
+include ':samples'
 include ':viewtest'
