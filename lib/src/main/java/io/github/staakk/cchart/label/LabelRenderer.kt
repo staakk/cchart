@@ -15,9 +15,3 @@ interface LabelRenderer {
 interface HorizontalLabelRenderer : LabelRenderer
 
 interface VerticalLabelRenderer : LabelRenderer
-
-object NullLabelRenderer : HorizontalLabelRenderer, VerticalLabelRenderer {
-    override fun DrawScope.render(context: RendererContext) = Unit
-    override fun getMaxLabelSize(): Size = Size.Zero
-    override fun getNormalisedPosition(): Float = 0f
-}
