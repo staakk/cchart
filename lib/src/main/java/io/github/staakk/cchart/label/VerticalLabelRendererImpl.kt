@@ -26,15 +26,18 @@ private class VerticalLabelRendererImpl(
         drawIntoCanvas { canvas ->
             labelsProvider.provide(context.bounds.minY, context.bounds.maxY)
                 .forEach { (text, offset) ->
-                    val textHeight = paint.fontMetrics.lineHeight * text.countLines()
+                    val textHeight = paint.fontMetrics.lineHeight * (text.countLines() - 1)
                     val y = size.height + context.dataToRendererCoordY(offset) - textHeight / 2
-                    if (y - textHeight > 0f && y < size.height) {
-                        canvas.nativeCanvas.drawText(
-                            text,
-                            getXPosition(this, paint.measureText(text)),
-                            y,
-                            paint
-                        )
+                    val lines = text.lines()
+                    lines.forEachIndexed { index, line ->
+                        if (y - textHeight > 0f && y + textHeight / 2 < size.height) {
+                            canvas.nativeCanvas.drawText(
+                                line,
+                                getXPosition(this, paint.measureText(text)),
+                                y + paint.fontMetrics.lineHeight * index,
+                                paint
+                            )
+                        }
                     }
                 }
         }

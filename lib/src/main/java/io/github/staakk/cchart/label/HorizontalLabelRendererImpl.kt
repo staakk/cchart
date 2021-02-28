@@ -28,12 +28,15 @@ private class HorizontalLabelRendererImpl(
                     val textWidth = paint.measureText(text)
                     val x = context.dataToRendererCoordX(offset) - textWidth / 2
                     if (x > 0 && x + textWidth < size.width) {
-                        canvas.nativeCanvas.drawText(
-                            text,
-                            context.dataToRendererCoordX(offset) - paint.measureText(text) / 2,
-                            getYPosition(this),
-                            paint
-                        )
+                        val lines = text.lines()
+                        lines.forEachIndexed { index, line ->
+                            canvas.nativeCanvas.drawText(
+                                line,
+                                context.dataToRendererCoordX(offset) - paint.measureText(line) / 2,
+                                getYPosition(this, index, lines.count()),
+                                paint
+                            )
+                        }
                     }
                 }
         }
@@ -43,12 +46,12 @@ private class HorizontalLabelRendererImpl(
         it.copy(height = it.height + axisDistance)
     }
 
-    private fun getYPosition(drawScope: DrawScope): Float {
+    private fun getYPosition(drawScope: DrawScope, lineNo: Int, linesCount: Int): Float {
         val position = getNormalisedPosition() * drawScope.size.height
-        val textHeight = paint.fontMetrics.lineHeight * labelsProvider.getMaxLines()
+        val textHeight = paint.fontMetrics.lineHeight
         return position + when (side) {
-            HorizontalLabelSide.BELOW -> textHeight + axisDistance
-            HorizontalLabelSide.ABOVE -> -axisDistance
+            HorizontalLabelSide.BELOW -> textHeight + axisDistance + lineNo * paint.fontMetrics.lineHeight
+            HorizontalLabelSide.ABOVE -> -axisDistance - (linesCount - lineNo - 1) * paint.fontMetrics.lineHeight
         }
     }
 

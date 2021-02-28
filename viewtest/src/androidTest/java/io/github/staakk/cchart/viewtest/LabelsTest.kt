@@ -15,6 +15,7 @@ import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.DataBounds
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
+import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.label.*
 import io.github.staakk.cchart.renderer.lineRenderer
 import org.junit.Rule
@@ -93,5 +94,102 @@ class LabelsTest : ScreenshotTest {
         }
 
         compareScreenshot(composeRule)
+    }
+
+    @Test
+    fun multiLineLabels() {
+        composeRule.setContent {
+            Chart(
+                modifier = Modifier
+                    .aspectRatio(1f, false),
+                bounds = DataBounds(0f, 10f, 0f, 5f)
+            ) {
+                series(
+                    seriesOf(
+                        "Data",
+                        pointOf(0f, 1f),
+                        pointOf(2f, 1.5f),
+                        pointOf(3f, 4f),
+                        pointOf(4f, 3.5f),
+                        pointOf(5f, 2f),
+                        pointOf(6f, 1.3f),
+                        pointOf(7f, 4f),
+                        pointOf(8f, 4.5f),
+                        pointOf(9f, 4.7f),
+                    ),
+                    renderer = lineRenderer(brush = SolidColor(Color.Blue))
+                )
+
+                verticalAxis(verticalAxisRenderer())
+
+                verticalAxis(verticalAxisRenderer(location = VerticalAxisLocation.RIGHT))
+
+                horizontalAxis(horizontalAxisRenderer())
+
+                horizontalAxis(horizontalAxisRenderer(location = HorizontalAxisLocation.TOP))
+
+                verticalLabel(verticalLabelRenderer(labelsProvider = MultiLineLabelsProvider))
+
+                verticalLabel(
+                    verticalLabelRenderer(
+                        side = VerticalLabelSide.RIGHT,
+                        labelsProvider = MultiLineLabelsProvider
+                    )
+                )
+
+                verticalLabel(
+                    verticalLabelRenderer(
+                        location = VerticalLabelLocation.RIGHT,
+                        labelsProvider = MultiLineLabelsProvider
+                    )
+                )
+
+                verticalLabel(
+                    verticalLabelRenderer(
+                        location = VerticalLabelLocation.RIGHT,
+                        side = VerticalLabelSide.RIGHT,
+                        labelsProvider = MultiLineLabelsProvider
+                    )
+                )
+
+                horizontalLabel(horizontalLabelRenderer(labelsProvider = MultiLineLabelsProvider))
+
+                horizontalLabel(
+                    horizontalLabelRenderer(
+                        side = HorizontalLabelSide.ABOVE,
+                        labelsProvider = MultiLineLabelsProvider
+                    )
+                )
+
+                horizontalLabel(
+                    horizontalLabelRenderer(
+                        location = HorizontalLabelLocation.TOP,
+                        labelsProvider = MultiLineLabelsProvider
+                    )
+                )
+
+                horizontalLabel(
+                    horizontalLabelRenderer(
+                        location = HorizontalLabelLocation.TOP,
+                        side = HorizontalLabelSide.ABOVE,
+                        labelsProvider = MultiLineLabelsProvider
+                    )
+                )
+
+                grid(gridRenderer())
+            }
+        }
+
+        compareScreenshot(composeRule)
+    }
+
+    private object MultiLineLabelsProvider : LabelsProvider {
+        override fun provide(min: Float, max: Float): List<Pair<String, Float>> {
+            return (min.toInt()..(max.toInt() + 1)).map { "$it\n$it$it" to it.toFloat() }
+        }
+
+        override fun getMaxLength(): Int = 10
+
+        override fun getMaxLines(): Int = 2
     }
 }

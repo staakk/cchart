@@ -43,6 +43,10 @@ class CommonConfigurationPlugin : Plugin<Project> {
                 target.dependencies {
                     add("coreLibraryDesugaring", Libs.desugar)
                 }
+                packagingOptions {
+                    resources.excludes += "META-INF/AL2.0"
+                    resources.excludes += "META-INF/LGPL2.1"
+                }
             }
         }
     }

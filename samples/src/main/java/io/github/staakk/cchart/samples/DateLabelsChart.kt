@@ -68,7 +68,7 @@ fun DateLabelsChartScreen() {
 }
 
 object DateLabelsProvider : LabelsProvider {
-    private const val pattern = "MMM yy"
+    private const val pattern = "MMMM \nyyyy"
     private val formatter = DateTimeFormatter.ofPattern(pattern)
 
     override fun provide(min: Float, max: Float): List<Pair<String, Float>> {
@@ -85,7 +85,7 @@ object DateLabelsProvider : LabelsProvider {
 
     override fun getMaxLength(): Int = pattern.length
 
-    override fun getMaxLines(): Int = 1
+    override fun getMaxLines(): Int = 2
 }
 
 @Preview
