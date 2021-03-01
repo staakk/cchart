@@ -26,6 +26,7 @@ const val COMBINED_CHART_ID = 2
 const val BAR_CHART_ID = 3
 const val DATE_LABELS_CHART = 4
 const val GRID_CHART = 5
+const val PAN_AND_ZOOM_CHART = 6
 
 class SamplesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +51,7 @@ fun Content() {
         BAR_CHART_ID -> BarChartScreen()
         DATE_LABELS_CHART -> DateLabelsChartScreen()
         GRID_CHART -> GridChartScreen()
+        PAN_AND_ZOOM_CHART -> PanAndZoomScreen()
     }
 
     MenuHeader()
@@ -60,6 +62,7 @@ fun Content() {
         item { Item(BAR_CHART_ID, "Bar chart") { selected.value = it } }
         item { Item(DATE_LABELS_CHART, "Chart with date labels") { selected.value = it } }
         item { Item(GRID_CHART, "Chart with grid") { selected.value = it } }
+        item { Item(PAN_AND_ZOOM_CHART, "Chart with panning and zooming") { selected.value = it } }
     }
 }
 

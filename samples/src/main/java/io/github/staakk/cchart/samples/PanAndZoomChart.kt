@@ -4,9 +4,11 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.staakk.cchart.Chart
+import io.github.staakk.cchart.PanRange
 import io.github.staakk.cchart.axis.horizontalAxisRenderer
 import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.Viewport
@@ -16,11 +18,18 @@ import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.pointRenderer
 
+
 @Composable
-fun PointChartScreen() {
+fun PanAndZoomScreen() {
     Chart(
         modifier = Modifier.aspectRatio(1f, false),
-        viewport = Viewport(0f, 10f, 0f, 5f)
+        viewport = Viewport(0f, 10f, 0f, 5f),
+        maxViewport = Viewport(-10f, 20f, -5f, 10f),
+        minViewportSize = Size(5f, 5f),
+        maxViewportSize = Size(10f, 10f),
+        enableZoom = true,
+        panRange = PanRange.horizontal(-10f..10f),
+        zoomRange = 0.5f..1.5f
     ) {
         series(
             seriesOf(
@@ -50,8 +59,8 @@ fun PointChartScreen() {
 
 @Preview
 @Composable
-fun PointLineChartScreen() {
+fun PreviewPanAndZoomScreen() {
     Surface {
-        PointChartScreen()
+        PanAndZoomScreen()
     }
 }

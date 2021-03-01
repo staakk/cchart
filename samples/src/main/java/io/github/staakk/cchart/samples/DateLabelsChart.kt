@@ -9,7 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.axis.horizontalAxisRenderer
 import io.github.staakk.cchart.axis.verticalAxisRenderer
-import io.github.staakk.cchart.data.DataBounds
+import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.label.LabelsProvider
@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter
 fun DateLabelsChartScreen() {
     Chart(
         modifier = Modifier.aspectRatio(1f, false),
-        bounds = DataBounds(
+        viewport = Viewport(
             minX = LocalDate.of(2020, 9, 1).toEpochDay(),
             maxX = LocalDate.of(2021, 1, 1).toEpochDay(),
             minY = 0f,

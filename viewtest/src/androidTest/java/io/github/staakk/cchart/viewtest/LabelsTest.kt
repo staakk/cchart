@@ -12,7 +12,7 @@ import io.github.staakk.cchart.axis.HorizontalAxisLocation
 import io.github.staakk.cchart.axis.VerticalAxisLocation
 import io.github.staakk.cchart.axis.horizontalAxisRenderer
 import io.github.staakk.cchart.axis.verticalAxisRenderer
-import io.github.staakk.cchart.data.DataBounds
+import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.grid.gridRenderer
@@ -39,7 +39,7 @@ class LabelsTest : ScreenshotTest {
             Chart(
                 modifier = Modifier
                     .aspectRatio(1f, false),
-                bounds = DataBounds(0f, 10f, 0f, 5f)
+                viewport = Viewport(0f, 10f, 0f, 5f)
             ) {
                 series(
                     seriesOf(
@@ -102,7 +102,7 @@ class LabelsTest : ScreenshotTest {
             Chart(
                 modifier = Modifier
                     .aspectRatio(1f, false),
-                bounds = DataBounds(0f, 10f, 0f, 5f)
+                viewport = Viewport(0f, 10f, 0f, 5f)
             ) {
                 series(
                     seriesOf(

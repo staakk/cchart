@@ -8,7 +8,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.rule.GrantPermissionRule
 import com.karumi.shot.ScreenshotTest
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.data.DataBounds
+import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.grid.GridLinesProviders
@@ -73,7 +73,7 @@ class GridsTest : ScreenshotTest {
         composeRule.setContent {
             Chart(
                 modifier = Modifier.aspectRatio(1f, false),
-                bounds = DataBounds(0f, 10f, 0f, 5f)
+                viewport = Viewport(0f, 10f, 0f, 5f)
             ) {
                 series(
                     seriesOf(

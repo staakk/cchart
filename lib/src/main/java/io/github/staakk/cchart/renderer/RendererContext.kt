@@ -1,13 +1,13 @@
 package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.geometry.Size
-import io.github.staakk.cchart.data.DataBounds
+import io.github.staakk.cchart.data.Viewport
 
 data class RendererContext(
     val canvasSize: Size,
     val scaleX: Float,
     val scaleY: Float,
-    val bounds: DataBounds,
+    val bounds: Viewport,
 ) {
     fun dataToRendererCoordX(x: Float) = (x - bounds.minX) * scaleX
 
@@ -19,7 +19,7 @@ data class RendererContext(
 }
 
 fun rendererContext(
-    bounds: DataBounds,
+    bounds: Viewport,
     canvasSize: Size,
 ) = RendererContext(
     canvasSize = canvasSize,

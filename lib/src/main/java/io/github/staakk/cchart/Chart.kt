@@ -1,7 +1,6 @@
 package io.github.staakk.cchart
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -10,7 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -21,78 +19,90 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.staakk.cchart.axis.*
 import io.github.staakk.cchart.data.*
-import io.github.staakk.cchart.data.DataBounds.Companion.getBounds
+import io.github.staakk.cchart.data.Viewport.Companion.getViewport
 import io.github.staakk.cchart.grid.GridOrientation
 import io.github.staakk.cchart.grid.GridRenderer
 import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.label.*
 import io.github.staakk.cchart.renderer.*
+import io.github.staakk.cchart.util.detectTransformGestures
 
 /**
  * Creates chart for visualising data.
  *
  * @param modifier Modifier to apply to this layout node.
- * @param bounds The initial bounds for the layout. Should be expressed int the same coordinate
- * system as the data series provided for the chart via [ChartScope.series].
- * @param panRange Pan range expressed in pixels.
- * @param zoomRange Zoom range.
+ * @param viewport The initial viewport for the layout. Should be expressed int the same coordinate
+ * system as the data represented on the chart.
+ * @param maxViewport The maximal viewport that can be displayed by this chart.
+ * @param minViewportSize Minimal size of the viewport.
+ * @param maxViewportSize Maximal size of the viewport.
  * @param content A black that describes the contents of the chart.
  */
 @Composable
 fun Chart(
     modifier: Modifier = Modifier,
-    bounds: DataBounds? = null,
-    panRange: PanRange = PanRange.NoPan,
-    zoomRange: ClosedFloatingPointRange<Float> = ZoomRange.None,
+    viewport: Viewport? = null,
+    maxViewport: Viewport? = viewport,
+    minViewportSize: Size = viewport?.let { Size(it.width, it.height) }
+        ?: Size(Float.MIN_VALUE, Float.MIN_VALUE),
+    maxViewportSize: Size = viewport?.let { Size(it.width, it.height) }
+        ?: Size(Float.MAX_VALUE, Float.MAX_VALUE),
+    enableZoom: Boolean = false,
     content: @Composable ChartScope.() -> Unit
 ) {
     val scope = ChartScopeImpl()
     scope.content()
 
-    val dataBounds = scope.series.keys
+    val currentViewport = viewport ?: scope.series.keys
         .flatten()
-        .getBounds()
+        .getViewport()
 
-    val density = LocalDensity.current
-    val panState = remember { mutableStateOf(Offset(0f, 0f)) }
-    val zoomState = remember { mutableStateOf(1f) }
+    val viewportState = remember { mutableStateOf(currentViewport) }
 
     val leftLabelSize = scope.verticalLabelRenderers.getMinLabelMaxSize()
     val rightLabelSize = scope.verticalLabelRenderers.getMaxLabelMaxSize()
     val topLabelSize = scope.horizontalLabelRenderers.getMinLabelMaxSize()
     val bottomLabelSize = scope.horizontalLabelRenderers.getMaxLabelMaxSize()
 
-    val paddingValues = PaddingValues(
-        start = with(density) { leftLabelSize.width.toDp() },
-        end = with(density) { rightLabelSize.width.toDp() },
-        top = with(density) { topLabelSize.height.toDp() },
-        bottom = with(density) { bottomLabelSize.height.toDp() },
-    )
+    val density = LocalDensity.current
+    val paddingValues = with(density) {
+        PaddingValues(
+            start = leftLabelSize.width.toDp(),
+            end = rightLabelSize.width.toDp(),
+            top = topLabelSize.height.toDp(),
+            bottom = bottomLabelSize.height.toDp(),
+        )
+    }
 
-    Box(modifier = modifier) {
+    BoxWithConstraints(modifier = modifier.then(Modifier.padding(paddingValues))) {
+        val canvasSize = with(density) { Size(width = maxWidth.toPx(), height = maxHeight.toPx()) }
+
+        val rendererContext = rendererContext(viewportState.value, canvasSize)
+
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
-                .pointerInput(panState) {
-                    detectTransformGestures { _, pan, zoom, _ ->
-                        panState.value = (panState.value + pan).coerceIn(panRange)
-                        zoomState.value = (zoomState.value * zoom).coerceIn(zoomRange)
+                .pointerInput(viewportState) {
+                    detectTransformGestures { _, pan, zoom, direction ->
+                        if (maxViewport == null) return@detectTransformGestures
+
+                        val current = if (enableZoom) {
+                            viewportState.value.applyZoom(
+                                zoom,
+                                direction,
+                                minViewportSize,
+                                maxViewportSize
+                            )
+                        } else {
+                            viewportState.value
+                        }
+
+                        val dx = -pan.x / rendererContext.scaleX
+                        val dy = pan.y / rendererContext.scaleY
+                        viewportState.value = current.applyPan(dx, dy, maxViewport)
                     }
                 }
         ) drawScope@{
-            val dataAdjustedPan = panState.value.let {
-                Offset(
-                    -it.x / (size.width / dataBounds.width),
-                    it.y / (size.height / dataBounds.height)
-                )
-            }
-
-            val rendererContext = rendererContext(
-                ((bounds ?: dataBounds) + dataAdjustedPan).withZoom(zoomState.value),
-                size
-            )
-
             clipRect {
                 translate(
                     0f,
@@ -224,7 +234,7 @@ private fun PreviewCoordinatePlane() {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Chart(
                 modifier = Modifier.weight(1f),
-                bounds = DataBounds(-1f, 5f, 0f, 9f)
+                viewport = Viewport(-1f, 5f, 0f, 9f)
             ) {
                 series(
                     seriesOf(

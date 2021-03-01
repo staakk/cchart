@@ -1,0 +1,105 @@
+package io.github.staakk.cchart.data
+
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import kotlin.math.abs
+
+/**
+ * Specifies bounds for rendering of the chart. Those values should be represented in the same
+ * coordinate system as the data provided for the chart.
+ */
+data class Viewport(
+    val minX: Float,
+    val maxX: Float,
+    val minY: Float,
+    val maxY: Float
+) {
+
+    constructor(minX: Number, maxX: Number, minY: Number, maxY: Number)
+            : this(minX.toFloat(), maxX.toFloat(), minY.toFloat(), maxY.toFloat())
+
+    val width = abs(maxX - minX)
+    val height = abs(maxY - minY)
+
+    fun applyZoom(zoom: Float, direction: Offset, minSize: Size, maxSize: Size): Viewport {
+        val dx = (width / zoom)
+        val dy = (height / zoom)
+        val ddx = (width - dx) / 2 * direction.x
+        val ddy = (height - dy) / 2 * direction.y
+        var minX = minX + ddx
+        var maxX = maxX - ddx
+        var minY = minY + ddy
+        var maxY = maxY - ddy
+        val width = abs(maxX - minX)
+        val height = abs(maxY - minY)
+
+        if (width < minSize.width) {
+            val diff = abs(minSize.width - width) / 2
+            minX -= diff
+            maxX += diff
+        }
+        if (height < minSize.height) {
+            val diff = abs(minSize.height - height) / 2
+            minY -= diff
+            maxY += diff
+        }
+
+        if (width > maxSize.width) {
+            val diff = abs(width - maxSize.width) / 2
+            minX += diff
+            maxX -= diff
+        }
+        if (height > maxSize.height) {
+            val diff = abs(height - maxSize.height) / 2
+            minY += diff
+            maxY -= diff
+        }
+        return Viewport(minX = minX, maxX = maxX, minY = minY, maxY = maxY)
+    }
+
+    fun applyPan(panX: Float, panY: Float, maxViewport: Viewport): Viewport {
+        var newMinX = minX + panX
+        var newMaxX = maxX + panX
+        if (newMinX < maxViewport.minX) {
+            newMaxX += abs(maxViewport.minX - newMinX)
+            newMinX = maxViewport.minX
+        }
+        if (newMaxX > maxViewport.maxX) {
+            newMinX -= abs(maxViewport.maxX - newMaxX)
+            newMaxX = maxViewport.maxX
+        }
+
+        var newMinY = minY + panY
+        var newMaxY = maxY + panY
+        if (newMinY < maxViewport.minY) {
+            newMaxY += abs(maxViewport.minY - newMinY)
+            newMinY = maxViewport.minY
+        }
+        if (newMaxY > maxViewport.maxY) {
+            newMinY -= abs(maxViewport.maxY - newMaxY)
+            newMaxY = maxViewport.maxY
+        }
+
+        return Viewport(minX = newMinX, maxX = newMaxX, minY = newMinY, maxY = newMaxY)
+    }
+
+    companion object {
+        fun Iterable<Series>.getViewport(): Viewport {
+            var maxX = Float.MIN_VALUE
+            var minX = Float.MAX_VALUE
+            var maxY = Float.MIN_VALUE
+            var minY = Float.MAX_VALUE
+
+            forEach { s ->
+                s.points.forEach { p ->
+                    if (p.x > maxX) maxX = p.x
+                    if (p.x < minX) minX = p.x
+                    if (p.y > maxY) maxY = p.y
+                    if (p.y < minY) minY = p.y
+                }
+            }
+
+            return Viewport(maxX = maxX, minX = minX, maxY = maxY, minY = minY)
+        }
+    }
+}

@@ -4,7 +4,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
-import io.github.staakk.cchart.data.DataBounds
+import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.renderer.RendererContext
 
 private class SimpleGridRenderer(
@@ -44,9 +44,9 @@ private class SimpleGridRenderer(
  */
 enum class GridOrientation {
     HORIZONTAL {
-        override fun getMin(bounds: DataBounds) = bounds.minY
+        override fun getMin(bounds: Viewport) = bounds.minY
 
-        override fun getMax(bounds: DataBounds) = bounds.maxY
+        override fun getMax(bounds: Viewport) = bounds.maxY
 
         override fun getStart(drawScope: DrawScope, context: RendererContext, value: Float) =
             Offset(0f, context.dataToRendererCoordY(value))
@@ -55,9 +55,9 @@ enum class GridOrientation {
             Offset(drawScope.size.width, context.dataToRendererCoordY(value))
     },
     VERTICAL {
-        override fun getMin(bounds: DataBounds) = bounds.minX
+        override fun getMin(bounds: Viewport) = bounds.minX
 
-        override fun getMax(bounds: DataBounds) = bounds.maxX
+        override fun getMax(bounds: Viewport) = bounds.maxX
 
         override fun getStart(drawScope: DrawScope, context: RendererContext, value: Float) =
             Offset(context.dataToRendererCoordX(value), 0f)
@@ -66,9 +66,9 @@ enum class GridOrientation {
             Offset(context.dataToRendererCoordX(value), -drawScope.size.height)
     };
 
-    abstract fun getMin(bounds: DataBounds): Float
+    abstract fun getMin(bounds: Viewport): Float
 
-    abstract fun getMax(bounds: DataBounds): Float
+    abstract fun getMax(bounds: Viewport): Float
 
     abstract fun getStart(drawScope: DrawScope, context: RendererContext, value: Float): Offset
 
