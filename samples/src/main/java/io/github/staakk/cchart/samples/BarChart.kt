@@ -55,11 +55,11 @@ fun BarChartScreen() {
 
         horizontalAxis(horizontalAxisRenderer())
 
-        horizontalLabel(horizontalLabelRenderer())
+        horizontalAxisLabels(horizontalLabelRenderer())
 
         verticalAxis(verticalAxisRenderer())
 
-        verticalLabel(verticalLabelRenderer())
+        verticalAxisLabels(verticalLabelRenderer())
     }
 }
 

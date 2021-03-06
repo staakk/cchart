@@ -65,26 +65,26 @@ class LabelsTest : ScreenshotTest {
 
                 horizontalAxis(horizontalAxisRenderer(location = HorizontalAxisLocation.TOP))
 
-                verticalLabel(verticalLabelRenderer())
+                verticalAxisLabels(verticalLabelRenderer())
 
-                verticalLabel(verticalLabelRenderer(side = VerticalLabelSide.RIGHT))
+                verticalAxisLabels(verticalLabelRenderer(side = VerticalLabelSide.RIGHT))
 
-                verticalLabel(verticalLabelRenderer(location = VerticalLabelLocation.RIGHT))
+                verticalAxisLabels(verticalLabelRenderer(location = VerticalLabelLocation.RIGHT))
 
-                verticalLabel(
+                verticalAxisLabels(
                     verticalLabelRenderer(
                         location = VerticalLabelLocation.RIGHT,
                         side = VerticalLabelSide.RIGHT
                     )
                 )
 
-                horizontalLabel(horizontalLabelRenderer())
+                horizontalAxisLabels(horizontalLabelRenderer())
 
-                horizontalLabel(horizontalLabelRenderer(side = HorizontalLabelSide.ABOVE))
+                horizontalAxisLabels(horizontalLabelRenderer(side = HorizontalLabelSide.ABOVE))
 
-                horizontalLabel(horizontalLabelRenderer(location = HorizontalLabelLocation.TOP))
+                horizontalAxisLabels(horizontalLabelRenderer(location = HorizontalLabelLocation.TOP))
 
-                horizontalLabel(
+                horizontalAxisLabels(
                     horizontalLabelRenderer(
                         location = HorizontalLabelLocation.TOP,
                         side = HorizontalLabelSide.ABOVE
@@ -128,23 +128,23 @@ class LabelsTest : ScreenshotTest {
 
                 horizontalAxis(horizontalAxisRenderer(location = HorizontalAxisLocation.TOP))
 
-                verticalLabel(verticalLabelRenderer(labelsProvider = MultiLineLabelsProvider))
+                verticalAxisLabels(verticalLabelRenderer(labelsProvider = MultiLineLabelsProvider))
 
-                verticalLabel(
+                verticalAxisLabels(
                     verticalLabelRenderer(
                         side = VerticalLabelSide.RIGHT,
                         labelsProvider = MultiLineLabelsProvider
                     )
                 )
 
-                verticalLabel(
+                verticalAxisLabels(
                     verticalLabelRenderer(
                         location = VerticalLabelLocation.RIGHT,
                         labelsProvider = MultiLineLabelsProvider
                     )
                 )
 
-                verticalLabel(
+                verticalAxisLabels(
                     verticalLabelRenderer(
                         location = VerticalLabelLocation.RIGHT,
                         side = VerticalLabelSide.RIGHT,
@@ -152,23 +152,23 @@ class LabelsTest : ScreenshotTest {
                     )
                 )
 
-                horizontalLabel(horizontalLabelRenderer(labelsProvider = MultiLineLabelsProvider))
+                horizontalAxisLabels(horizontalLabelRenderer(labelsProvider = MultiLineLabelsProvider))
 
-                horizontalLabel(
+                horizontalAxisLabels(
                     horizontalLabelRenderer(
                         side = HorizontalLabelSide.ABOVE,
                         labelsProvider = MultiLineLabelsProvider
                     )
                 )
 
-                horizontalLabel(
+                horizontalAxisLabels(
                     horizontalLabelRenderer(
                         location = HorizontalLabelLocation.TOP,
                         labelsProvider = MultiLineLabelsProvider
                     )
                 )
 
-                horizontalLabel(
+                horizontalAxisLabels(
                     horizontalLabelRenderer(
                         location = HorizontalLabelLocation.TOP,
                         side = HorizontalLabelSide.ABOVE,

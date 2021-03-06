@@ -62,9 +62,9 @@ class BarChartTest : ScreenshotTest {
 
                 horizontalAxis(horizontalAxisRenderer())
 
-                verticalLabel(verticalLabelRenderer())
+                verticalAxisLabels(verticalLabelRenderer())
 
-                horizontalLabel(horizontalLabelRenderer())
+                horizontalAxisLabels(horizontalLabelRenderer())
             }
         }
 
@@ -121,9 +121,9 @@ class BarChartTest : ScreenshotTest {
 
                 horizontalAxis(horizontalAxisRenderer())
 
-                verticalLabel(verticalLabelRenderer())
+                verticalAxisLabels(verticalLabelRenderer())
 
-                horizontalLabel(horizontalLabelRenderer())
+                horizontalAxisLabels(horizontalLabelRenderer())
             }
         }
 
@@ -181,9 +181,9 @@ class BarChartTest : ScreenshotTest {
 
                 horizontalAxis(horizontalAxisRenderer())
 
-                verticalLabel(verticalLabelRenderer())
+                verticalAxisLabels(verticalLabelRenderer())
 
-                horizontalLabel(horizontalLabelRenderer())
+                horizontalAxisLabels(horizontalLabelRenderer())
             }
         }
 

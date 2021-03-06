@@ -61,9 +61,9 @@ fun DateLabelsChartScreen() {
 
         verticalAxis(verticalAxisRenderer())
 
-        verticalLabel(verticalLabelRenderer())
+        verticalAxisLabels(verticalLabelRenderer())
 
-        horizontalLabel(horizontalLabelRenderer(labelsProvider = DateLabelsProvider))
+        horizontalAxisLabels(horizontalLabelRenderer(labelsProvider = DateLabelsProvider))
     }
 }
 

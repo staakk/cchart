@@ -8,7 +8,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.PanRange
 import io.github.staakk.cchart.axis.horizontalAxisRenderer
 import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.Viewport
@@ -27,9 +26,7 @@ fun PanAndZoomScreen() {
         maxViewport = Viewport(-10f, 20f, -5f, 10f),
         minViewportSize = Size(5f, 5f),
         maxViewportSize = Size(10f, 10f),
-        enableZoom = true,
-        panRange = PanRange.horizontal(-10f..10f),
-        zoomRange = 0.5f..1.5f
+        enableZoom = true
     ) {
         series(
             seriesOf(
@@ -49,11 +46,11 @@ fun PanAndZoomScreen() {
 
         horizontalAxis(horizontalAxisRenderer())
 
-        horizontalLabel(horizontalLabelRenderer())
+        horizontalAxisLabels(horizontalLabelRenderer())
 
         verticalAxis(verticalAxisRenderer())
 
-        verticalLabel(verticalLabelRenderer())
+        verticalAxisLabels(verticalLabelRenderer())
     }
 }
 

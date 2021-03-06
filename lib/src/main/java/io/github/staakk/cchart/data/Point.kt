@@ -6,7 +6,8 @@ package io.github.staakk.cchart.data
  */
 data class Point(
     val x: Float,
-    val y: Float
+    val y: Float,
+    val tag: Any?
 )
 
-fun pointOf(x: Number, y: Number) = Point(x.toFloat(), y.toFloat())
+fun pointOf(x: Number, y: Number, tag: Any? = null) = Point(x.toFloat(), y.toFloat(), tag)

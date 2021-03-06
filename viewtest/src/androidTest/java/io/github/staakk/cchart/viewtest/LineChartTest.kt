@@ -58,9 +58,9 @@ class LineChartTest : ScreenshotTest {
 
                 horizontalAxis(horizontalAxisRenderer())
 
-                verticalLabel(verticalLabelRenderer())
+                verticalAxisLabels(verticalLabelRenderer())
 
-                horizontalLabel(horizontalLabelRenderer())
+                horizontalAxisLabels(horizontalLabelRenderer())
             }
         }
 
