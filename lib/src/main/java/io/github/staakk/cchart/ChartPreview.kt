@@ -94,6 +94,10 @@ private fun PreviewCoordinatePlane() {
                     )
                 )
 
+                dataLabels {
+                    Text(text = "$seriesName ${point.x} ${point.y}")
+                }
+
             }
 
             Text(modifier = Modifier.weight(1f), text = "Another fine chart")

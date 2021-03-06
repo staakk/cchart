@@ -7,6 +7,9 @@ package io.github.staakk.cchart.data
 data class Point(
     val x: Float,
     val y: Float,
+    /**
+     * Additional data that can be used for rendering extra info in labels.
+     */
     val tag: Any?
 )
 

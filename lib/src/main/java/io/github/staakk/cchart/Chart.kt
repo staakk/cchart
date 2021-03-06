@@ -67,6 +67,7 @@ fun Chart(
     }
 
     BoxWithConstraints(modifier = modifier.then(Modifier.padding(paddingValues))) {
+        val renderedPoints = remember { mutableStateOf(listOf<RenderedPoint>()) }
         val canvasSize = with(density) { Size(width = maxWidth.toPx(), height = maxHeight.toPx()) }
         val rendererContext = rendererContext(viewportState.value, canvasSize)
 
@@ -103,8 +104,8 @@ fun Chart(
                         with(renderer) { this@drawScope.render(rendererContext) }
                     }
 
-                    scope.series.forEach { (series, renderer) ->
-                        renderer.apply { this@drawScope.render(rendererContext, series) }
+                    renderedPoints.value = scope.series.flatMap { (series, renderer) ->
+                        with(renderer) { this@drawScope.render(rendererContext, series) }
                     }
                 }
             }
@@ -122,6 +123,18 @@ fun Chart(
             scope.verticalLabelRenderers.forEach {
                 with(it) { this@drawScope.render(rendererContext) }
             }
+        }
+
+        val labelContent = scope.labelContent
+        if (labelContent != null) {
+            DataLabels(
+                modifier = modifier,
+                renderedPoints = renderedPoints.value,
+                canvasSize = canvasSize,
+                horizontalAlignment = scope.horizontalLabelAlignment,
+                verticalAlignment = scope.verticalLabelAlignment,
+                labelContent = labelContent
+            )
         }
     }
 }
@@ -177,21 +190,33 @@ interface ChartScope {
      * Adds series of data to the chart.
      */
     fun series(vararg series: Series, renderer: SeriesRenderer)
+
+    fun dataLabels(
+        horizontalAlignment: HorizontalAlignment = HorizontalAlignment.CENTER,
+        verticalAlignment: VerticalAlignment = VerticalAlignment.TOP,
+        labelContent: @Composable DataLabelScope.() -> Unit
+    )
 }
 
 private class ChartScopeImpl : ChartScope {
 
-    var horizontalAxisRenderers = mutableListOf<HorizontalAxisRenderer>()
+    val horizontalAxisRenderers = mutableListOf<HorizontalAxisRenderer>()
 
-    var verticalAxisRenderer = mutableListOf<VerticalAxisRenderer>()
+    val verticalAxisRenderer = mutableListOf<VerticalAxisRenderer>()
 
-    var horizontalLabelRenderers = mutableListOf<HorizontalLabelRenderer>()
+    val horizontalLabelRenderers = mutableListOf<HorizontalLabelRenderer>()
 
-    var verticalLabelRenderers = mutableListOf<VerticalLabelRenderer>()
+    val verticalLabelRenderers = mutableListOf<VerticalLabelRenderer>()
 
-    var gridRenderers: MutableList<GridRenderer> = mutableListOf()
+    val gridRenderers: MutableList<GridRenderer> = mutableListOf()
 
     val series: MutableMap<List<Series>, SeriesRenderer> = mutableMapOf()
+
+    var labelContent: @Composable (DataLabelScope.() -> Unit)? = null
+
+    var horizontalLabelAlignment: HorizontalAlignment = HorizontalAlignment.CENTER
+
+    var verticalLabelAlignment: VerticalAlignment = VerticalAlignment.TOP
 
     override fun grid(gridRenderer: GridRenderer) {
         gridRenderers.add(gridRenderer)
@@ -215,5 +240,15 @@ private class ChartScopeImpl : ChartScope {
 
     override fun series(vararg series: Series, renderer: SeriesRenderer) {
         this.series[series.toList()] = renderer
+    }
+
+    override fun dataLabels(
+        horizontalAlignment: HorizontalAlignment,
+        verticalAlignment: VerticalAlignment,
+        labelContent: @Composable DataLabelScope.() -> Unit
+    ) {
+        horizontalLabelAlignment = horizontalAlignment
+        verticalLabelAlignment = verticalAlignment
+        this.labelContent = labelContent
     }
 }
