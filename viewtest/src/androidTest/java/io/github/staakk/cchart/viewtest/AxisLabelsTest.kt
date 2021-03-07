@@ -21,7 +21,7 @@ import io.github.staakk.cchart.renderer.lineRenderer
 import org.junit.Rule
 import org.junit.Test
 
-class LabelsTest : ScreenshotTest {
+class AxisLabelsTest : ScreenshotTest {
 
     @Rule
     @JvmField

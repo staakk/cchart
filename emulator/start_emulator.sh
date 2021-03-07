@@ -27,7 +27,6 @@ then
   echo "Creating emulator"
   echo "no" | $AVD_MANAGER create avd --force --name $NAME --package $IMAGE --tag default --abi $ABI || exit
   echo "hw.lcd.density=320" >> ~/.android/avd/$NAME.avd/config.ini || exit
-
 fi
 
 $EMULATOR @$NAME -skin 1080x1920 &
