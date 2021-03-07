@@ -19,14 +19,14 @@ function is_emulator_created {
 if ! is_image_installed
 then
   echo "Installing image $IMAGE"
-  $SDK_MANAGER --install $IMAGE || exit
+  $SDK_MANAGER --install $IMAGE || exit 1
 fi
 
 if ! is_emulator_created
 then
   echo "Creating emulator"
-  echo "no" | $AVD_MANAGER create avd --force --name $NAME --package $IMAGE --tag default --abi $ABI || exit
-  echo "hw.lcd.density=320" >> ~/.android/avd/$NAME.avd/config.ini || exit
+  echo "no" | $AVD_MANAGER create avd --force --name $NAME --package $IMAGE --tag default --abi $ABI || exit 1
+  echo "hw.lcd.density=320" >> ~/.android/avd/$NAME.avd/config.ini || exit 1
 fi
 
 $EMULATOR @$NAME -skin 1080x1920 &

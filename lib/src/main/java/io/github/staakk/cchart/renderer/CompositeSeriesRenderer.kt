@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import io.github.staakk.cchart.data.RenderedPoint
 import io.github.staakk.cchart.data.Series
 
-private class CompositeSeriesRenderer(
+class CompositeSeriesRenderer(
     private val renderers: List<SeriesRenderer>
 ) : SeriesRenderer {
 
@@ -12,10 +12,17 @@ private class CompositeSeriesRenderer(
         context: RendererContext,
         series: List<Series>
     ): List<RenderedPoint> = renderers.flatMap { with(it) { render(context, series) } }
-}
 
-/**
- * Combines multiple renderers.
- */
-fun combine(vararg renderers: SeriesRenderer): SeriesRenderer =
-    CompositeSeriesRenderer(renderers.toList())
+    companion object {
+        /**
+         * Combines multiple renderers.
+         */
+        fun combine(vararg renderers: SeriesRenderer): SeriesRenderer =
+            CompositeSeriesRenderer(renderers.flatMap {
+                when (it) {
+                    is CompositeSeriesRenderer -> it.renderers
+                    else -> listOf(it)
+                }
+            })
+    }
+}

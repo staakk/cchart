@@ -14,7 +14,7 @@ import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
-import io.github.staakk.cchart.renderer.combine
+import io.github.staakk.cchart.renderer.CompositeSeriesRenderer.Companion.combine
 import io.github.staakk.cchart.renderer.lineRenderer
 import io.github.staakk.cchart.renderer.pointRenderer
 

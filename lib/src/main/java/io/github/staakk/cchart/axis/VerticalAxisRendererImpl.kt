@@ -60,7 +60,7 @@ fun verticalAxisRenderer(
     strokeWidth: Float = Stroke.HairlineWidth,
     pathEffect: PathEffect? = null,
     cap: StrokeCap = Stroke.DefaultCap,
-    alpha: Float = 0.2f,
+    alpha: Float = 1f,
     colorFilter: ColorFilter? = null,
     blendMode: BlendMode = DrawScope.DefaultBlendMode,
 ): VerticalAxisRenderer = VerticalAxisRendererImpl(

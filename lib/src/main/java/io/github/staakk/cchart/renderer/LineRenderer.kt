@@ -61,7 +61,7 @@ private class LineRenderer(
 
 fun lineRenderer(
     brush: Brush = SolidColor(Color.Black),
-    style: DrawStyle = Stroke(width = 10f),
+    style: DrawStyle = Stroke(width = 5f, cap = StrokeCap.Round),
     colorFilter: ColorFilter? = null,
     alpha: Float = 1.0f,
     blendMode: BlendMode = DrawScope.DefaultBlendMode,

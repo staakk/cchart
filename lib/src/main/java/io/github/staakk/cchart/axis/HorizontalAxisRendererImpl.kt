@@ -10,7 +10,7 @@ import io.github.staakk.cchart.renderer.RendererContext
 private class HorizontalAxisRendererImpl(
     private val brush: Brush,
     private val location: HorizontalAxisLocation = HorizontalAxisLocation.BOTTOM,
-    private val strokeWidth: Float = Stroke.HairlineWidth,
+    private val strokeWidth: Float,
     private val alpha: Float = 0.2f,
     private val pathEffect: PathEffect? = null,
     private val cap: StrokeCap = Stroke.DefaultCap,
@@ -62,7 +62,7 @@ fun horizontalAxisRenderer(
     brush: Brush = SolidColor(Color.Black),
     location: HorizontalAxisLocation = HorizontalAxisLocation.BOTTOM,
     strokeWidth: Float = Stroke.HairlineWidth,
-    alpha: Float = 0.2f,
+    alpha: Float = 1f,
     pathEffect: PathEffect? = null,
     cap: StrokeCap = Stroke.DefaultCap,
     colorFilter: ColorFilter? = null,
