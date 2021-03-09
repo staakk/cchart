@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Fill
 import io.github.staakk.cchart.data.RenderedPoint
 import io.github.staakk.cchart.data.Series
+import io.github.staakk.cchart.data.Viewport
 
 private class PointRenderer(
     private val brush: Brush,
@@ -21,7 +22,8 @@ private class PointRenderer(
         context: RendererContext,
         series: List<Series>
     ): List<RenderedPoint> = series.flatMap { s ->
-        s.points.map { point ->
+        s.getPointsInViewport(getDrawingBounds(context))
+            .map { point ->
             val x = context.dataToRendererCoordX(point.x)
             val y = context.dataToRendererCoordY(point.y)
             drawCircle(
@@ -36,6 +38,19 @@ private class PointRenderer(
             RenderedPoint(point, s.name, x, y)
         }
     }
+
+    private fun getDrawingBounds(rendererContext: RendererContext): Viewport {
+        val bounds = rendererContext.bounds
+        val xScaledRadius = radius / rendererContext.scaleX
+        val yScaledRadius = radius / rendererContext.scaleY
+        return Viewport(
+            minX = bounds.minX - xScaledRadius,
+            maxX = bounds.maxX + xScaledRadius,
+            minY = bounds.minY - yScaledRadius,
+            maxY = bounds.maxY + yScaledRadius
+        )
+    }
+
 }
 
 fun pointRenderer(

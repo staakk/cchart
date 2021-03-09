@@ -11,17 +11,18 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import io.github.staakk.cchart.data.Point
 import io.github.staakk.cchart.data.RenderedPoint
 import io.github.staakk.cchart.data.Series
+import io.github.staakk.cchart.data.Viewport
 import kotlin.math.abs
 
 private class BarRenderer(
     private val brushProvider: (String) -> Brush,
     private val preferredWidth: Float,
-    private val minimalSpacing: Float = 10f,
+    private val minimalSpacing: Float,
     private val style: DrawStyle,
     private val alpha: Float,
     private val colorFilter: ColorFilter?,
     private val blendMode: BlendMode,
-    private val isSameX: (Float, Float) -> Boolean = { a, b -> abs(a - b) < 0.01f },
+    private val isSameX: (Float, Float) -> Boolean,
 ) : SeriesRenderer {
 
     override fun DrawScope.render(
@@ -29,7 +30,11 @@ private class BarRenderer(
         series: List<Series>
     ): List<RenderedPoint> {
         val renderedPoints = mutableListOf<RenderedPoint>()
-        val points = series.flatMap { s -> s.points.map { SeriesPoint(s.name, it) } }
+        val drawingBounds = getDrawingBounds(context)
+        val points = series.flatMap { s ->
+            s.getPointsInViewport(drawingBounds)
+                .map { SeriesPoint(s.name, it) }
+        }
         val groups = getGroups(points).sortedBy { it[0].x }
         val width = getBarWidth(groups, context)
 
@@ -39,7 +44,8 @@ private class BarRenderer(
                 val unitOffset = -groupSize / 2 + index
                 val halfWidth = width / 2f
 
-                val x = context.dataToRendererCoordX(point.x) - unitOffset * width - (1 - groupSize % 2) * halfWidth
+                val x =
+                    context.dataToRendererCoordX(point.x) - unitOffset * width - (1 - groupSize % 2) * halfWidth
                 val y = context.dataToRendererSizeY(point.y)
 
                 drawRect(
@@ -79,6 +85,17 @@ private class BarRenderer(
             .minOrNull()
             ?: Float.MAX_VALUE
 
+    private fun getDrawingBounds(rendererContext: RendererContext): Viewport {
+        val canvasBounds = rendererContext.bounds
+        val canvasWidth = rendererContext.canvasSize.width
+        return Viewport(
+            maxX = canvasBounds.maxX + canvasWidth / 2,
+            minX = canvasBounds.minX - canvasWidth / 2,
+            minY = Float.MIN_VALUE,
+            maxY = Float.MAX_VALUE
+        )
+    }
+
     private fun getGroups(points: List<SeriesPoint>): List<List<SeriesPoint>> {
         val groups = mutableListOf<List<SeriesPoint>>()
         val pointsLeft = mutableListOf(*points.toTypedArray())
@@ -96,11 +113,8 @@ private data class SeriesPoint(
     val seriesName: String,
     val point: Point
 ) {
-    val x: Float
-        get() = point.x
-
-    val y: Float
-        get() = point.y
+    val x = point.x
+    val y = point.y
 }
 
 fun barRenderer(

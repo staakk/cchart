@@ -83,6 +83,8 @@ data class Viewport(
         return Viewport(minX = newMinX, maxX = newMaxX, minY = newMinY, maxY = newMaxY)
     }
 
+    fun contains(point: Point) = point.x in minX..maxX && point.y in minY..maxY
+
     companion object {
         fun Iterable<Series>.getViewport(): Viewport {
             var maxX = Float.MIN_VALUE

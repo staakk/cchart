@@ -22,16 +22,16 @@ private class LineRenderer(
         val renderedPoints = mutableListOf<RenderedPoint>()
         series.forEach { s ->
             if (s.points.size < 2) return@forEach
-
+            val pointsToRender = s.getLineInViewport(context.bounds)
             renderedPoints += RenderedPoint(
                 seriesName = s.name,
-                point = s.points[0],
-                x = context.dataToRendererCoordX(s.points[0].x),
-                y = context.dataToRendererCoordY(s.points[0].y),
+                point = pointsToRender[0],
+                x = context.dataToRendererCoordX(pointsToRender[0].x),
+                y = context.dataToRendererCoordY(pointsToRender[0].y),
             )
             drawPath(
                 path = Path().apply {
-                    s.points.windowed(2) {
+                    pointsToRender.windowed(2) {
                         moveTo(
                             context.dataToRendererCoordX(it[0].x),
                             context.dataToRendererCoordY(it[0].y),
@@ -41,7 +41,7 @@ private class LineRenderer(
                         lineTo(secondPointX, secondPointY)
                         renderedPoints += RenderedPoint(
                             seriesName = s.name,
-                            point = s.points[0],
+                            point = pointsToRender[0],
                             x = secondPointX,
                             y = secondPointY,
                         )
