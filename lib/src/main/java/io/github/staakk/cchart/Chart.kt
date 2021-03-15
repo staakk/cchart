@@ -3,6 +3,7 @@ package io.github.staakk.cchart
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -28,29 +29,69 @@ import io.github.staakk.cchart.util.detectTransformGestures
  * @param maxViewport The maximal viewport that can be displayed by this chart.
  * @param minViewportSize Minimal size of the viewport.
  * @param maxViewportSize Maximal size of the viewport.
- * @param content A black that describes the contents of the chart.
+ * @param content A block that describes the contents of the chart.
  */
 @Composable
 fun Chart(
     modifier: Modifier = Modifier,
     viewport: Viewport? = null,
     maxViewport: Viewport? = viewport,
-    minViewportSize: Size = viewport?.let { Size(it.width, it.height) }
-        ?: Size(Float.MIN_VALUE, Float.MIN_VALUE),
-    maxViewportSize: Size = viewport?.let { Size(it.width, it.height) }
-        ?: Size(Float.MAX_VALUE, Float.MAX_VALUE),
+    minViewportSize: Size? = viewport?.size,
+    maxViewportSize: Size? = viewport?.size,
     enableZoom: Boolean = false,
     content: @Composable ChartScope.() -> Unit
 ) {
     val scope = ChartScopeImpl()
     scope.content()
 
-    val currentViewport = viewport ?: scope.series.keys
-        .flatten()
-        .getViewport()
+    val viewportState = remember {
+        mutableStateOf(viewport ?: scope.series.keys.flatten().getViewport())
+    }
+    Chart(
+        modifier = modifier,
+        viewport = viewportState,
+        maxViewport = maxViewport ?: viewportState.value,
+        minViewportSize = minViewportSize ?: viewportState.value.size,
+        maxViewportSize = maxViewportSize ?: viewportState.value.size,
+        enableZoom = enableZoom,
+        scope = scope
+    )
+}
 
-    val viewportState = remember { mutableStateOf(currentViewport) }
+@Composable
+fun Chart(
+    modifier: Modifier = Modifier,
+    chartState: ChartState,
+    maxViewport: Viewport = chartState.viewport,
+    minViewportSize: Size = chartState.viewport.size,
+    maxViewportSize: Size = chartState.viewport.size,
+    enableZoom: Boolean = false,
+    content: @Composable ChartScope.() -> Unit
+) {
+    val scope = ChartScopeImpl()
+    scope.content()
 
+    Chart(
+        modifier = modifier,
+        viewport = chartState.viewportState,
+        maxViewport = maxViewport,
+        minViewportSize = minViewportSize,
+        maxViewportSize = maxViewportSize,
+        enableZoom = enableZoom,
+        scope = scope
+    )
+}
+
+@Composable
+private fun Chart(
+    modifier: Modifier = Modifier,
+    viewport: MutableState<Viewport>,
+    maxViewport: Viewport = viewport.value,
+    minViewportSize: Size = viewport.value.size,
+    maxViewportSize: Size = viewport.value.size,
+    enableZoom: Boolean = false,
+    scope: ChartScopeImpl
+) {
     val leftLabelSize = scope.verticalLabelRenderers.getMinLabelMaxSize()
     val rightLabelSize = scope.verticalLabelRenderers.getMaxLabelMaxSize()
     val topLabelSize = scope.horizontalLabelRenderers.getMinLabelMaxSize()
@@ -69,29 +110,27 @@ fun Chart(
     BoxWithConstraints(modifier = modifier.then(Modifier.padding(paddingValues))) {
         val renderedPoints = remember { mutableStateOf(listOf<RenderedPoint>()) }
         val canvasSize = with(density) { Size(width = maxWidth.toPx(), height = maxHeight.toPx()) }
-        val rendererContext = rendererContext(viewportState.value, canvasSize)
+        val rendererContext = rendererContext(viewport.value, canvasSize)
 
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
-                .pointerInput(viewportState) {
+                .pointerInput(viewport) {
                     detectTransformGestures { _, pan, zoom, direction ->
-                        if (maxViewport == null) return@detectTransformGestures
-
                         val current = if (enableZoom) {
-                            viewportState.value.applyZoom(
+                            viewport.value.applyZoom(
                                 zoom,
                                 direction,
                                 minViewportSize,
                                 maxViewportSize
                             )
                         } else {
-                            viewportState.value
+                            viewport.value
                         }
 
                         val dx = -pan.x / rendererContext.scaleX
                         val dy = pan.y / rendererContext.scaleY
-                        viewportState.value = current.applyPan(dx, dy, maxViewport)
+                        viewport.value = current.applyPan(dx, dy, maxViewport)
                     }
                 }
         ) drawScope@{
@@ -196,6 +235,14 @@ interface ChartScope {
         verticalAlignment: VerticalAlignment = VerticalAlignment.TOP,
         labelContent: @Composable DataLabelScope.() -> Unit
     )
+}
+
+class ChartState(
+    viewport: Viewport
+) {
+    internal val viewportState = mutableStateOf(viewport)
+
+    val viewport: Viewport get() = viewportState.value
 }
 
 private class ChartScopeImpl : ChartScope {

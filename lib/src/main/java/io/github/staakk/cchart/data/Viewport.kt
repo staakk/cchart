@@ -18,8 +18,9 @@ data class Viewport(
     constructor(minX: Number, maxX: Number, minY: Number, maxY: Number)
             : this(minX.toFloat(), maxX.toFloat(), minY.toFloat(), maxY.toFloat())
 
-    val width = abs(maxX - minX)
-    val height = abs(maxY - minY)
+    val size = Size(abs(maxX - minX), abs(maxY - minY))
+    val width get() = size.width
+    val height get() = size.height
 
     fun applyZoom(zoom: Float, direction: Offset, minSize: Size, maxSize: Size): Viewport {
         val dx = (width / zoom)
