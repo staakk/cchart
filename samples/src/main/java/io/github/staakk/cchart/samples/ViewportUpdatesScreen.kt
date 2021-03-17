@@ -49,7 +49,7 @@ fun ViewportUpdatesScreen() {
                     pointOf(8f, 4.5f),
                     pointOf(9f, 4.7f),
                 ),
-                renderer = pointRenderer(brush = SolidColor(Color.Red), radius = 10f)
+                renderer = pointRenderer(brush = SolidColor(Color.Indigo), radius = 10f)
             )
 
             horizontalAxis(horizontalAxisRenderer())
@@ -94,7 +94,7 @@ private fun getPanText(reference: Viewport, current: Viewport): String {
             "y=${(currentCenterY - referenceCenterY).format(2)}"
 }
 
-fun Float.format(digits: Int) = "%.${digits}f".format(this)
+private fun Float.format(digits: Int) = "%.${digits}f".format(this)
 
 @Preview
 @Composable

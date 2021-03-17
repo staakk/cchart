@@ -28,7 +28,7 @@ import io.github.staakk.cchart.renderer.pointRenderer
 
 @Preview(name = "Chart")
 @Composable
-private fun PreviewCoordinatePlane() {
+internal fun PreviewCoordinatePlane() {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Chart(

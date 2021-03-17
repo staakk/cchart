@@ -9,13 +9,13 @@ import io.github.staakk.cchart.renderer.RendererContext
 
 private class HorizontalAxisRendererImpl(
     private val brush: Brush,
-    private val location: HorizontalAxisLocation = HorizontalAxisLocation.BOTTOM,
+    private val location: HorizontalAxisLocation,
     private val strokeWidth: Float,
-    private val alpha: Float = 0.2f,
-    private val pathEffect: PathEffect? = null,
-    private val cap: StrokeCap = Stroke.DefaultCap,
-    private val colorFilter: ColorFilter? = null,
-    private val blendMode: BlendMode = DrawScope.DefaultBlendMode,
+    private val alpha: Float,
+    private val pathEffect: PathEffect?,
+    private val cap: StrokeCap,
+    private val colorFilter: ColorFilter?,
+    private val blendMode: BlendMode,
 ) : HorizontalAxisRenderer {
 
     override fun DrawScope.render(context: RendererContext) {
