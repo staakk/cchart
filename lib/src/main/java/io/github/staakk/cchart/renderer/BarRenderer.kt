@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Fill
 import io.github.staakk.cchart.data.Point
-import io.github.staakk.cchart.data.RenderedPoint
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
 import kotlin.math.abs
@@ -28,8 +27,8 @@ private class BarRenderer(
     override fun DrawScope.render(
         context: RendererContext,
         series: List<Series>
-    ): List<RenderedPoint> {
-        val renderedPoints = mutableListOf<RenderedPoint>()
+    ): List<RenderedShape> {
+        val renderedPoints = mutableListOf<RenderedShape>()
         val drawingBounds = getDrawingBounds(context)
         val points = series.flatMap { s ->
             s.getPointsInViewport(drawingBounds)
@@ -48,21 +47,25 @@ private class BarRenderer(
                     context.dataToRendererCoordX(point.x) - unitOffset * width - (1 - groupSize % 2) * halfWidth
                 val y = context.dataToRendererSizeY(point.y)
 
+                val topLeft = Offset(x - halfWidth, context.dataToRendererCoordY(0f))
+                val size = Size(width, -context.dataToRendererSizeY(point.y))
                 drawRect(
                     brush = brushProvider(point.seriesName),
-                    topLeft = Offset(x - halfWidth, context.dataToRendererCoordY(0f)),
-                    size = Size(width, -context.dataToRendererSizeY(point.y)),
+                    topLeft = topLeft,
+                    size = size,
                     style = style,
                     alpha = alpha,
                     colorFilter = colorFilter,
                     blendMode = blendMode
                 )
 
-                renderedPoints += RenderedPoint(
+                renderedPoints += RenderedShape.Rect(
                     seriesName = point.seriesName,
                     point = point.point,
-                    x = x,
-                    y = -y
+                    labelAnchorX = x,
+                    labelAnchorY = -y,
+                    topLeft = topLeft,
+                    bottomRight = Offset(topLeft.x + size.width, topLeft.y - size.height)
                 )
             }
         }

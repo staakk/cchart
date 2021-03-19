@@ -1,7 +1,6 @@
 package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import io.github.staakk.cchart.data.RenderedPoint
 import io.github.staakk.cchart.data.Series
 
 /**
@@ -9,5 +8,5 @@ import io.github.staakk.cchart.data.Series
  */
 fun interface SeriesRenderer {
 
-    fun DrawScope.render(context: RendererContext, series: List<Series>): List<RenderedPoint>
+    fun DrawScope.render(context: RendererContext, series: List<Series>): List<RenderedShape>
 }

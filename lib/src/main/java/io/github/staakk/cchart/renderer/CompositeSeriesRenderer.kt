@@ -1,7 +1,6 @@
 package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import io.github.staakk.cchart.data.RenderedPoint
 import io.github.staakk.cchart.data.Series
 
 class CompositeSeriesRenderer(
@@ -11,7 +10,7 @@ class CompositeSeriesRenderer(
     override fun DrawScope.render(
         context: RendererContext,
         series: List<Series>
-    ): List<RenderedPoint> = renderers.flatMap { with(it) { render(context, series) } }
+    ): List<RenderedShape> = renderers.flatMap { with(it) { render(context, series) } }
 
     companion object {
         /**

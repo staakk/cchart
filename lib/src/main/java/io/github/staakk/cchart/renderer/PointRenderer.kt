@@ -5,7 +5,6 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Fill
-import io.github.staakk.cchart.data.RenderedPoint
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
 
@@ -21,7 +20,7 @@ private class PointRenderer(
     override fun DrawScope.render(
         context: RendererContext,
         series: List<Series>
-    ): List<RenderedPoint> = series.flatMap { s ->
+    ): List<RenderedShape> = series.flatMap { s ->
         s.getPointsInViewport(getDrawingBounds(context))
             .map { point ->
             val x = context.dataToRendererCoordX(point.x)
@@ -35,7 +34,14 @@ private class PointRenderer(
                 colorFilter = colorFilter,
                 blendMode = blendMode,
             )
-            RenderedPoint(point, s.name, x, y)
+            RenderedShape.Circle(
+                point = point,
+                seriesName = s.name,
+                labelAnchorX = x,
+                labelAnchorY =y,
+                center = Offset(x = x, y =y),
+                radius = radius
+            )
         }
     }
 

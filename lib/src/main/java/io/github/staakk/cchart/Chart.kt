@@ -1,12 +1,14 @@
 package io.github.staakk.cchart
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.translate
@@ -39,6 +41,7 @@ fun Chart(
     minViewportSize: Size? = viewport?.size,
     maxViewportSize: Size? = viewport?.size,
     enableZoom: Boolean = false,
+    onClick: (Offset, Point) -> Unit = { _, _ -> },
     content: @Composable ChartScope.() -> Unit
 ) {
     val scope = ChartScopeImpl()
@@ -54,6 +57,7 @@ fun Chart(
         minViewportSize = minViewportSize ?: viewportState.value.size,
         maxViewportSize = maxViewportSize ?: viewportState.value.size,
         enableZoom = enableZoom,
+        onClick = onClick,
         scope = scope
     )
 }
@@ -66,6 +70,7 @@ fun Chart(
     minViewportSize: Size = chartState.viewport.size,
     maxViewportSize: Size = chartState.viewport.size,
     enableZoom: Boolean = false,
+    onClick: (Offset, Point) -> Unit = { _, _ -> },
     content: @Composable ChartScope.() -> Unit
 ) {
     val scope = ChartScopeImpl()
@@ -78,6 +83,7 @@ fun Chart(
         minViewportSize = minViewportSize,
         maxViewportSize = maxViewportSize,
         enableZoom = enableZoom,
+        onClick = onClick,
         scope = scope
     )
 }
@@ -90,6 +96,7 @@ private fun Chart(
     minViewportSize: Size = viewport.value.size,
     maxViewportSize: Size = viewport.value.size,
     enableZoom: Boolean = false,
+    onClick: (Offset, Point) -> Unit,
     scope: ChartScopeImpl
 ) {
     val leftLabelSize = scope.verticalLabelRenderers.getMinLabelMaxSize()
@@ -108,7 +115,7 @@ private fun Chart(
     }
 
     BoxWithConstraints(modifier = modifier.then(Modifier.padding(paddingValues))) {
-        val renderedPoints = remember { mutableStateOf(listOf<RenderedPoint>()) }
+        val renderedPoints = remember { mutableStateOf(listOf<RenderedShape>()) }
         val canvasSize = with(density) { Size(width = maxWidth.toPx(), height = maxHeight.toPx()) }
         val rendererContext = rendererContext(viewport.value, canvasSize)
 
@@ -131,6 +138,15 @@ private fun Chart(
                         val dx = -pan.x / rendererContext.scaleX
                         val dy = pan.y / rendererContext.scaleY
                         viewport.value = current.applyPan(dx, dy, maxViewport)
+                    }
+                }
+                .pointerInput(renderedPoints) {
+                    detectTapGestures { offset ->
+                        renderedPoints.value
+                            .firstOrNull {
+                                it.contains(offset.copy(y = offset.y - canvasSize.height))
+                            }
+                            ?.let { onClick(offset, it.point) }
                     }
                 }
         ) drawScope@{
@@ -164,15 +180,14 @@ private fun Chart(
             }
         }
 
-        val labelContent = scope.labelContent
-        if (labelContent != null) {
+        scope.dataLabels.forEach {
             DataLabels(
                 modifier = modifier,
-                renderedPoints = renderedPoints.value,
+                renderedShapes = renderedPoints.value,
                 canvasSize = canvasSize,
-                horizontalAlignment = scope.horizontalLabelAlignment,
-                verticalAlignment = scope.verticalLabelAlignment,
-                labelContent = labelContent
+                horizontalAlignment = it.horizontalAlignment,
+                verticalAlignment = it.verticalAlignment,
+                labelContent = it.labelContent
             )
         }
     }
@@ -230,6 +245,9 @@ interface ChartScope {
      */
     fun series(vararg series: Series, renderer: SeriesRenderer)
 
+    /**
+     * Adds labels to the data with specified [horizontalAlignment] and [verticalAlignment].
+     */
     fun dataLabels(
         horizontalAlignment: HorizontalAlignment = HorizontalAlignment.CENTER,
         verticalAlignment: VerticalAlignment = VerticalAlignment.TOP,
@@ -245,6 +263,12 @@ class ChartState(
     val viewport: Viewport get() = viewportState.value
 }
 
+private data class DataLabel(
+    val horizontalAlignment: HorizontalAlignment,
+    val verticalAlignment: VerticalAlignment,
+    val labelContent: @Composable DataLabelScope.() -> Unit
+)
+
 private class ChartScopeImpl : ChartScope {
 
     val horizontalAxisRenderers = mutableListOf<HorizontalAxisRenderer>()
@@ -259,11 +283,7 @@ private class ChartScopeImpl : ChartScope {
 
     val series: MutableMap<List<Series>, SeriesRenderer> = mutableMapOf()
 
-    var labelContent: @Composable (DataLabelScope.() -> Unit)? = null
-
-    var horizontalLabelAlignment: HorizontalAlignment = HorizontalAlignment.CENTER
-
-    var verticalLabelAlignment: VerticalAlignment = VerticalAlignment.TOP
+    val dataLabels: MutableList<DataLabel> = mutableListOf()
 
     override fun grid(gridRenderer: GridRenderer) {
         gridRenderers.add(gridRenderer)
@@ -294,8 +314,11 @@ private class ChartScopeImpl : ChartScope {
         verticalAlignment: VerticalAlignment,
         labelContent: @Composable DataLabelScope.() -> Unit
     ) {
-        horizontalLabelAlignment = horizontalAlignment
-        verticalLabelAlignment = verticalAlignment
-        this.labelContent = labelContent
+        val dataLabel = DataLabel(
+            horizontalAlignment = horizontalAlignment,
+            verticalAlignment = verticalAlignment,
+            labelContent = labelContent
+        )
+        dataLabels.add(dataLabel)
     }
 }

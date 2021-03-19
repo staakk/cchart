@@ -1,10 +1,10 @@
 package io.github.staakk.cchart.renderer
 
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Stroke
-import io.github.staakk.cchart.data.RenderedPoint
 import io.github.staakk.cchart.data.Series
 
 private class LineRenderer(
@@ -18,16 +18,21 @@ private class LineRenderer(
     override fun DrawScope.render(
         context: RendererContext,
         series: List<Series>
-    ): List<RenderedPoint> {
-        val renderedPoints = mutableListOf<RenderedPoint>()
+    ): List<RenderedShape> {
+        val renderedPoints = mutableListOf<RenderedShape>()
         series.forEach { s ->
             if (s.points.size < 2) return@forEach
             val pointsToRender = s.getLineInViewport(context.bounds)
-            renderedPoints += RenderedPoint(
+            renderedPoints += RenderedShape.Circle(
                 seriesName = s.name,
                 point = pointsToRender[0],
-                x = context.dataToRendererCoordX(pointsToRender[0].x),
-                y = context.dataToRendererCoordY(pointsToRender[0].y),
+                labelAnchorX = context.dataToRendererCoordX(pointsToRender[0].x),
+                labelAnchorY = context.dataToRendererCoordY(pointsToRender[0].y),
+                center = Offset(
+                    x = context.dataToRendererCoordX(pointsToRender[0].x),
+                    y = context.dataToRendererCoordY(pointsToRender[0].y),
+                ),
+                radius = 20f
             )
             drawPath(
                 path = Path().apply {
@@ -39,11 +44,16 @@ private class LineRenderer(
                         val secondPointX = context.dataToRendererCoordX(it[1].x)
                         val secondPointY = context.dataToRendererCoordY(it[1].y)
                         lineTo(secondPointX, secondPointY)
-                        renderedPoints += RenderedPoint(
+                        renderedPoints += RenderedShape.Circle(
                             seriesName = s.name,
                             point = pointsToRender[0],
-                            x = secondPointX,
-                            y = secondPointY,
+                            labelAnchorX = secondPointX,
+                            labelAnchorY = secondPointY,
+                            center = Offset(
+                                x = secondPointX,
+                                y = secondPointY,
+                            ),
+                            radius = 20f
                         )
                     }
                     close()

@@ -14,13 +14,13 @@ import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import io.github.staakk.cchart.data.Point
-import io.github.staakk.cchart.data.RenderedPoint
-import io.github.staakk.cchart.data.toDataLabelScope
+import io.github.staakk.cchart.renderer.RenderedShape
+import io.github.staakk.cchart.renderer.toDataLabelScope
 
 @Composable
 fun DataLabels(
     modifier: Modifier,
-    renderedPoints: List<RenderedPoint>,
+    renderedShapes: List<RenderedShape>,
     canvasSize: Size,
     horizontalAlignment: HorizontalAlignment,
     verticalAlignment: VerticalAlignment,
@@ -32,10 +32,10 @@ fun DataLabels(
             .fillMaxSize()
             .clipToBounds()
     ) {
-        renderedPoints.forEach { renderedPoint ->
+        renderedShapes.forEach { renderedPoint ->
             Box(modifier = Modifier.absoluteOffsetToCenter(
-                with(density) { renderedPoint.x.toDp() },
-                with(density) { canvasSize.height.toDp() + renderedPoint.y.toDp() },
+                with(density) { renderedPoint.labelAnchorX.toDp() },
+                with(density) { canvasSize.height.toDp() + renderedPoint.labelAnchorY.toDp() },
                 horizontalAlignment,
                 verticalAlignment
             )) {
@@ -84,7 +84,6 @@ data class DataLabelScope(
     val point: Point,
     val seriesName: String
 )
-
 
 private class OffsetToCenterModifier(
     val x: Dp,
