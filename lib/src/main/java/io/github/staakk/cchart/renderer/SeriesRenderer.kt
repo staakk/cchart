@@ -8,5 +8,5 @@ import io.github.staakk.cchart.data.Series
  */
 fun interface SeriesRenderer {
 
-    fun DrawScope.render(context: RendererContext, series: List<Series>): List<RenderedShape>
+    fun DrawScope.render(context: RendererContext, series: Series): List<RenderedShape>
 }

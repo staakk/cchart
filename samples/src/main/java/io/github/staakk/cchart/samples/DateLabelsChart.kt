@@ -10,12 +10,13 @@ import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.axis.horizontalAxisRenderer
 import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.Viewport
+import io.github.staakk.cchart.data.groupedSeriesOf
 import io.github.staakk.cchart.data.pointOf
-import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.label.LabelsProvider
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
-import io.github.staakk.cchart.renderer.barRenderer
+import io.github.staakk.cchart.renderer.barGroupRenderer
+import io.github.staakk.cchart.renderer.drawBar
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -31,24 +32,26 @@ fun DateLabelsChartScreen() {
         )
     ) {
         series(
-            seriesOf(
-                "Data I",
-                pointOf(LocalDate.of(2020, 10, 1).toEpochDay(), 6f),
-                pointOf(LocalDate.of(2020, 11, 1).toEpochDay(), 12f),
-                pointOf(LocalDate.of(2020, 12, 1).toEpochDay(), 15f),
+            groupedSeriesOf(
+                listOf(
+                    pointOf(LocalDate.of(2020, 10, 1).toEpochDay(), 6f),
+                    pointOf(LocalDate.of(2020, 10, 1).toEpochDay(), 6.9f),
+                ),
+                listOf(
+                    pointOf(LocalDate.of(2020, 11, 1).toEpochDay(), 12f),
+                    pointOf(LocalDate.of(2020, 11, 1).toEpochDay(), 14f),
+                ),
+                listOf(
+                    pointOf(LocalDate.of(2020, 12, 1).toEpochDay(), 15f),
+                    pointOf(LocalDate.of(2020, 12, 1).toEpochDay(), 13.8f),
+                )
             ),
-            seriesOf(
-                "Data II",
-                pointOf(LocalDate.of(2020, 10, 1).toEpochDay(), 6.9f),
-                pointOf(LocalDate.of(2020, 11, 1).toEpochDay(), 14f),
-                pointOf(LocalDate.of(2020, 12, 1).toEpochDay(), 13.8f),
-            ),
-            renderer = barRenderer(
-                brushProvider = {
+            barGroupRenderer(
+                draw = drawBar { index, _ ->
                     SolidColor(
-                        when (it) {
-                            "Data I" -> Color.DeepPurple
-                            "Data II" -> Color.Green
+                        when (index) {
+                            0 -> Color.DeepPurple
+                            1 -> Color.Green
                             else -> Color.Pink
                         }
                     )

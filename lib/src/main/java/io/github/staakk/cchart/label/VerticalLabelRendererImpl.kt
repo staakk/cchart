@@ -61,11 +61,9 @@ private class VerticalLabelRendererImpl(
     }
 }
 
-
 enum class VerticalLabelLocation { RIGHT, LEFT }
 
 enum class VerticalLabelSide { RIGHT, LEFT }
-
 
 @Composable
 fun verticalLabelRenderer(

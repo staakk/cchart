@@ -19,10 +19,9 @@ private class PointRenderer(
 
     override fun DrawScope.render(
         context: RendererContext,
-        series: List<Series>
-    ): List<RenderedShape> = series.flatMap { s ->
-        s.getPointsInViewport(getDrawingBounds(context))
-            .map { point ->
+        series: Series
+    ): List<RenderedShape> = series.getPointsInViewport(getDrawingBounds(context))
+        .map { point ->
             val x = context.dataToRendererCoordX(point.x)
             val y = context.dataToRendererCoordY(point.y)
             drawCircle(
@@ -36,14 +35,13 @@ private class PointRenderer(
             )
             RenderedShape.Circle(
                 point = point,
-                seriesName = s.name,
+                seriesName = series.name,
                 labelAnchorX = x,
-                labelAnchorY =y,
-                center = Offset(x = x, y =y),
+                labelAnchorY = y,
+                center = Offset(x = x, y = y),
                 radius = radius
             )
         }
-    }
 
     private fun getDrawingBounds(rendererContext: RendererContext): Viewport {
         val bounds = rendererContext.bounds
@@ -56,7 +54,6 @@ private class PointRenderer(
             maxY = bounds.maxY + yScaledRadius
         )
     }
-
 }
 
 fun pointRenderer(

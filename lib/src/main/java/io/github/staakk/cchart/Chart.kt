@@ -48,7 +48,7 @@ fun Chart(
     scope.content()
 
     val viewportState = remember {
-        mutableStateOf(viewport ?: scope.series.keys.flatten().getViewport())
+        mutableStateOf(viewport ?: scope.series.keys.getViewport())
     }
     Chart(
         modifier = modifier,
@@ -159,9 +159,14 @@ private fun Chart(
                         with(renderer) { this@drawScope.render(rendererContext) }
                     }
 
-                    renderedPoints.value = scope.series.flatMap { (series, renderer) ->
+                    val points = mutableListOf<RenderedShape>()
+                    points += scope.series.flatMap { (series, renderer) ->
                         with(renderer) { this@drawScope.render(rendererContext, series) }
                     }
+                    points += scope.groupedSeries.flatMap { (series, renderer) ->
+                        with(renderer) { this@drawScope.render(rendererContext, series)}
+                    }
+                    renderedPoints.value = points
                 }
             }
 
@@ -243,7 +248,12 @@ interface ChartScope {
     /**
      * Adds series of data to the chart.
      */
-    fun series(vararg series: Series, renderer: SeriesRenderer)
+    fun series(series: Series, renderer: SeriesRenderer)
+
+    /**
+     * Adds series of data to the chart.
+     */
+    fun series(series: GroupedSeries, renderer: GroupedSeriesRenderer)
 
     /**
      * Adds labels to the data with specified [horizontalAlignment] and [verticalAlignment].
@@ -281,7 +291,9 @@ private class ChartScopeImpl : ChartScope {
 
     val gridRenderers: MutableList<GridRenderer> = mutableListOf()
 
-    val series: MutableMap<List<Series>, SeriesRenderer> = mutableMapOf()
+    val series: MutableMap<Series, SeriesRenderer> = mutableMapOf()
+
+    val groupedSeries: MutableMap<GroupedSeries, GroupedSeriesRenderer> = mutableMapOf()
 
     val dataLabels: MutableList<DataLabel> = mutableListOf()
 
@@ -305,8 +317,12 @@ private class ChartScopeImpl : ChartScope {
         verticalLabelRenderers.add(labelRenderer)
     }
 
-    override fun series(vararg series: Series, renderer: SeriesRenderer) {
-        this.series[series.toList()] = renderer
+    override fun series(series: Series, renderer: SeriesRenderer) {
+        this.series[series] = renderer
+    }
+
+    override fun series(series: GroupedSeries, renderer: GroupedSeriesRenderer) {
+        groupedSeries[series] = renderer
     }
 
     override fun dataLabels(

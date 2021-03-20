@@ -21,13 +21,3 @@ interface AxisRenderer {
 interface HorizontalAxisRenderer : AxisRenderer
 
 interface VerticalAxisRenderer : AxisRenderer
-
-/**
- * Setting this as axis renderer will result in no axis being drawn.
- */
-object NullAxisRenderer : VerticalAxisRenderer, HorizontalAxisRenderer {
-    override fun DrawScope.render(context: RendererContext) {
-    }
-
-    override fun getNormalisedPosition(): Float = 0f
-}

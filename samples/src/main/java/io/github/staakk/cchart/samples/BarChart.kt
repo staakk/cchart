@@ -10,11 +10,12 @@ import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.axis.horizontalAxisRenderer
 import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.Viewport
+import io.github.staakk.cchart.data.groupedSeriesOf
 import io.github.staakk.cchart.data.pointOf
-import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
-import io.github.staakk.cchart.renderer.barRenderer
+import io.github.staakk.cchart.renderer.barGroupRenderer
+import io.github.staakk.cchart.renderer.drawBar
 
 @Composable
 fun BarChartScreen() {
@@ -23,33 +24,39 @@ fun BarChartScreen() {
         viewport = Viewport(0f, 6f, 0f, 5f)
     ) {
         series(
-            seriesOf(
-                "Data I",
-                pointOf(1f, 1f),
-                pointOf(2f, 1.5f),
-                pointOf(3f, 4f),
-                pointOf(4f, 3.5f),
-                pointOf(5f, 2f)
+            groupedSeriesOf(
+                listOf(
+                    pointOf(1f, 1f),
+                    pointOf(1f, 1.5f),
+                ),
+                listOf(
+                    pointOf(2f, 1.5f),
+                    pointOf(2f, 1f),
+                ),
+                listOf(
+                    pointOf(3f, 4f),
+                    pointOf(3f, 4.5f),
+                ),
+                listOf(
+                    pointOf(4f, 3.5f),
+                    pointOf(4f, 3.5f),
+                ),
+                listOf(
+                    pointOf(5f, 2f),
+                    pointOf(5f, 1f)
+                )
             ),
-            seriesOf(
-                "Data II",
-                pointOf(1f, 1.5f),
-                pointOf(2f, 1f),
-                pointOf(3f, 4.5f),
-                pointOf(4f, 3.5f),
-                pointOf(5f, 1f)
-            ),
-            renderer = barRenderer(
-                brushProvider = {
+            renderer = barGroupRenderer(
+                preferredWidth = 64f,
+                draw = drawBar { index, _ ->
                     SolidColor(
-                        when (it) {
-                            "Data I" -> Color.DeepPurple
-                            "Data II" -> Color.Green
+                        when (index) {
+                            0 -> Color.Indigo
+                            1 -> Color.Green
                             else -> Color.Pink
                         }
                     )
-                },
-                preferredWidth = 64f,
+                }
             )
         )
 

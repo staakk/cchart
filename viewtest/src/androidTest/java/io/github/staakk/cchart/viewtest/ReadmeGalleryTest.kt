@@ -23,13 +23,15 @@ import io.github.staakk.cchart.axis.VerticalAxisLocation
 import io.github.staakk.cchart.axis.horizontalAxisRenderer
 import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.Viewport
+import io.github.staakk.cchart.data.groupedSeriesOf
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.grid.GridOrientation
 import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.label.*
 import io.github.staakk.cchart.renderer.CompositeSeriesRenderer.Companion.combine
-import io.github.staakk.cchart.renderer.barRenderer
+import io.github.staakk.cchart.renderer.barGroupRenderer
+import io.github.staakk.cchart.renderer.drawBar
 import io.github.staakk.cchart.renderer.lineRenderer
 import io.github.staakk.cchart.renderer.pointRenderer
 import org.junit.Rule
@@ -67,6 +69,7 @@ class ReadmeGalleryTest : ScreenshotTest {
     @Test
     fun lineChart() {
         composeRule.setContent {
+            //tag=line_chart
             Chart(
                 modifier = Modifier
                     .aspectRatio(1f, false)
@@ -91,23 +94,30 @@ class ReadmeGalleryTest : ScreenshotTest {
                     renderer = lineRenderer(brush = SolidColor(Blue))
                 )
 
-                verticalAxis(verticalAxisRenderer(
-                    brush = SolidColor(DarkGrey)
-                ))
+                verticalAxis(
+                    verticalAxisRenderer(
+                        brush = SolidColor(DarkGrey)
+                    )
+                )
 
-                horizontalAxis(horizontalAxisRenderer(
-                    brush = SolidColor(DarkGrey)
-                ))
+                horizontalAxis(
+                    horizontalAxisRenderer(
+                        brush = SolidColor(DarkGrey)
+                    )
+                )
 
                 verticalAxisLabels(verticalLabelRenderer())
 
                 horizontalAxisLabels(horizontalLabelRenderer())
 
-                grid(gridRenderer(
-                    brush = SolidColor(LightGrey),
-                    orientation = GridOrientation.HORIZONTAL
-                ))
+                grid(
+                    gridRenderer(
+                        brush = SolidColor(LightGrey),
+                        orientation = GridOrientation.HORIZONTAL
+                    )
+                )
             }
+            //endtag=line_chart
         }
 
         compareScreenshot(composeRule)
@@ -116,8 +126,10 @@ class ReadmeGalleryTest : ScreenshotTest {
     @Test
     fun barChart() {
         composeRule.setContent {
+            //tag=bar_chart
             Chart(
-                modifier = Modifier.aspectRatio(1f, false)
+                modifier = Modifier
+                    .aspectRatio(1f, false)
                     .padding(bottom = 16.dp),
                 viewport = Viewport(
                     minX = LocalDate.of(2020, 9, 1).toEpochDay(),
@@ -126,42 +138,46 @@ class ReadmeGalleryTest : ScreenshotTest {
                     maxY = 100f
                 )
             ) {
-                val series1 = "series_1"
-                val series2 = "series_2"
                 series(
-                    seriesOf(
-                        series1,
-                        pointOf(LocalDate.of(2020, 10, 1).toEpochDay(), 78f),
-                        pointOf(LocalDate.of(2020, 11, 1).toEpochDay(), 56f),
-                        pointOf(LocalDate.of(2020, 12, 1).toEpochDay(), 82f),
+                    groupedSeriesOf(
+                        listOf(
+                            pointOf(LocalDate.of(2020, 10, 1).toEpochDay(), 78f),
+                            pointOf(LocalDate.of(2020, 10, 1).toEpochDay(), 68f),
+                        ),
+                        listOf(
+                            pointOf(LocalDate.of(2020, 11, 1).toEpochDay(), 56f),
+                            pointOf(LocalDate.of(2020, 11, 1).toEpochDay(), 45f),
+                        ),
+                        listOf(
+                            pointOf(LocalDate.of(2020, 12, 1).toEpochDay(), 82f),
+                            pointOf(LocalDate.of(2020, 12, 1).toEpochDay(), 86f),
+                        )
                     ),
-                    seriesOf(
-                        series2,
-                        pointOf(LocalDate.of(2020, 10, 1).toEpochDay(), 68f),
-                        pointOf(LocalDate.of(2020, 11, 1).toEpochDay(), 45f),
-                        pointOf(LocalDate.of(2020, 12, 1).toEpochDay(), 86f),
-                    ),
-                    renderer = barRenderer(
-                        brushProvider = {
+                    renderer = barGroupRenderer(
+                        preferredWidth = 64f,
+                        draw = drawBar { index, _ ->
                             SolidColor(
-                                when (it) {
-                                    series1 -> DeepPurple
-                                    series2 -> Green
+                                when (index) {
+                                    0 -> DeepPurple
+                                    1 -> Green
                                     else -> Pink
                                 }
                             )
-                        },
-                        preferredWidth = 64f,
+                        }
                     )
                 )
 
-                verticalAxis(verticalAxisRenderer(
-                    brush = SolidColor(DarkGrey)
-                ))
+                verticalAxis(
+                    verticalAxisRenderer(
+                        brush = SolidColor(DarkGrey)
+                    )
+                )
 
-                horizontalAxis(horizontalAxisRenderer(
-                    brush = SolidColor(DarkGrey)
-                ))
+                horizontalAxis(
+                    horizontalAxisRenderer(
+                        brush = SolidColor(DarkGrey)
+                    )
+                )
 
                 dataLabels(HorizontalAlignment.CENTER, VerticalAlignment.TOP) {
                     Text(
@@ -172,9 +188,12 @@ class ReadmeGalleryTest : ScreenshotTest {
 
                 verticalAxisLabels(verticalLabelRenderer(
                     labelsProvider = object : LabelsProvider {
-                        override fun provide(min: Float, max: Float): List<Pair<String, Float>> =
+                        override fun provide(
+                            min: Float,
+                            max: Float
+                        ): List<Pair<String, Float>> =
                             (min.toInt()..max.toInt())
-                                .filter { it % 25 == 0}
+                                .filter { it % 25 == 0 }
                                 .map { "$it%" to it.toFloat() }
 
                         override fun getMaxLength(): Int = 3
@@ -189,13 +208,19 @@ class ReadmeGalleryTest : ScreenshotTest {
                         private val pattern = "MMMM \nyyyy"
                         private val formatter = DateTimeFormatter.ofPattern(pattern)
 
-                        override fun provide(min: Float, max: Float): List<Pair<String, Float>> {
+                        override fun provide(
+                            min: Float,
+                            max: Float
+                        ): List<Pair<String, Float>> {
                             var currentDate = LocalDate.ofEpochDay(min.toLong()).withDayOfMonth(1)
                             val endDate = LocalDate.ofEpochDay(max.toLong()).withDayOfMonth(1)
 
                             val labels = mutableListOf<Pair<String, Float>>()
                             while (currentDate.isBefore(endDate)) {
-                                labels.add(currentDate.format(formatter) to currentDate.toEpochDay().toFloat())
+                                labels.add(
+                                    currentDate.format(formatter) to currentDate.toEpochDay()
+                                        .toFloat()
+                                )
                                 currentDate = currentDate.plusMonths(1)
                             }
                             return labels
@@ -207,6 +232,7 @@ class ReadmeGalleryTest : ScreenshotTest {
                     }
                 ))
             }
+            //endtag=bar_chart
         }
 
         compareScreenshot(composeRule)
@@ -215,6 +241,7 @@ class ReadmeGalleryTest : ScreenshotTest {
     @Test
     fun twoAxisChart() {
         composeRule.setContent {
+            //tag=two_axis_chart
             Chart(
                 modifier = Modifier
                     .aspectRatio(1f, false)
@@ -269,30 +296,38 @@ class ReadmeGalleryTest : ScreenshotTest {
                     )
                 )
 
-                verticalAxis(verticalAxisRenderer(
-                    brush = SolidColor(Blue),
-                    location = VerticalAxisLocation.LEFT
-                ))
+                verticalAxis(
+                    verticalAxisRenderer(
+                        brush = SolidColor(Blue),
+                        location = VerticalAxisLocation.LEFT
+                    )
+                )
 
-                verticalAxis(verticalAxisRenderer(
-                    brush = SolidColor(Green),
-                    location = VerticalAxisLocation.RIGHT
-                ))
+                verticalAxis(
+                    verticalAxisRenderer(
+                        brush = SolidColor(Green),
+                        location = VerticalAxisLocation.RIGHT
+                    )
+                )
 
-                horizontalAxis(horizontalAxisRenderer(
-                    brush = SolidColor(DarkGrey)
-                ))
+                horizontalAxis(
+                    horizontalAxisRenderer(
+                        brush = SolidColor(DarkGrey)
+                    )
+                )
 
-                verticalAxisLabels(verticalLabelRenderer(
-                    paint = Paint().apply {
-                        color = Blue.toArgb()
-                        typeface = Typeface.DEFAULT
-                        textSize = with(LocalDensity.current) { 12.sp.toPx() }
-                        isAntiAlias = true
-                    },
-                    location = VerticalLabelLocation.LEFT,
-                    side = VerticalLabelSide.LEFT
-                ))
+                verticalAxisLabels(
+                    verticalLabelRenderer(
+                        paint = Paint().apply {
+                            color = Blue.toArgb()
+                            typeface = Typeface.DEFAULT
+                            textSize = with(LocalDensity.current) { 12.sp.toPx() }
+                            isAntiAlias = true
+                        },
+                        location = VerticalLabelLocation.LEFT,
+                        side = VerticalLabelSide.LEFT
+                    )
+                )
 
                 verticalAxisLabels(verticalLabelRenderer(
                     paint = Paint().apply {
@@ -303,8 +338,11 @@ class ReadmeGalleryTest : ScreenshotTest {
                     },
                     location = VerticalLabelLocation.RIGHT,
                     side = VerticalLabelSide.RIGHT,
-                    labelsProvider = object: LabelsProvider {
-                        override fun provide(min: Float, max: Float): List<Pair<String, Float>> {
+                    labelsProvider = object : LabelsProvider {
+                        override fun provide(
+                            min: Float,
+                            max: Float
+                        ): List<Pair<String, Float>> {
                             return (min.toInt()..(max.toInt() + 1)).map { "${it * 2}" to it.toFloat() }
                         }
 
@@ -316,11 +354,14 @@ class ReadmeGalleryTest : ScreenshotTest {
 
                 horizontalAxisLabels(horizontalLabelRenderer())
 
-                grid(gridRenderer(
-                    brush = SolidColor(LightGrey),
-                    orientation = GridOrientation.HORIZONTAL
-                ))
+                grid(
+                    gridRenderer(
+                        brush = SolidColor(LightGrey),
+                        orientation = GridOrientation.HORIZONTAL
+                    )
+                )
             }
+            //endtag=two_axis_chart
         }
 
         compareScreenshot(composeRule)

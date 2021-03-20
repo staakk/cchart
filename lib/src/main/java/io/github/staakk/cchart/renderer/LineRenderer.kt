@@ -17,54 +17,52 @@ private class LineRenderer(
 
     override fun DrawScope.render(
         context: RendererContext,
-        series: List<Series>
+        series: Series
     ): List<RenderedShape> {
         val renderedPoints = mutableListOf<RenderedShape>()
-        series.forEach { s ->
-            if (s.points.size < 2) return@forEach
-            val pointsToRender = s.getLineInViewport(context.bounds)
-            renderedPoints += RenderedShape.Circle(
-                seriesName = s.name,
-                point = pointsToRender[0],
-                labelAnchorX = context.dataToRendererCoordX(pointsToRender[0].x),
-                labelAnchorY = context.dataToRendererCoordY(pointsToRender[0].y),
-                center = Offset(
-                    x = context.dataToRendererCoordX(pointsToRender[0].x),
-                    y = context.dataToRendererCoordY(pointsToRender[0].y),
-                ),
-                radius = 20f
-            )
-            drawPath(
-                path = Path().apply {
-                    pointsToRender.windowed(2) {
-                        moveTo(
-                            context.dataToRendererCoordX(it[0].x),
-                            context.dataToRendererCoordY(it[0].y),
-                        )
-                        val secondPointX = context.dataToRendererCoordX(it[1].x)
-                        val secondPointY = context.dataToRendererCoordY(it[1].y)
-                        lineTo(secondPointX, secondPointY)
-                        renderedPoints += RenderedShape.Circle(
-                            seriesName = s.name,
-                            point = pointsToRender[0],
-                            labelAnchorX = secondPointX,
-                            labelAnchorY = secondPointY,
-                            center = Offset(
-                                x = secondPointX,
-                                y = secondPointY,
-                            ),
-                            radius = 20f
-                        )
-                    }
-                    close()
-                },
-                alpha = alpha,
-                brush = brush,
-                style = style,
-                colorFilter = colorFilter,
-                blendMode = blendMode
-            )
-        }
+        if (series.points.size < 2) return renderedPoints
+        val pointsToRender = series.getLineInViewport(context.bounds)
+        renderedPoints += RenderedShape.Circle(
+            seriesName = series.name,
+            point = pointsToRender[0],
+            labelAnchorX = context.dataToRendererCoordX(pointsToRender[0].x),
+            labelAnchorY = context.dataToRendererCoordY(pointsToRender[0].y),
+            center = Offset(
+                x = context.dataToRendererCoordX(pointsToRender[0].x),
+                y = context.dataToRendererCoordY(pointsToRender[0].y),
+            ),
+            radius = 20f
+        )
+        drawPath(
+            path = Path().apply {
+                pointsToRender.windowed(2) {
+                    moveTo(
+                        context.dataToRendererCoordX(it[0].x),
+                        context.dataToRendererCoordY(it[0].y),
+                    )
+                    val secondPointX = context.dataToRendererCoordX(it[1].x)
+                    val secondPointY = context.dataToRendererCoordY(it[1].y)
+                    lineTo(secondPointX, secondPointY)
+                    renderedPoints += RenderedShape.Circle(
+                        seriesName = series.name,
+                        point = pointsToRender[0],
+                        labelAnchorX = secondPointX,
+                        labelAnchorY = secondPointY,
+                        center = Offset(
+                            x = secondPointX,
+                            y = secondPointY,
+                        ),
+                        radius = 20f
+                    )
+                }
+                close()
+            },
+            alpha = alpha,
+            brush = brush,
+            style = style,
+            colorFilter = colorFilter,
+            blendMode = blendMode
+        )
         return renderedPoints
     }
 }
