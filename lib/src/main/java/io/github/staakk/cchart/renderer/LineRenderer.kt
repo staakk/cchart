@@ -7,10 +7,10 @@ import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Stroke
 import io.github.staakk.cchart.data.Point
 
-fun lineRenderer(
-    render: DrawScope.(List<Pair<Point, Offset>>) -> List<RenderedShape>
-): SeriesRenderer = SeriesRenderer { context, series ->
-    if (series.points.size < 2) return@SeriesRenderer emptyList()
+typealias LineDrawer = DrawScope.(List<Pair<Point, Offset>>) -> List<RenderedShape>
+
+fun lineRenderer(drawLine: LineDrawer = drawLine()) = SeriesRenderer { context, series ->
+    if (series.size < 2) return@SeriesRenderer emptyList()
     series.getLineInViewport(context.bounds)
         .map {
             it to Offset(
@@ -18,16 +18,16 @@ fun lineRenderer(
                 y = context.dataToRendererCoordY(it.y)
             )
         }
-        .let { render(it) }
+        .let { drawLine(it) }
 }
 
-fun renderLine(
+fun drawLine(
     brush: Brush = SolidColor(Color.Black),
     style: DrawStyle = Stroke(width = 5f, cap = StrokeCap.Round),
     colorFilter: ColorFilter? = null,
     alpha: Float = 1.0f,
     blendMode: BlendMode = DrawScope.DefaultBlendMode,
-): DrawScope.(List<Pair<Point, Offset>>) -> List<RenderedShape> = { pointsToRender ->
+): LineDrawer = { pointsToRender ->
     val renderedPoints = mutableListOf<RenderedShape>()
     renderedPoints += RenderedShape.Circle(
         point = pointsToRender[0].first,

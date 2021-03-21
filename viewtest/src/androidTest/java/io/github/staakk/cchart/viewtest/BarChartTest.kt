@@ -16,7 +16,7 @@ import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.barGroupRenderer
-import io.github.staakk.cchart.renderer.renderBar
+import io.github.staakk.cchart.renderer.drawBar
 import org.junit.Rule
 import org.junit.Test
 
@@ -56,7 +56,7 @@ class BarChartTest : ScreenshotTest {
                     ),
                     renderer = barGroupRenderer(
                         preferredWidth = 50f,
-                        render = renderBar { _, _ -> SolidColor(Color.Blue) }
+                        drawBar = drawBar { _, _ -> SolidColor(Color.Blue) }
                     )
                 )
 
@@ -124,7 +124,7 @@ class BarChartTest : ScreenshotTest {
                     ),
                     renderer = barGroupRenderer(
                         preferredWidth = 50f,
-                        render = renderBar { index, _ ->
+                        drawBar = drawBar { index, _ ->
                             val color = when (index) {
                                 0 -> Color.Blue
                                 1 -> Color.Green
@@ -200,7 +200,7 @@ class BarChartTest : ScreenshotTest {
                     renderer = barGroupRenderer(
                         preferredWidth = 50f,
                         minimalSpacing = 50f,
-                        render = renderBar { index, _ ->
+                        drawBar = drawBar { index, _ ->
                             val color = when (index) {
                                 0 -> Color.Blue
                                 1 -> Color.Green

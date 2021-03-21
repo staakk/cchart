@@ -1,8 +1,8 @@
 package io.github.staakk.cchart.data
 
-data class GroupedSeries(
-    val points: List<List<Point>>
-)
+class GroupedSeries(
+    points: List<List<Point>>
+) : List<List<Point>> by points
 
 fun groupedSeriesOf(vararg points: List<Point>) = GroupedSeries(points.toList())
 

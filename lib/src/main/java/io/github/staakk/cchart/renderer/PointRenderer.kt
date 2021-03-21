@@ -8,25 +8,25 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import io.github.staakk.cchart.data.Point
 import io.github.staakk.cchart.data.Viewport
 
-fun pointRenderer(
-    radius: Float = 15f,
-    render: DrawScope.(Point, center: Offset, radius: Float) -> RenderedShape
-): SeriesRenderer = SeriesRenderer { context, series ->
-    series.getPointsInViewport(getDrawingBounds(context, radius))
-        .map { point ->
-            val x = context.dataToRendererCoordX(point.x)
-            val y = context.dataToRendererCoordY(point.y)
-            render(this, point, Offset(x, y), radius)
-        }
-}
+typealias CircleDrawer = DrawScope.(Point, center: Offset, radius: Float) -> RenderedShape
 
-fun renderCircle(
+fun pointRenderer(radius: Float = 15f, drawCircle: CircleDrawer = drawCircle()) =
+    SeriesRenderer { context, series ->
+        series.getPointsInViewport(getDrawingBounds(context, radius))
+            .map { point ->
+                val x = context.dataToRendererCoordX(point.x)
+                val y = context.dataToRendererCoordY(point.y)
+                drawCircle(this, point, Offset(x, y), radius)
+            }
+    }
+
+fun drawCircle(
     brush: Brush = SolidColor(Color.Black),
     alpha: Float = 1.0f,
     style: DrawStyle = Fill,
     colorFilter: ColorFilter? = null,
     blendMode: BlendMode = DrawScope.DefaultBlendMode,
-): DrawScope.(Point, Offset, Float) -> RenderedShape = { point, center, radius ->
+): CircleDrawer = { point, center, radius ->
     drawCircle(
         brush = brush,
         radius = radius,

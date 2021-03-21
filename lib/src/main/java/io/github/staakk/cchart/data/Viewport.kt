@@ -94,7 +94,7 @@ data class Viewport(
             var minY = Float.MAX_VALUE
 
             forEach { s ->
-                s.points.forEach { p ->
+                s.forEach { p ->
                     if (p.x > maxX) maxX = p.x
                     if (p.x < minX) minX = p.x
                     if (p.y > maxY) maxY = p.y

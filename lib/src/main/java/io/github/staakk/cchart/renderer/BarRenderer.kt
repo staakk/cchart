@@ -10,21 +10,22 @@ import io.github.staakk.cchart.data.Point
 import io.github.staakk.cchart.data.Viewport
 import kotlin.math.abs
 
+typealias BarDrawer = DrawScope.(index: Int, Point, topLeft: Offset, Size) -> RenderedShape
+
 fun barGroupRenderer(
     preferredWidth: Float,
     minimalSpacing: Float = 10f,
-    render: DrawScope.(index: Int, point: Point, topLeft: Offset, size: Size) -> RenderedShape = renderBar()
+    drawBar: BarDrawer = drawBar()
 ): GroupedSeriesRenderer = GroupedSeriesRenderer { context, series ->
     val renderedPoints = mutableListOf<RenderedShape>()
     val drawingBounds = getDrawingBounds(context)
-    val groups = series.points
-        .filter {
-            if (it.isEmpty()) false
-            else {
-                val first = it.first()
-                first.x in drawingBounds.minX..drawingBounds.maxX
-            }
+    val groups = series.filter {
+        if (it.isEmpty()) false
+        else {
+            val first = it.first()
+            first.x in drawingBounds.minX..drawingBounds.maxX
         }
+    }
     val width = getBarWidth(groups, context, preferredWidth, minimalSpacing)
 
     groups.forEach { group ->
@@ -39,7 +40,7 @@ fun barGroupRenderer(
 
             val topLeft = Offset(x - halfWidth, context.dataToRendererCoordY(0f))
             val size = Size(width, -y)
-            renderedPoints += render(index, point, topLeft, size)
+            renderedPoints += drawBar(index, point, topLeft, size)
         }
     }
     renderedPoints
@@ -77,14 +78,13 @@ private fun getDrawingBounds(rendererContext: RendererContext): Viewport {
     )
 }
 
-fun renderBar(
+fun drawBar(
     style: DrawStyle = Fill,
     alpha: Float = 1.0f,
     colorFilter: ColorFilter? = null,
     blendMode: BlendMode = DrawScope.DefaultBlendMode,
     brushProvider: (index: Int, Point) -> Brush = { _, _ -> SolidColor(Color.Black) }
-): DrawScope.(index: Int, point: Point, topLeft: Offset, size: Size) -> RenderedShape =
-    { index: Int, point: Point, topLeft: Offset, size: Size ->
+): BarDrawer = { index: Int, point: Point, topLeft: Offset, size: Size ->
         drawRect(
             brush = brushProvider(index, point),
             topLeft = topLeft,

@@ -19,8 +19,8 @@ import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
+import io.github.staakk.cchart.renderer.drawCircle
 import io.github.staakk.cchart.renderer.pointRenderer
-import io.github.staakk.cchart.renderer.renderCircle
 
 
 @Composable
@@ -41,7 +41,7 @@ fun LabeledPointsScreen() {
             ),
             renderer = pointRenderer(
                 radius = 10f,
-                render = renderCircle(brush = SolidColor(Color.Red))
+                drawCircle = drawCircle(brush = SolidColor(Color.Red))
             )
         )
 

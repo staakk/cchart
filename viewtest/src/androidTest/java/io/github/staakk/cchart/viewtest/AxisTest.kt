@@ -17,8 +17,8 @@ import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
+import io.github.staakk.cchart.renderer.drawLine
 import io.github.staakk.cchart.renderer.lineRenderer
-import io.github.staakk.cchart.renderer.renderLine
 import org.junit.Rule
 import org.junit.Test
 
@@ -55,7 +55,7 @@ class AxisTest : ScreenshotTest {
                         pointOf(8f, 4.5f),
                         pointOf(9f, 4.7f),
                     ),
-                    renderer = lineRenderer(render = renderLine(brush = SolidColor(Color.Blue)))
+                    renderer = lineRenderer(drawLine = drawLine(brush = SolidColor(Color.Blue)))
                 )
 
                 verticalAxis(verticalAxisRenderer())
