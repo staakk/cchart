@@ -22,6 +22,9 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun DateLabelsChartScreen() {
+    val verticalLabelRenderer = verticalLabelRenderer()
+    val horizontalLabelRenderer = horizontalLabelRenderer(labelsProvider = DateLabelsProvider)
+
     Chart(
         modifier = Modifier.aspectRatio(1f, false),
         viewport = Viewport(
@@ -64,9 +67,9 @@ fun DateLabelsChartScreen() {
 
         verticalAxis(verticalAxisRenderer())
 
-        verticalAxisLabels(verticalLabelRenderer())
+        horizontalAxisLabels(horizontalLabelRenderer)
 
-        horizontalAxisLabels(horizontalLabelRenderer(labelsProvider = DateLabelsProvider))
+        verticalAxisLabels(verticalLabelRenderer)
     }
 }
 

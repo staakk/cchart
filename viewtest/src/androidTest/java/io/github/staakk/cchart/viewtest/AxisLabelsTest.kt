@@ -37,6 +37,22 @@ class AxisLabelsTest : ScreenshotTest {
     @Test
     fun labels() {
         composeRule.setContent {
+            val verticalLabels = verticalLabelRenderer()
+            val rightSideVerticalLabels = verticalLabelRenderer(side = VerticalLabelSide.RIGHT)
+            val rightLocationVerticalLabels =
+                verticalLabelRenderer(location = VerticalLabelLocation.RIGHT)
+            val rightSideRightLocationVerticalLabels = verticalLabelRenderer(
+                location = VerticalLabelLocation.RIGHT,
+                side = VerticalLabelSide.RIGHT
+            )
+            val horizontalLabels = horizontalLabelRenderer()
+            val aboveHorizontalLabels = horizontalLabelRenderer(side = HorizontalLabelSide.ABOVE)
+            val topHorizontalLabels =
+                horizontalLabelRenderer(location = HorizontalLabelLocation.TOP)
+            val topAboveHorizontalLabels = horizontalLabelRenderer(
+                location = HorizontalLabelLocation.TOP,
+                side = HorizontalLabelSide.ABOVE
+            )
             Chart(
                 modifier = Modifier
                     .aspectRatio(1f, false),
@@ -65,31 +81,21 @@ class AxisLabelsTest : ScreenshotTest {
 
                 horizontalAxis(horizontalAxisRenderer(location = HorizontalAxisLocation.TOP))
 
-                verticalAxisLabels(verticalLabelRenderer())
+                verticalAxisLabels(verticalLabels)
 
-                verticalAxisLabels(verticalLabelRenderer(side = VerticalLabelSide.RIGHT))
+                verticalAxisLabels(rightSideVerticalLabels)
 
-                verticalAxisLabels(verticalLabelRenderer(location = VerticalLabelLocation.RIGHT))
+                verticalAxisLabels(rightLocationVerticalLabels)
 
-                verticalAxisLabels(
-                    verticalLabelRenderer(
-                        location = VerticalLabelLocation.RIGHT,
-                        side = VerticalLabelSide.RIGHT
-                    )
-                )
+                verticalAxisLabels(rightSideRightLocationVerticalLabels)
 
-                horizontalAxisLabels(horizontalLabelRenderer())
+                horizontalAxisLabels(horizontalLabels)
 
-                horizontalAxisLabels(horizontalLabelRenderer(side = HorizontalLabelSide.ABOVE))
+                horizontalAxisLabels(aboveHorizontalLabels)
 
-                horizontalAxisLabels(horizontalLabelRenderer(location = HorizontalLabelLocation.TOP))
+                horizontalAxisLabels(topHorizontalLabels)
 
-                horizontalAxisLabels(
-                    horizontalLabelRenderer(
-                        location = HorizontalLabelLocation.TOP,
-                        side = HorizontalLabelSide.ABOVE
-                    )
-                )
+                horizontalAxisLabels(topAboveHorizontalLabels)
             }
         }
 
@@ -99,6 +105,36 @@ class AxisLabelsTest : ScreenshotTest {
     @Test
     fun multiLineLabels() {
         composeRule.setContent {
+            val verticalLabels = verticalLabelRenderer(labelsProvider = MultiLineLabelsProvider)
+            val rightSideVerticalLabels = verticalLabelRenderer(
+                side = VerticalLabelSide.RIGHT,
+                labelsProvider = MultiLineLabelsProvider
+            )
+            val rightLocationVerticalLabels =
+                verticalLabelRenderer(
+                    location = VerticalLabelLocation.RIGHT,
+                    labelsProvider = MultiLineLabelsProvider
+                )
+            val rightSideRightLocationVerticalLabels = verticalLabelRenderer(
+                location = VerticalLabelLocation.RIGHT,
+                side = VerticalLabelSide.RIGHT,
+                labelsProvider = MultiLineLabelsProvider
+            )
+            val horizontalLabels = horizontalLabelRenderer(labelsProvider = MultiLineLabelsProvider)
+            val aboveHorizontalLabels = horizontalLabelRenderer(
+                side = HorizontalLabelSide.ABOVE,
+                labelsProvider = MultiLineLabelsProvider
+            )
+            val topHorizontalLabels =
+                horizontalLabelRenderer(
+                    location = HorizontalLabelLocation.TOP,
+                    labelsProvider = MultiLineLabelsProvider
+                )
+            val topAboveHorizontalLabels = horizontalLabelRenderer(
+                location = HorizontalLabelLocation.TOP,
+                side = HorizontalLabelSide.ABOVE,
+                labelsProvider = MultiLineLabelsProvider
+            )
             Chart(
                 modifier = Modifier
                     .aspectRatio(1f, false),
@@ -127,53 +163,21 @@ class AxisLabelsTest : ScreenshotTest {
 
                 horizontalAxis(horizontalAxisRenderer(location = HorizontalAxisLocation.TOP))
 
-                verticalAxisLabels(verticalLabelRenderer(labelsProvider = MultiLineLabelsProvider))
+                verticalAxisLabels(verticalLabels)
 
-                verticalAxisLabels(
-                    verticalLabelRenderer(
-                        side = VerticalLabelSide.RIGHT,
-                        labelsProvider = MultiLineLabelsProvider
-                    )
-                )
+                verticalAxisLabels(rightSideVerticalLabels)
 
-                verticalAxisLabels(
-                    verticalLabelRenderer(
-                        location = VerticalLabelLocation.RIGHT,
-                        labelsProvider = MultiLineLabelsProvider
-                    )
-                )
+                verticalAxisLabels(rightLocationVerticalLabels)
 
-                verticalAxisLabels(
-                    verticalLabelRenderer(
-                        location = VerticalLabelLocation.RIGHT,
-                        side = VerticalLabelSide.RIGHT,
-                        labelsProvider = MultiLineLabelsProvider
-                    )
-                )
+                verticalAxisLabels(rightSideRightLocationVerticalLabels)
 
-                horizontalAxisLabels(horizontalLabelRenderer(labelsProvider = MultiLineLabelsProvider))
+                horizontalAxisLabels(horizontalLabels)
 
-                horizontalAxisLabels(
-                    horizontalLabelRenderer(
-                        side = HorizontalLabelSide.ABOVE,
-                        labelsProvider = MultiLineLabelsProvider
-                    )
-                )
+                horizontalAxisLabels(aboveHorizontalLabels)
 
-                horizontalAxisLabels(
-                    horizontalLabelRenderer(
-                        location = HorizontalLabelLocation.TOP,
-                        labelsProvider = MultiLineLabelsProvider
-                    )
-                )
+                horizontalAxisLabels(topHorizontalLabels)
 
-                horizontalAxisLabels(
-                    horizontalLabelRenderer(
-                        location = HorizontalLabelLocation.TOP,
-                        side = HorizontalLabelSide.ABOVE,
-                        labelsProvider = MultiLineLabelsProvider
-                    )
-                )
+                horizontalAxisLabels(topAboveHorizontalLabels)
 
                 grid(gridRenderer())
             }

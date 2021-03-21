@@ -1,15 +1,12 @@
 package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.geometry.Offset
-import io.github.staakk.cchart.DataLabelScope
 import io.github.staakk.cchart.data.Point
 import kotlin.math.pow
 
 sealed class RenderedShape {
 
     abstract val point: Point
-
-    abstract val seriesName: String
 
     /**
      * Horizontal position at which label should be anchored.
@@ -28,7 +25,6 @@ sealed class RenderedShape {
 
     data class Circle(
         override val point: Point,
-        override val seriesName: String,
         override val labelAnchorX: Float,
         override val labelAnchorY: Float,
         val center: Offset,
@@ -41,7 +37,6 @@ sealed class RenderedShape {
 
     data class Rect(
         override val point: Point,
-        override val seriesName: String,
         override val labelAnchorX: Float,
         override val labelAnchorY: Float,
         val topLeft: Offset,
@@ -53,5 +48,3 @@ sealed class RenderedShape {
                     bottomRight.y <= offset.y && offset.y <= topLeft.y
     }
 }
-
-fun RenderedShape.toDataLabelScope() = DataLabelScope(point, seriesName)

@@ -19,6 +19,8 @@ import io.github.staakk.cchart.renderer.renderBar
 
 @Composable
 fun BarChartScreen() {
+    val horizontalLabelRenderer = horizontalLabelRenderer()
+    val verticalLabelRenderer = verticalLabelRenderer()
     Chart(
         modifier = Modifier.aspectRatio(1f, false),
         viewport = Viewport(0f, 6f, 0f, 5f)
@@ -62,11 +64,11 @@ fun BarChartScreen() {
 
         horizontalAxis(horizontalAxisRenderer())
 
-        horizontalAxisLabels(horizontalLabelRenderer())
+        horizontalAxisLabels(horizontalLabelRenderer)
 
         verticalAxis(verticalAxisRenderer())
 
-        verticalAxisLabels(verticalLabelRenderer())
+        verticalAxisLabels(verticalLabelRenderer)
     }
 }
 

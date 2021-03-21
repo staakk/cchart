@@ -29,6 +29,7 @@ const val GRID_CHART = 5
 const val PAN_AND_ZOOM_CHART = 6
 const val LABELED_POINTS_CHART = 7
 const val OBSERVE_VIEWPORT_CHART = 8
+const val POPUP_CHART = 9
 
 class SamplesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +57,7 @@ fun Content() {
         PAN_AND_ZOOM_CHART -> PanAndZoomScreen()
         LABELED_POINTS_CHART -> LabeledPointsScreen()
         OBSERVE_VIEWPORT_CHART -> ViewportUpdatesScreen()
+        POPUP_CHART -> PopupChartScreen()
     }
 
     MenuHeader()
@@ -69,6 +71,7 @@ fun Content() {
         item { Item(GRID_CHART, "Chart with grid") { selected.value = it } }
         item { Item(PAN_AND_ZOOM_CHART, "Chart with panning and zooming") { selected.value = it } }
         item { Item(OBSERVE_VIEWPORT_CHART, "Chart with observing viewport") { selected.value = it } }
+        item { Item(POPUP_CHART, "Chart with popup") { selected.value = it } }
     }
 }
 

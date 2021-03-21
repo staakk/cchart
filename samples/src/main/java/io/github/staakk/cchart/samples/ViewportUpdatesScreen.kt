@@ -26,6 +26,8 @@ import io.github.staakk.cchart.renderer.renderCircle
 
 @Composable
 fun ViewportUpdatesScreen() {
+    val horizontalLabelRenderer = horizontalLabelRenderer()
+    val verticalLabelRenderer = verticalLabelRenderer()
     Column {
         val viewport = Viewport(0f, 10f, 0f, 5f)
         val chartState = remember { ChartState(viewport) }
@@ -57,11 +59,11 @@ fun ViewportUpdatesScreen() {
 
             horizontalAxis(horizontalAxisRenderer())
 
-            horizontalAxisLabels(horizontalLabelRenderer())
+            horizontalAxisLabels(horizontalLabelRenderer)
 
             verticalAxis(verticalAxisRenderer())
 
-            verticalAxisLabels(verticalLabelRenderer())
+            verticalAxisLabels(verticalLabelRenderer)
         }
         Column(modifier = Modifier.padding(16.dp)) {
             Text(

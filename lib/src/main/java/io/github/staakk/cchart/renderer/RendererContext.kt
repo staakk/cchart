@@ -16,6 +16,10 @@ data class RendererContext(
     fun dataToRendererSizeX(x: Float) = x * scaleX
 
     fun dataToRendererSizeY(y: Float) = y * scaleY
+
+    fun rendererToDataCoordX(x: Float) = x / scaleX + bounds.minX
+
+    fun rendererToDataCoordY(y: Float) = -y / scaleY + bounds.minY
 }
 
 fun rendererContext(

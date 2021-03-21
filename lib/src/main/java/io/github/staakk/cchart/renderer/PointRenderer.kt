@@ -38,7 +38,6 @@ fun renderCircle(
     )
     RenderedShape.Circle(
         point = point,
-        seriesName = "series.name",
         labelAnchorX = center.x,
         labelAnchorY = center.y,
         center = center,

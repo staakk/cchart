@@ -34,6 +34,8 @@ class LineChartTest : ScreenshotTest {
     @Test
     fun lineChart() {
         composeRule.setContent {
+            val horizontalLabelRenderer = horizontalLabelRenderer()
+            val verticalLabelRenderer = verticalLabelRenderer()
             Chart(
                 modifier = Modifier
                     .aspectRatio(1f, false),
@@ -58,9 +60,9 @@ class LineChartTest : ScreenshotTest {
 
                 horizontalAxis(horizontalAxisRenderer())
 
-                verticalAxisLabels(verticalLabelRenderer())
+                verticalAxisLabels(verticalLabelRenderer)
 
-                horizontalAxisLabels(horizontalLabelRenderer())
+                horizontalAxisLabels(horizontalLabelRenderer)
             }
         }
 

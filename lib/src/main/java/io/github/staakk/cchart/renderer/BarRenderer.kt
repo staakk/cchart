@@ -95,7 +95,6 @@ fun renderBar(
             blendMode = blendMode
         )
         RenderedShape.Rect(
-            seriesName = "point.seriesName",
             point = point,
             labelAnchorX = topLeft.x + size.width / 2,
             labelAnchorY = size.height,

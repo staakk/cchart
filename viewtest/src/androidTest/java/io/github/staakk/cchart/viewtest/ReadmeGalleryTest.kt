@@ -67,6 +67,8 @@ class ReadmeGalleryTest : ScreenshotTest {
     fun lineChart() {
         composeRule.setContent {
             //tag=line_chart
+            val horizontalLabelRenderer = horizontalLabelRenderer()
+            val verticalLabelRenderer = verticalLabelRenderer()
             Chart(
                 modifier = Modifier
                     .aspectRatio(1f, false)
@@ -102,9 +104,9 @@ class ReadmeGalleryTest : ScreenshotTest {
                     )
                 )
 
-                verticalAxisLabels(verticalLabelRenderer())
+                verticalAxisLabels(verticalLabelRenderer)
 
-                horizontalAxisLabels(horizontalLabelRenderer())
+                horizontalAxisLabels(horizontalLabelRenderer)
 
                 grid(
                     gridRenderer(
@@ -123,6 +125,50 @@ class ReadmeGalleryTest : ScreenshotTest {
     fun barChart() {
         composeRule.setContent {
             //tag=bar_chart
+            val horizontalLabelRenderer = horizontalLabelRenderer(
+                labelsProvider = object : LabelsProvider {
+                    private val pattern = "MMMM \nyyyy"
+                    private val formatter = DateTimeFormatter.ofPattern(pattern)
+
+                    override fun provide(
+                        min: Float,
+                        max: Float
+                    ): List<Pair<String, Float>> {
+                        var currentDate = LocalDate.ofEpochDay(min.toLong()).withDayOfMonth(1)
+                        val endDate = LocalDate.ofEpochDay(max.toLong()).withDayOfMonth(1)
+
+                        val labels = mutableListOf<Pair<String, Float>>()
+                        while (currentDate.isBefore(endDate)) {
+                            labels.add(
+                                currentDate.format(formatter) to currentDate.toEpochDay()
+                                    .toFloat()
+                            )
+                            currentDate = currentDate.plusMonths(1)
+                        }
+                        return labels
+                    }
+
+                    override fun getMaxLength(): Int = pattern.length
+
+                    override fun getMaxLines(): Int = 2
+                }
+            )
+            val verticalLabelRenderer = verticalLabelRenderer(
+                labelsProvider = object : LabelsProvider {
+                    override fun provide(
+                        min: Float,
+                        max: Float
+                    ): List<Pair<String, Float>> =
+                        (min.toInt()..max.toInt())
+                            .filter { it % 25 == 0 }
+                            .map { "$it%" to it.toFloat() }
+
+                    override fun getMaxLength(): Int = 3
+
+                    override fun getMaxLines(): Int = 1
+
+                }
+            )
             Chart(
                 modifier = Modifier
                     .aspectRatio(1f, false)
@@ -175,58 +221,20 @@ class ReadmeGalleryTest : ScreenshotTest {
                     )
                 )
 
-                dataLabels(HorizontalAlignment.CENTER, VerticalAlignment.TOP) {
+                dataLabels {
                     Text(
+                        modifier = Modifier.align(
+                            HorizontalAlignment.CENTER,
+                            VerticalAlignment.TOP
+                        ),
                         text = "${point.y.toInt()}%",
                         style = TextStyle(fontSize = 12.sp)
                     )
                 }
 
-                verticalAxisLabels(verticalLabelRenderer(
-                    labelsProvider = object : LabelsProvider {
-                        override fun provide(
-                            min: Float,
-                            max: Float
-                        ): List<Pair<String, Float>> =
-                            (min.toInt()..max.toInt())
-                                .filter { it % 25 == 0 }
-                                .map { "$it%" to it.toFloat() }
+                verticalAxisLabels(verticalLabelRenderer)
 
-                        override fun getMaxLength(): Int = 3
-
-                        override fun getMaxLines(): Int = 1
-
-                    }
-                ))
-
-                horizontalAxisLabels(horizontalLabelRenderer(
-                    labelsProvider = object : LabelsProvider {
-                        private val pattern = "MMMM \nyyyy"
-                        private val formatter = DateTimeFormatter.ofPattern(pattern)
-
-                        override fun provide(
-                            min: Float,
-                            max: Float
-                        ): List<Pair<String, Float>> {
-                            var currentDate = LocalDate.ofEpochDay(min.toLong()).withDayOfMonth(1)
-                            val endDate = LocalDate.ofEpochDay(max.toLong()).withDayOfMonth(1)
-
-                            val labels = mutableListOf<Pair<String, Float>>()
-                            while (currentDate.isBefore(endDate)) {
-                                labels.add(
-                                    currentDate.format(formatter) to currentDate.toEpochDay()
-                                        .toFloat()
-                                )
-                                currentDate = currentDate.plusMonths(1)
-                            }
-                            return labels
-                        }
-
-                        override fun getMaxLength(): Int = pattern.length
-
-                        override fun getMaxLines(): Int = 2
-                    }
-                ))
+                horizontalAxisLabels(horizontalLabelRenderer)
             }
             //endtag=bar_chart
         }
@@ -238,6 +246,8 @@ class ReadmeGalleryTest : ScreenshotTest {
     fun twoAxisChart() {
         composeRule.setContent {
             //tag=two_axis_chart
+            val horizontalLabelRenderer = horizontalLabelRenderer()
+            val density = LocalDensity.current
             Chart(
                 modifier = Modifier
                     .aspectRatio(1f, false)
@@ -261,7 +271,7 @@ class ReadmeGalleryTest : ScreenshotTest {
                     renderer = combine(
                         lineRenderer(render = renderLine(brush = SolidColor(Blue))),
                         pointRenderer(
-                            radius = with(LocalDensity.current) { 4.dp.toPx() },
+                            radius = with(density) { 4.dp.toPx() },
                             render = renderCircle(brush = SolidColor(LightBlue))
                         )
                     )
@@ -284,7 +294,7 @@ class ReadmeGalleryTest : ScreenshotTest {
                     renderer = combine(
                         lineRenderer(render = renderLine(brush = SolidColor(Green))),
                         pointRenderer(
-                            radius = with(LocalDensity.current) { 4.dp.toPx() },
+                            radius = with(density) { 4.dp.toPx() },
                             render = renderCircle(brush = SolidColor(LightGreen))
                         )
                     )
@@ -315,7 +325,7 @@ class ReadmeGalleryTest : ScreenshotTest {
                         paint = Paint().apply {
                             color = Blue.toArgb()
                             typeface = Typeface.DEFAULT
-                            textSize = with(LocalDensity.current) { 12.sp.toPx() }
+                            textSize = with(density) { 12.sp.toPx() }
                             isAntiAlias = true
                         },
                         location = VerticalLabelLocation.LEFT,
@@ -327,7 +337,7 @@ class ReadmeGalleryTest : ScreenshotTest {
                     paint = Paint().apply {
                         color = Green.toArgb()
                         typeface = Typeface.DEFAULT
-                        textSize = with(LocalDensity.current) { 12.sp.toPx() }
+                        textSize = with(density) { 12.sp.toPx() }
                         isAntiAlias = true
                     },
                     location = VerticalLabelLocation.RIGHT,
@@ -346,7 +356,7 @@ class ReadmeGalleryTest : ScreenshotTest {
                     }
                 ))
 
-                horizontalAxisLabels(horizontalLabelRenderer())
+                horizontalAxisLabels(horizontalLabelRenderer)
 
                 grid(
                     gridRenderer(

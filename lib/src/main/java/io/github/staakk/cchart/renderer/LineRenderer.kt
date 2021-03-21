@@ -30,7 +30,6 @@ fun renderLine(
 ): DrawScope.(List<Pair<Point, Offset>>) -> List<RenderedShape> = { pointsToRender ->
     val renderedPoints = mutableListOf<RenderedShape>()
     renderedPoints += RenderedShape.Circle(
-        seriesName = "series.name",
         point = pointsToRender[0].first,
         labelAnchorX = pointsToRender[0].second.x,
         labelAnchorY = pointsToRender[0].second.y,
@@ -43,7 +42,6 @@ fun renderLine(
                 moveTo(it[0].second)
                 lineTo(it[1].second)
                 renderedPoints += RenderedShape.Circle(
-                    seriesName = "series.name",
                     point = it[1].first,
                     labelAnchorX = it[1].second.x,
                     labelAnchorY = it[1].second.y,

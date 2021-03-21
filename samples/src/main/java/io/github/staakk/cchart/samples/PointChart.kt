@@ -19,6 +19,9 @@ import io.github.staakk.cchart.renderer.renderCircle
 
 @Composable
 fun PointChartScreen() {
+    val horizontalLabelRenderer = horizontalLabelRenderer()
+    val verticalLabelRenderer = verticalLabelRenderer()
+
     Chart(
         modifier = Modifier.aspectRatio(1f, false),
         viewport = Viewport(0f, 10f, 0f, 5f)
@@ -43,11 +46,11 @@ fun PointChartScreen() {
 
         horizontalAxis(horizontalAxisRenderer())
 
-        horizontalAxisLabels(horizontalLabelRenderer())
+        horizontalAxisLabels(horizontalLabelRenderer)
 
         verticalAxis(verticalAxisRenderer())
 
-        verticalAxisLabels(verticalLabelRenderer())
+        verticalAxisLabels(verticalLabelRenderer)
     }
 }
 

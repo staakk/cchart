@@ -35,6 +35,8 @@ class BarChartTest : ScreenshotTest {
     @Test
     fun barChart() {
         composeRule.setContent {
+            val horizontalLabelRenderer = horizontalLabelRenderer()
+            val verticalLabelRenderer = verticalLabelRenderer()
             Chart(
                 modifier = Modifier
                     .aspectRatio(1f, false),
@@ -62,9 +64,9 @@ class BarChartTest : ScreenshotTest {
 
                 horizontalAxis(horizontalAxisRenderer())
 
-                verticalAxisLabels(verticalLabelRenderer())
+                verticalAxisLabels(verticalLabelRenderer)
 
-                horizontalAxisLabels(horizontalLabelRenderer())
+                horizontalAxisLabels(horizontalLabelRenderer)
             }
         }
 
@@ -74,6 +76,8 @@ class BarChartTest : ScreenshotTest {
     @Test
     fun multiSeriesBarChart() {
         composeRule.setContent {
+            val horizontalLabelRenderer = horizontalLabelRenderer()
+            val verticalLabelRenderer = verticalLabelRenderer()
             Chart(
                 modifier = Modifier
                     .aspectRatio(1f, false),
@@ -135,9 +139,9 @@ class BarChartTest : ScreenshotTest {
 
                 horizontalAxis(horizontalAxisRenderer())
 
-                verticalAxisLabels(verticalLabelRenderer())
+                verticalAxisLabels(verticalLabelRenderer)
 
-                horizontalAxisLabels(horizontalLabelRenderer())
+                horizontalAxisLabels(horizontalLabelRenderer)
             }
         }
 
@@ -147,6 +151,8 @@ class BarChartTest : ScreenshotTest {
     @Test
     fun multiSeriesMinimalSpacingBarChart() {
         composeRule.setContent {
+            val horizontalLabelRenderer = horizontalLabelRenderer()
+            val verticalLabelRenderer = verticalLabelRenderer()
             Chart(
                 modifier = Modifier
                     .aspectRatio(1f, false),
@@ -209,9 +215,9 @@ class BarChartTest : ScreenshotTest {
 
                 horizontalAxis(horizontalAxisRenderer())
 
-                verticalAxisLabels(verticalLabelRenderer())
+                verticalAxisLabels(verticalLabelRenderer)
 
-                horizontalAxisLabels(horizontalLabelRenderer())
+                horizontalAxisLabels(horizontalLabelRenderer)
             }
         }
 

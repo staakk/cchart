@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.InspectorInfo
@@ -12,19 +13,32 @@ import androidx.compose.ui.platform.InspectorValueInfo
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import io.github.staakk.cchart.data.Point
 import io.github.staakk.cchart.renderer.RenderedShape
-import io.github.staakk.cchart.renderer.toDataLabelScope
 
 @Composable
-fun DataLabels(
+internal fun DataLabels(
     modifier: Modifier,
     renderedShapes: List<RenderedShape>,
     canvasSize: Size,
-    horizontalAlignment: HorizontalAlignment,
-    verticalAlignment: VerticalAlignment,
-    labelContent: @Composable DataLabelScope.() -> Unit,
+    labelContent: @Composable AnchorScope.() -> Unit,
+) {
+    AnchoredViews(
+        modifier = modifier,
+        canvasSize = canvasSize,
+        anchors = renderedShapes
+            .map { it.point to Offset(it.labelAnchorX, it.labelAnchorY) to labelContent }
+            .toMap()
+    )
+}
+
+@Composable
+internal fun AnchoredViews(
+    modifier: Modifier,
+    canvasSize: Size,
+    anchors: Map<Pair<Point, Offset>, @Composable AnchorScope.() -> Unit>
 ) {
     val density = LocalDensity.current
     Box(
@@ -32,17 +46,28 @@ fun DataLabels(
             .fillMaxSize()
             .clipToBounds()
     ) {
-        renderedShapes.forEach { renderedPoint ->
-            Box(modifier = Modifier.absoluteOffsetToCenter(
-                with(density) { renderedPoint.labelAnchorX.toDp() },
-                with(density) { canvasSize.height.toDp() + renderedPoint.labelAnchorY.toDp() },
-                horizontalAlignment,
-                verticalAlignment
-            )) {
-                labelContent.invoke(renderedPoint.toDataLabelScope())
-            }
+        anchors.forEach { (pointWithOffset, content) ->
+            content(AnchorScope(pointWithOffset.first, pointWithOffset.second, canvasSize, density))
         }
     }
+}
+
+data class AnchorScope(
+    val point: Point,
+    val offset: Offset,
+    val canvasSize: Size,
+    val density: Density
+) {
+
+    fun Modifier.align(
+        horizontalAlignment: HorizontalAlignment,
+        verticalAlignment: VerticalAlignment
+    ): Modifier = absoluteOffsetToCenter(
+        with(density) { offset.x.toDp() },
+        with(density) { canvasSize.height.toDp() + offset.y.toDp() },
+        horizontalAlignment,
+        verticalAlignment
+    )
 }
 
 enum class HorizontalAlignment {
@@ -79,11 +104,6 @@ enum class VerticalAlignment {
 
     internal abstract fun calculatePosition(position: Int, placeable: Placeable): Int
 }
-
-data class DataLabelScope(
-    val point: Point,
-    val seriesName: String
-)
 
 private class OffsetToCenterModifier(
     val x: Dp,
@@ -125,7 +145,7 @@ private class OffsetToCenterModifier(
     override fun toString(): String = "OffsetToCenterModifier(x=$x, y=$y, rtlAware=$rtlAware)"
 }
 
-fun Modifier.absoluteOffsetToCenter(
+internal fun Modifier.absoluteOffsetToCenter(
     x: Dp,
     y: Dp,
     horizontalAlignment: HorizontalAlignment,

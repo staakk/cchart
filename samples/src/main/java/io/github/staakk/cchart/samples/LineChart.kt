@@ -19,6 +19,9 @@ import io.github.staakk.cchart.renderer.renderLine
 
 @Composable
 fun LineChartScreen() {
+    val horizontalLabelRenderer = horizontalLabelRenderer()
+    val verticalLabelRenderer = verticalLabelRenderer()
+
     Chart(
         modifier = Modifier.aspectRatio(1f, false),
         viewport = Viewport(0f, 10f, 0f, 5f)
@@ -40,11 +43,11 @@ fun LineChartScreen() {
 
         horizontalAxis(horizontalAxisRenderer())
 
-        horizontalAxisLabels(horizontalLabelRenderer())
+        horizontalAxisLabels(horizontalLabelRenderer)
 
         verticalAxis(verticalAxisRenderer())
 
-        verticalAxisLabels(verticalLabelRenderer())
+        verticalAxisLabels(verticalLabelRenderer)
     }
 }
 

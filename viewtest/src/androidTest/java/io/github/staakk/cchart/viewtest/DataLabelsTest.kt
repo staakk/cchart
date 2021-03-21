@@ -53,6 +53,8 @@ class DataLabelsTest : ScreenshotTest {
     @Test
     fun dataLabels() {
         composeRule.setContent {
+            val horizontalLabelRenderer = horizontalLabelRenderer()
+            val verticalLabelRenderer = verticalLabelRenderer()
             Chart(
                 modifier = Modifier
                     .aspectRatio(1f, false),
@@ -72,12 +74,15 @@ class DataLabelsTest : ScreenshotTest {
 
                 horizontalAxis(horizontalAxisRenderer())
 
-                verticalAxisLabels(verticalLabelRenderer())
+                verticalAxisLabels(verticalLabelRenderer)
 
-                horizontalAxisLabels(horizontalLabelRenderer())
+                horizontalAxisLabels(horizontalLabelRenderer)
 
-                dataLabels(alignments.first, alignments.second) {
-                    Text("(${point.x}, ${point.y})")
+                dataLabels {
+                    Text(
+                        modifier = Modifier.align(alignments.first, alignments.second),
+                        text = "(${point.x}, ${point.y})"
+                    )
                 }
             }
         }

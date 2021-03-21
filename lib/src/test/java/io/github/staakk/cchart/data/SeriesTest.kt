@@ -9,14 +9,14 @@ class SeriesTest {
 
     @Test
     fun `should return empty list for line not in viewport`() {
-        val series = Series("", listOf(pointOf(-1f, -1f), pointOf(-0.5f, -1f)))
+        val series = Series(listOf(pointOf(-1f, -1f), pointOf(-0.5f, -1f)))
 
         assertEquals(emptyList<Point>(), series.getLineInViewport(viewport))
     }
 
     @Test
     fun `should return previous and next point for line crossing the viewport`() {
-        val series = Series("", listOf(
+        val series = Series(listOf(
             pointOf(-1, 0.5f),
             pointOf(-0.5, 0.5f),
             pointOf(0.5, 0.5f),
@@ -36,7 +36,7 @@ class SeriesTest {
 
     @Test
     fun `should return line inside viewport`() {
-        val series = Series("", listOf(
+        val series = Series(listOf(
             pointOf(0.1, 0.5f),
             pointOf(0.5, 0.5f),
             pointOf(0.9, 0.5f),
@@ -54,7 +54,7 @@ class SeriesTest {
 
     @Test
     fun `should return line segments inside viewport`() {
-        val series = Series("", listOf(
+        val series = Series(listOf(
             pointOf(-1, 0.5f),
             pointOf(-0.5, 0.5f),
             pointOf(0.5, 0.5f),
