@@ -13,7 +13,7 @@ import kotlin.math.abs
 fun barGroupRenderer(
     preferredWidth: Float,
     minimalSpacing: Float = 10f,
-    draw: DrawScope.(index: Int, point: Point, topLeft: Offset, size: Size) -> RenderedShape = drawBar()
+    render: DrawScope.(index: Int, point: Point, topLeft: Offset, size: Size) -> RenderedShape = renderBar()
 ): GroupedSeriesRenderer = GroupedSeriesRenderer { context, series ->
     val renderedPoints = mutableListOf<RenderedShape>()
     val drawingBounds = getDrawingBounds(context)
@@ -39,7 +39,7 @@ fun barGroupRenderer(
 
             val topLeft = Offset(x - halfWidth, context.dataToRendererCoordY(0f))
             val size = Size(width, -y)
-            renderedPoints += draw(index, point, topLeft, size)
+            renderedPoints += render(index, point, topLeft, size)
         }
     }
     renderedPoints
@@ -77,7 +77,7 @@ private fun getDrawingBounds(rendererContext: RendererContext): Viewport {
     )
 }
 
-fun drawBar(
+fun renderBar(
     style: DrawStyle = Fill,
     alpha: Float = 1.0f,
     colorFilter: ColorFilter? = null,

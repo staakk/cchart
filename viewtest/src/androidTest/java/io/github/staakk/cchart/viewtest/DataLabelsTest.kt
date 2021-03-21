@@ -19,6 +19,7 @@ import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.pointRenderer
+import io.github.staakk.cchart.renderer.renderCircle
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -59,13 +60,12 @@ class DataLabelsTest : ScreenshotTest {
             ) {
                 series(
                     seriesOf(
-                        "Data",
                         pointOf(2f, 1.5f),
                         pointOf(4f, 3.5f),
                         pointOf(6f, 1.3f),
                         pointOf(8f, 4.5f),
                     ),
-                    renderer = pointRenderer(brush = SolidColor(Color.Blue))
+                    renderer = pointRenderer(render = renderCircle(brush = SolidColor(Color.Blue)))
                 )
 
                 verticalAxis(verticalAxisRenderer())

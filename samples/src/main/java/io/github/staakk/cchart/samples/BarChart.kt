@@ -15,7 +15,7 @@ import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.barGroupRenderer
-import io.github.staakk.cchart.renderer.drawBar
+import io.github.staakk.cchart.renderer.renderBar
 
 @Composable
 fun BarChartScreen() {
@@ -48,7 +48,7 @@ fun BarChartScreen() {
             ),
             renderer = barGroupRenderer(
                 preferredWidth = 64f,
-                draw = drawBar { index, _ ->
+                render = renderBar { index, _ ->
                     SolidColor(
                         when (index) {
                             0 -> Color.Indigo

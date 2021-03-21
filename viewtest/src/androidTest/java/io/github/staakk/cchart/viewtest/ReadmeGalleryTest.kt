@@ -29,11 +29,8 @@ import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.grid.GridOrientation
 import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.label.*
+import io.github.staakk.cchart.renderer.*
 import io.github.staakk.cchart.renderer.CompositeSeriesRenderer.Companion.combine
-import io.github.staakk.cchart.renderer.barGroupRenderer
-import io.github.staakk.cchart.renderer.drawBar
-import io.github.staakk.cchart.renderer.lineRenderer
-import io.github.staakk.cchart.renderer.pointRenderer
 import org.junit.Rule
 import org.junit.Test
 import java.time.LocalDate
@@ -78,7 +75,6 @@ class ReadmeGalleryTest : ScreenshotTest {
             ) {
                 series(
                     seriesOf(
-                        "Data",
                         pointOf(0f, 1.3f),
                         pointOf(1f, 2.4f),
                         pointOf(2f, 2.3f),
@@ -91,7 +87,7 @@ class ReadmeGalleryTest : ScreenshotTest {
                         pointOf(9f, 8.3f),
                         pointOf(10f, 9.1f),
                     ),
-                    renderer = lineRenderer(brush = SolidColor(Blue))
+                    renderer = lineRenderer(render = renderLine(brush = SolidColor(Blue)))
                 )
 
                 verticalAxis(
@@ -155,7 +151,7 @@ class ReadmeGalleryTest : ScreenshotTest {
                     ),
                     renderer = barGroupRenderer(
                         preferredWidth = 64f,
-                        draw = drawBar { index, _ ->
+                        render = renderBar { index, _ ->
                             SolidColor(
                                 when (index) {
                                     0 -> DeepPurple
@@ -250,7 +246,6 @@ class ReadmeGalleryTest : ScreenshotTest {
             ) {
                 series(
                     seriesOf(
-                        "Data",
                         pointOf(0f, 1.3f),
                         pointOf(1f, 2.4f),
                         pointOf(2f, 2.3f),
@@ -264,17 +259,16 @@ class ReadmeGalleryTest : ScreenshotTest {
                         pointOf(10f, 9.1f),
                     ),
                     renderer = combine(
-                        lineRenderer(brush = SolidColor(Blue)),
+                        lineRenderer(render = renderLine(brush = SolidColor(Blue))),
                         pointRenderer(
-                            brush = SolidColor(LightBlue),
-                            radius = with(LocalDensity.current) { 4.dp.toPx() }
+                            radius = with(LocalDensity.current) { 4.dp.toPx() },
+                            render = renderCircle(brush = SolidColor(LightBlue))
                         )
                     )
                 )
 
                 series(
                     seriesOf(
-                        "Data1",
                         pointOf(0f, 9.1f),
                         pointOf(1f, 8.3f),
                         pointOf(2f, 6.1f),
@@ -288,10 +282,10 @@ class ReadmeGalleryTest : ScreenshotTest {
                         pointOf(10f, 1.3f),
                     ),
                     renderer = combine(
-                        lineRenderer(brush = SolidColor(Green)),
+                        lineRenderer(render = renderLine(brush = SolidColor(Green))),
                         pointRenderer(
-                            brush = SolidColor(LightGreen),
-                            radius = with(LocalDensity.current) { 4.dp.toPx() }
+                            radius = with(LocalDensity.current) { 4.dp.toPx() },
+                            render = renderCircle(brush = SolidColor(LightGreen))
                         )
                     )
                 )

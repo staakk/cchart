@@ -22,6 +22,7 @@ import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.pointRenderer
+import io.github.staakk.cchart.renderer.renderCircle
 
 @Composable
 fun ViewportUpdatesScreen() {
@@ -38,7 +39,6 @@ fun ViewportUpdatesScreen() {
         ) {
             series(
                 seriesOf(
-                    "Data",
                     pointOf(0f, 1f),
                     pointOf(2f, 1.5f),
                     pointOf(3f, 4f),
@@ -49,7 +49,10 @@ fun ViewportUpdatesScreen() {
                     pointOf(8f, 4.5f),
                     pointOf(9f, 4.7f),
                 ),
-                renderer = pointRenderer(brush = SolidColor(Color.Indigo), radius = 10f)
+                renderer = pointRenderer(
+                    radius = 10f,
+                    render = renderCircle(brush = SolidColor(Color.Indigo))
+                )
             )
 
             horizontalAxis(horizontalAxisRenderer())

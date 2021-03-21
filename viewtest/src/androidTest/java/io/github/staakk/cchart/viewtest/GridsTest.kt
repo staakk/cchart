@@ -16,6 +16,7 @@ import io.github.staakk.cchart.grid.GridOrientation
 import io.github.staakk.cchart.grid.GridRenderer
 import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.renderer.lineRenderer
+import io.github.staakk.cchart.renderer.renderLine
 import org.junit.Rule
 import org.junit.Test
 
@@ -77,7 +78,6 @@ class GridsTest : ScreenshotTest {
             ) {
                 series(
                     seriesOf(
-                        "Data",
                         pointOf(0f, 1f),
                         pointOf(2f, 1.5f),
                         pointOf(3f, 4f),
@@ -88,7 +88,7 @@ class GridsTest : ScreenshotTest {
                         pointOf(8f, 4.5f),
                         pointOf(9f, 4.7f),
                     ),
-                    renderer = lineRenderer(brush = SolidColor(Color.Blue))
+                    renderer = lineRenderer(render = renderLine(brush = SolidColor(Color.Blue)))
                 )
 
                 grids.forEach(::grid)

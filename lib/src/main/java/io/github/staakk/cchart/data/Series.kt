@@ -5,11 +5,9 @@ import io.github.staakk.cchart.util.indexOfFirstFrom
 /**
  * Series of data to be represented by the [io.github.staakk.cchart.Chart]
  *
- * @param name Name of this series.
  * @param points Data points in this series.
  */
 data class Series(
-    val name: String,
     val points: List<Point>,
 ) {
 
@@ -37,4 +35,4 @@ data class Series(
     }
 }
 
-fun seriesOf(name: String, vararg points: Point) = Series(name, points.toList())
+fun seriesOf(vararg points: Point) = Series(points.toList())

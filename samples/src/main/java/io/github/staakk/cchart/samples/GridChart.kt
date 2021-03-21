@@ -17,6 +17,7 @@ import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.lineRenderer
+import io.github.staakk.cchart.renderer.renderLine
 
 @Composable
 fun GridChartScreen() {
@@ -26,7 +27,6 @@ fun GridChartScreen() {
     ) {
         series(
             seriesOf(
-                "Data",
                 pointOf(0f, 1f),
                 pointOf(2f, 1.5f),
                 pointOf(3f, 4f),
@@ -37,7 +37,7 @@ fun GridChartScreen() {
                 pointOf(8f, 4.5f),
                 pointOf(9f, 4.7f),
             ),
-            renderer = lineRenderer(brush = SolidColor(Color.Blue))
+            renderer = lineRenderer(render = renderLine(brush = SolidColor(Color.Blue)))
         )
 
         horizontalAxis(horizontalAxisRenderer())

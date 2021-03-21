@@ -17,6 +17,8 @@ import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.CompositeSeriesRenderer.Companion.combine
 import io.github.staakk.cchart.renderer.lineRenderer
 import io.github.staakk.cchart.renderer.pointRenderer
+import io.github.staakk.cchart.renderer.renderCircle
+import io.github.staakk.cchart.renderer.renderLine
 
 @Composable
 fun CombinedChartScreen() {
@@ -26,7 +28,6 @@ fun CombinedChartScreen() {
     ) {
         series(
             seriesOf(
-                "Data",
                 pointOf(0f, 1f),
                 pointOf(2f, 1.5f),
                 pointOf(3f, 4f),
@@ -38,8 +39,8 @@ fun CombinedChartScreen() {
                 pointOf(9f, 4.7f),
             ),
             renderer = combine(
-                lineRenderer(brush = SolidColor(Color.Pink)),
-                pointRenderer(brush = SolidColor(Color.Indigo), radius = 10f)
+                lineRenderer(render = renderLine(brush = SolidColor(Color.Pink))),
+                pointRenderer(radius = 10f, render = renderCircle(brush = SolidColor(Color.Indigo)))
             )
         )
 
