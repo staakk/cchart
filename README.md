@@ -28,6 +28,8 @@ Here are few examples together with the code:
 
 <!-- insert=line_chart -->
 ```kotlin
+val horizontalLabelRenderer = horizontalLabelRenderer()
+val verticalLabelRenderer = verticalLabelRenderer()
 Chart(
   modifier = Modifier
     .aspectRatio(1f, false)
@@ -36,7 +38,6 @@ Chart(
 ) {
   series(
     seriesOf(
-      "Data",
       pointOf(0f, 1.3f),
       pointOf(1f, 2.4f),
       pointOf(2f, 2.3f),
@@ -49,7 +50,7 @@ Chart(
       pointOf(9f, 8.3f),
       pointOf(10f, 9.1f),
     ),
-    renderer = lineRenderer(brush = SolidColor(Blue))
+    renderer = lineRenderer(render = renderLine(brush = SolidColor(Blue)))
   )
 
   verticalAxis(
@@ -64,9 +65,9 @@ Chart(
     )
   )
 
-  verticalAxisLabels(verticalLabelRenderer())
+  verticalAxisLabels(verticalLabelRenderer)
 
-  horizontalAxisLabels(horizontalLabelRenderer())
+  horizontalAxisLabels(horizontalLabelRenderer)
 
   grid(
     gridRenderer(
@@ -86,6 +87,50 @@ Chart(
 
 <!-- insert=bar_chart -->
 ```kotlin
+val horizontalLabelRenderer = horizontalLabelRenderer(
+  labelsProvider = object : LabelsProvider {
+    private val pattern = "MMMM \nyyyy"
+    private val formatter = DateTimeFormatter.ofPattern(pattern)
+
+    override fun provide(
+      min: Float,
+      max: Float
+    ): List<Pair<String, Float>> {
+      var currentDate = LocalDate.ofEpochDay(min.toLong()).withDayOfMonth(1)
+      val endDate = LocalDate.ofEpochDay(max.toLong()).withDayOfMonth(1)
+
+      val labels = mutableListOf<Pair<String, Float>>()
+      while (currentDate.isBefore(endDate)) {
+        labels.add(
+          currentDate.format(formatter) to currentDate.toEpochDay()
+            .toFloat()
+        )
+        currentDate = currentDate.plusMonths(1)
+      }
+      return labels
+    }
+
+    override fun getMaxLength(): Int = pattern.length
+
+    override fun getMaxLines(): Int = 2
+  }
+)
+val verticalLabelRenderer = verticalLabelRenderer(
+  labelsProvider = object : LabelsProvider {
+    override fun provide(
+      min: Float,
+      max: Float
+    ): List<Pair<String, Float>> =
+      (min.toInt()..max.toInt())
+        .filter { it % 25 == 0 }
+        .map { "$it%" to it.toFloat() }
+
+    override fun getMaxLength(): Int = 3
+
+    override fun getMaxLines(): Int = 1
+
+  }
+)
 Chart(
   modifier = Modifier
     .aspectRatio(1f, false)
@@ -114,7 +159,7 @@ Chart(
     ),
     renderer = barGroupRenderer(
       preferredWidth = 64f,
-      draw = drawBar { index, _ ->
+      render = renderBar { index, _ ->
         SolidColor(
           when (index) {
             0 -> DeepPurple
@@ -138,58 +183,20 @@ Chart(
     )
   )
 
-  dataLabels(HorizontalAlignment.CENTER, VerticalAlignment.TOP) {
+  dataLabels {
     Text(
+      modifier = Modifier.align(
+        HorizontalAlignment.CENTER,
+        VerticalAlignment.TOP
+      ),
       text = "${point.y.toInt()}%",
       style = TextStyle(fontSize = 12.sp)
     )
   }
 
-  verticalAxisLabels(verticalLabelRenderer(
-    labelsProvider = object : LabelsProvider {
-      override fun provide(
-        min: Float,
-        max: Float
-      ): List<Pair<String, Float>> =
-        (min.toInt()..max.toInt())
-          .filter { it % 25 == 0 }
-          .map { "$it%" to it.toFloat() }
+  verticalAxisLabels(verticalLabelRenderer)
 
-      override fun getMaxLength(): Int = 3
-
-      override fun getMaxLines(): Int = 1
-
-    }
-  ))
-
-  horizontalAxisLabels(horizontalLabelRenderer(
-    labelsProvider = object : LabelsProvider {
-      private val pattern = "MMMM \nyyyy"
-      private val formatter = DateTimeFormatter.ofPattern(pattern)
-
-      override fun provide(
-        min: Float,
-        max: Float
-      ): List<Pair<String, Float>> {
-        var currentDate = LocalDate.ofEpochDay(min.toLong()).withDayOfMonth(1)
-        val endDate = LocalDate.ofEpochDay(max.toLong()).withDayOfMonth(1)
-
-        val labels = mutableListOf<Pair<String, Float>>()
-        while (currentDate.isBefore(endDate)) {
-          labels.add(
-            currentDate.format(formatter) to currentDate.toEpochDay()
-              .toFloat()
-          )
-          currentDate = currentDate.plusMonths(1)
-        }
-        return labels
-      }
-
-      override fun getMaxLength(): Int = pattern.length
-
-      override fun getMaxLines(): Int = 2
-    }
-  ))
+  horizontalAxisLabels(horizontalLabelRenderer)
 }
 ```
 </details>
@@ -202,6 +209,8 @@ Chart(
 
 <!-- insert=two_axis_chart -->
 ```kotlin
+val horizontalLabelRenderer = horizontalLabelRenderer()
+val density = LocalDensity.current
 Chart(
   modifier = Modifier
     .aspectRatio(1f, false)
@@ -210,7 +219,6 @@ Chart(
 ) {
   series(
     seriesOf(
-      "Data",
       pointOf(0f, 1.3f),
       pointOf(1f, 2.4f),
       pointOf(2f, 2.3f),
@@ -224,17 +232,16 @@ Chart(
       pointOf(10f, 9.1f),
     ),
     renderer = combine(
-      lineRenderer(brush = SolidColor(Blue)),
+      lineRenderer(render = renderLine(brush = SolidColor(Blue))),
       pointRenderer(
-        brush = SolidColor(LightBlue),
-        radius = with(LocalDensity.current) { 4.dp.toPx() }
+        radius = with(density) { 4.dp.toPx() },
+        render = renderCircle(brush = SolidColor(LightBlue))
       )
     )
   )
 
   series(
     seriesOf(
-      "Data1",
       pointOf(0f, 9.1f),
       pointOf(1f, 8.3f),
       pointOf(2f, 6.1f),
@@ -248,10 +255,10 @@ Chart(
       pointOf(10f, 1.3f),
     ),
     renderer = combine(
-      lineRenderer(brush = SolidColor(Green)),
+      lineRenderer(render = renderLine(brush = SolidColor(Green))),
       pointRenderer(
-        brush = SolidColor(LightGreen),
-        radius = with(LocalDensity.current) { 4.dp.toPx() }
+        radius = with(density) { 4.dp.toPx() },
+        render = renderCircle(brush = SolidColor(LightGreen))
       )
     )
   )
@@ -281,7 +288,7 @@ Chart(
       paint = Paint().apply {
         color = Blue.toArgb()
         typeface = Typeface.DEFAULT
-        textSize = with(LocalDensity.current) { 12.sp.toPx() }
+        textSize = with(density) { 12.sp.toPx() }
         isAntiAlias = true
       },
       location = VerticalLabelLocation.LEFT,
@@ -293,7 +300,7 @@ Chart(
     paint = Paint().apply {
       color = Green.toArgb()
       typeface = Typeface.DEFAULT
-      textSize = with(LocalDensity.current) { 12.sp.toPx() }
+      textSize = with(density) { 12.sp.toPx() }
       isAntiAlias = true
     },
     location = VerticalLabelLocation.RIGHT,
@@ -312,7 +319,7 @@ Chart(
     }
   ))
 
-  horizontalAxisLabels(horizontalLabelRenderer())
+  horizontalAxisLabels(horizontalLabelRenderer)
 
   grid(
     gridRenderer(
