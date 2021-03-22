@@ -10,14 +10,16 @@ import io.github.staakk.cchart.data.Point
 import io.github.staakk.cchart.data.Viewport
 import kotlin.math.abs
 
-typealias BarDrawer = DrawScope.(index: Int, Point, topLeft: Offset, Size) -> RenderedShape
+typealias BarDrawer = DrawScope.(index: Int, Point, topLeft: Offset, Size) -> Unit
+typealias BarBoundingShapeProvider = DrawScope.(index: Int, Point, topLeft: Offset, Size) -> BoundingShape
 
 fun barGroupRenderer(
     preferredWidth: Float,
     minimalSpacing: Float = 10f,
-    barDrawer: BarDrawer = drawBar()
+    barDrawer: BarDrawer = drawBar(),
+    boundingShapeProvider: BarBoundingShapeProvider = barBoundingShapeProvider()
 ): GroupedSeriesRenderer = GroupedSeriesRenderer { context, series ->
-    val renderedPoints = mutableListOf<RenderedShape>()
+    val renderedPoints = mutableListOf<BoundingShape>()
     val drawingBounds = getDrawingBounds(context)
     val groups = series.filter {
         if (it.isEmpty()) false
@@ -40,7 +42,8 @@ fun barGroupRenderer(
 
             val topLeft = Offset(x - halfWidth, context.dataToRendererCoordY(0f))
             val size = Size(width, -y)
-            renderedPoints += barDrawer(index, point, topLeft, size)
+            barDrawer(index, point, topLeft, size)
+            renderedPoints += boundingShapeProvider(index, point, topLeft, size)
         }
     }
     renderedPoints
@@ -85,20 +88,23 @@ fun drawBar(
     blendMode: BlendMode = DrawScope.DefaultBlendMode,
     brushProvider: (index: Int, Point) -> Brush = { _, _ -> SolidColor(Color.Black) }
 ): BarDrawer = { index, point, topLeft, size ->
-        drawRect(
-            brush = brushProvider(index, point),
-            topLeft = topLeft,
-            size = size,
-            style = style,
-            alpha = alpha,
-            colorFilter = colorFilter,
-            blendMode = blendMode
-        )
-        RenderedShape.Rect(
-            point = point,
-            labelAnchorX = topLeft.x + size.width / 2,
-            labelAnchorY = size.height,
-            topLeft = topLeft,
-            bottomRight = Offset(topLeft.x + size.width, topLeft.y - size.height)
-        )
-    }
+    drawRect(
+        brush = brushProvider(index, point),
+        topLeft = topLeft,
+        size = size,
+        style = style,
+        alpha = alpha,
+        colorFilter = colorFilter,
+        blendMode = blendMode
+    )
+}
+
+fun barBoundingShapeProvider(): BarBoundingShapeProvider = { _, point, topLeft, size ->
+    BoundingShape.Rect(
+        point = point,
+        labelAnchorX = topLeft.x + size.width / 2,
+        labelAnchorY = size.height,
+        topLeft = topLeft,
+        bottomRight = Offset(topLeft.x + size.width, topLeft.y - size.height)
+    )
+}

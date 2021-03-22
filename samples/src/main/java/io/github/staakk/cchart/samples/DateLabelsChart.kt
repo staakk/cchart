@@ -53,9 +53,9 @@ fun DateLabelsChartScreen() {
                 barDrawer = drawBar { index, _ ->
                     SolidColor(
                         when (index) {
-                            0 -> Color.DeepPurple
-                            1 -> Color.Green
-                            else -> Color.Pink
+                            0 -> Colors.DeepPurple
+                            1 -> Colors.Green
+                            else -> Colors.Pink
                         }
                     )
                 },

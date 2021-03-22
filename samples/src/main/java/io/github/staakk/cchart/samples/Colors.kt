@@ -2,7 +2,7 @@ package io.github.staakk.cchart.samples
 
 import androidx.compose.ui.graphics.Color
 
-object Color {
+object Colors {
     val Red = Color(0xFFE57474)
     val Pink = Color(0xFFF06292)
     val Purple = Color(0xFFBA68C8)

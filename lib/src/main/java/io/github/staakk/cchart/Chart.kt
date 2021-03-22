@@ -119,7 +119,7 @@ private fun Chart(
     }
 
     BoxWithConstraints(modifier = modifier.then(Modifier.padding(paddingValues))) {
-        val renderedPoints = remember { mutableStateOf(listOf<RenderedShape>()) }
+        val renderedPoints = remember { mutableStateOf(listOf<BoundingShape>()) }
         val canvasSize = with(density) { Size(width = maxWidth.toPx(), height = maxHeight.toPx()) }
         val rendererContext = rendererContext(viewport.value, canvasSize)
 
@@ -166,7 +166,7 @@ private fun Chart(
                         with(renderer) { this@drawScope.render(rendererContext) }
                     }
 
-                    val points = mutableListOf<RenderedShape>()
+                    val points = mutableListOf<BoundingShape>()
                     points += scope.series.flatMap { (series, renderer) ->
                         with(renderer) { this@drawScope.render(rendererContext, series) }
                     }

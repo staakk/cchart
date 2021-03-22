@@ -40,7 +40,7 @@ fun PointChartScreen() {
             ),
             renderer = pointRenderer(
                 radius = 10f,
-                circleDrawer = drawCircle(brush = SolidColor(Color.Red))
+                circleDrawer = drawCircle(brush = SolidColor(Colors.Red))
             )
         )
 

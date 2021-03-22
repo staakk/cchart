@@ -8,15 +8,21 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import io.github.staakk.cchart.data.Point
 import io.github.staakk.cchart.data.Viewport
 
-typealias CircleDrawer = DrawScope.(Point, center: Offset, radius: Float) -> RenderedShape
+typealias CircleDrawer = DrawScope.(Point, center: Offset, radius: Float) -> Unit
+typealias CircleBoundingShapeProvider = DrawScope.(Point, center: Offset, radius: Float) -> BoundingShape
 
-fun pointRenderer(radius: Float = 15f, circleDrawer: CircleDrawer = drawCircle()) =
+fun pointRenderer(
+    radius: Float = 15f,
+    circleDrawer: CircleDrawer = drawCircle(),
+    boundingShapeProvider: CircleBoundingShapeProvider = circleBoundingShapeProvider()
+) =
     SeriesRenderer { context, series ->
         series.getPointsInViewport(getDrawingBounds(context, radius))
             .map { point ->
                 val x = context.dataToRendererCoordX(point.x)
                 val y = context.dataToRendererCoordY(point.y)
                 circleDrawer(this, point, Offset(x, y), radius)
+                boundingShapeProvider(this, point, Offset(x, y), radius)
             }
     }
 
@@ -26,7 +32,7 @@ fun drawCircle(
     style: DrawStyle = Fill,
     colorFilter: ColorFilter? = null,
     blendMode: BlendMode = DrawScope.DefaultBlendMode,
-): CircleDrawer = { point, center, radius ->
+): CircleDrawer = { _, center, radius ->
     drawCircle(
         brush = brush,
         radius = radius,
@@ -35,13 +41,6 @@ fun drawCircle(
         style = style,
         colorFilter = colorFilter,
         blendMode = blendMode,
-    )
-    RenderedShape.Circle(
-        point = point,
-        labelAnchorX = center.x,
-        labelAnchorY = center.y,
-        center = center,
-        radius = radius
     )
 }
 
@@ -54,5 +53,16 @@ private fun getDrawingBounds(rendererContext: RendererContext, radius: Float): V
         maxX = bounds.maxX + xScaledRadius,
         minY = bounds.minY - yScaledRadius,
         maxY = bounds.maxY + yScaledRadius
+    )
+}
+
+
+fun circleBoundingShapeProvider(): CircleBoundingShapeProvider = { point, center, radius ->
+    BoundingShape.Circle(
+        point = point,
+        labelAnchorX = center.x,
+        labelAnchorY = center.y,
+        center = center,
+        radius = radius
     )
 }

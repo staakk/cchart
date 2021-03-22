@@ -10,7 +10,7 @@ class CompositeSeriesRenderer(
     override fun DrawScope.render(
         context: RendererContext,
         series: Series
-    ): List<RenderedShape> = renderers.flatMap { with(it) { render(context, series) } }
+    ): List<BoundingShape> = renderers.flatMap { with(it) { render(context, series) } }
 
     companion object {
         /**

@@ -16,12 +16,12 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import io.github.staakk.cchart.data.Point
-import io.github.staakk.cchart.renderer.RenderedShape
+import io.github.staakk.cchart.renderer.BoundingShape
 
 @Composable
 internal fun DataLabels(
     modifier: Modifier,
-    renderedShapes: List<RenderedShape>,
+    renderedShapes: List<BoundingShape>,
     canvasSize: Size,
     labelContent: @Composable AnchorScope.() -> Unit,
 ) {

@@ -1,8 +1,13 @@
 package io.github.staakk.cchart.samples
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,12 +20,21 @@ import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.barGroupRenderer
-import io.github.staakk.cchart.renderer.drawBar
 
 @Composable
-fun BarChartScreen() {
+fun AnimatedBarSizeChartScreen() {
     val horizontalLabelRenderer = horizontalLabelRenderer()
     val verticalLabelRenderer = verticalLabelRenderer()
+
+    val trigger = remember { mutableStateOf(false) }
+    val heightScale = animateFloatAsState(
+        targetValue = if (trigger.value) 1.0f else 0.0f,
+        animationSpec = tween(1000)
+    )
+    LaunchedEffect(heightScale) {
+        trigger.value = true
+    }
+
     Chart(
         modifier = Modifier.aspectRatio(1f, false),
         viewport = Viewport(0f, 6f, 0f, 5f)
@@ -50,13 +64,17 @@ fun BarChartScreen() {
             ),
             renderer = barGroupRenderer(
                 preferredWidth = 64f,
-                barDrawer = drawBar { index, _ ->
-                    SolidColor(
-                        when (index) {
-                            0 -> Colors.Indigo
-                            1 -> Colors.Green
-                            else -> Colors.Pink
-                        }
+                barDrawer = { index, _, topLeft, size ->
+                    drawRect(
+                        brush = SolidColor(
+                            when (index) {
+                                0 -> Colors.Blue
+                                1 -> Colors.Red
+                                else -> Colors.Pink
+                            }
+                        ),
+                        topLeft = topLeft,
+                        size = size.copy(height = size.height * heightScale.value)
                     )
                 }
             )
@@ -74,8 +92,8 @@ fun BarChartScreen() {
 
 @Preview
 @Composable
-fun PreviewBarChart() {
+fun PreviewAnimatedBarSizeChart() {
     Surface {
-        BarChartScreen()
+        AnimatedBarSizeChartScreen()
     }
 }

@@ -16,7 +16,7 @@ class PointRendererTest {
     private val circleRadius = 0.1f
 
     private val circleDrawer: CircleDrawer = { point, center, radius ->
-        RenderedShape.Circle(
+        BoundingShape.Circle(
             point = point,
             labelAnchorX = center.x,
             labelAnchorY = center.y,
@@ -44,22 +44,22 @@ class PointRendererTest {
 
     @Test
     fun `test point renderer`() {
-        val expected = listOf<RenderedShape>(
-            RenderedShape.Circle(
+        val expected = listOf<BoundingShape>(
+            BoundingShape.Circle(
                 point = Point(x = 0f, y = 0.2f, tag = null),
                 labelAnchorX = 0f,
                 labelAnchorY = -0.4f,
                 center = Offset(0f, -0.4f),
                 radius = circleRadius
             ),
-            RenderedShape.Circle(
+            BoundingShape.Circle(
                 point = Point(x = 0.5f, y = 1f, tag = null),
                 labelAnchorX = 1f,
                 labelAnchorY = -2f,
                 center = Offset(1f, -2f),
                 radius = circleRadius
             ),
-            RenderedShape.Circle(
+            BoundingShape.Circle(
                 point = Point(x = 1f, y = 1f, tag = null),
                 labelAnchorX = 2f,
                 labelAnchorY = -2f,

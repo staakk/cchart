@@ -5,5 +5,5 @@ import io.github.staakk.cchart.data.GroupedSeries
 
 fun interface GroupedSeriesRenderer {
 
-    fun DrawScope.render(context: RendererContext, series: GroupedSeries): List<RenderedShape>
+    fun DrawScope.render(context: RendererContext, series: GroupedSeries): List<BoundingShape>
 }

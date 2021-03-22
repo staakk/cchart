@@ -1,22 +1,22 @@
 package io.github.staakk.cchart
 
-import io.github.staakk.cchart.renderer.RenderedShape
+import io.github.staakk.cchart.renderer.BoundingShape
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
 import kotlin.math.abs
 
 class RectMatcher(
-    private val expected: RenderedShape.Rect,
+    private val expected: BoundingShape.Rect,
     private val precision: Float = 0.001f
-) : TypeSafeMatcher<RenderedShape>() {
+) : TypeSafeMatcher<BoundingShape>() {
     override fun describeTo(description: Description?) {
         description?.appendText("RenderedShape.Rect")
     }
 
-    override fun matchesSafely(item: RenderedShape?): Boolean {
+    override fun matchesSafely(item: BoundingShape?): Boolean {
         return item != null &&
-                item is RenderedShape.Rect &&
+                item is BoundingShape.Rect &&
                 expected.point == item.point &&
                 abs(expected.labelAnchorX - item.labelAnchorX) < precision &&
                 abs(expected.labelAnchorY - item.labelAnchorY) < precision &&
@@ -27,5 +27,5 @@ class RectMatcher(
     }
 }
 
-fun matchesRect(expected: RenderedShape.Rect, precision: Float = 0.001f): Matcher<RenderedShape> =
+fun matchesRect(expected: BoundingShape.Rect, precision: Float = 0.001f): Matcher<BoundingShape> =
     RectMatcher(expected, precision)

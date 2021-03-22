@@ -4,7 +4,7 @@ import androidx.compose.ui.geometry.Offset
 import io.github.staakk.cchart.data.Point
 import kotlin.math.pow
 
-sealed class RenderedShape {
+sealed class BoundingShape {
 
     abstract val point: Point
 
@@ -29,7 +29,7 @@ sealed class RenderedShape {
         override val labelAnchorY: Float,
         val center: Offset,
         val radius: Float
-    ) : RenderedShape() {
+    ) : BoundingShape() {
 
         override fun contains(offset: Offset): Boolean =
             radius.pow(2) - (center.x - offset.x).pow(2) - (center.y - offset.y).pow(2) >= 0f
@@ -41,7 +41,7 @@ sealed class RenderedShape {
         override val labelAnchorY: Float,
         val topLeft: Offset,
         val bottomRight: Offset
-    ) : RenderedShape() {
+    ) : BoundingShape() {
 
         override fun contains(offset: Offset): Boolean =
             topLeft.x <= offset.x && offset.x <= bottomRight.x &&

@@ -30,6 +30,8 @@ const val PAN_AND_ZOOM_CHART = 6
 const val LABELED_POINTS_CHART = 7
 const val OBSERVE_VIEWPORT_CHART = 8
 const val POPUP_CHART = 9
+const val ANIMATED_BAR_COLOR_CHART_ID = 10
+const val ANIMATED_BAR_SIZE_CHART_ID = 11
 
 class SamplesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +60,8 @@ fun Content() {
         LABELED_POINTS_CHART -> LabeledPointsScreen()
         OBSERVE_VIEWPORT_CHART -> ViewportUpdatesScreen()
         POPUP_CHART -> PopupChartScreen()
+        ANIMATED_BAR_COLOR_CHART_ID -> AnimatedBarColorChartScreen()
+        ANIMATED_BAR_SIZE_CHART_ID -> AnimatedBarSizeChartScreen()
     }
 
     MenuHeader()
@@ -70,8 +74,10 @@ fun Content() {
         item { Item(DATE_LABELS_CHART, "Chart with date labels") { selected.value = it } }
         item { Item(GRID_CHART, "Chart with grid") { selected.value = it } }
         item { Item(PAN_AND_ZOOM_CHART, "Chart with panning and zooming") { selected.value = it } }
-        item { Item(OBSERVE_VIEWPORT_CHART, "Chart with observing viewport") { selected.value = it } }
-        item { Item(POPUP_CHART, "Chart with popup") { selected.value = it } }
+        item { Item(OBSERVE_VIEWPORT_CHART, "Observing viewport") { selected.value = it } }
+        item { Item(POPUP_CHART, "Displaying popup") { selected.value = it } }
+        item { Item(ANIMATED_BAR_COLOR_CHART_ID, "Animated bar color") { selected.value = it } }
+        item { Item(ANIMATED_BAR_SIZE_CHART_ID, "Animated bar size") { selected.value = it } }
     }
 }
 

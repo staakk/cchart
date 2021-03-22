@@ -18,7 +18,7 @@ class BarRendererTest {
     private val drawScope = mockk<DrawScope>()
 
     private val barDrawer: BarDrawer = { _, point, topLeft, size ->
-        RenderedShape.Rect(
+        BoundingShape.Rect(
             point = point,
             labelAnchorX = topLeft.x + size.width / 2,
             labelAnchorY = size.height,
@@ -54,56 +54,56 @@ class BarRendererTest {
     @Test
     fun `should draw line`() {
         val expected = listOf(
-            RenderedShape.Rect(
+            BoundingShape.Rect(
                 point = Point(x = -1.0f, y = 0.5f, tag = null),
                 labelAnchorX = -2.05f,
                 labelAnchorY = -1.0f,
                 topLeft = Offset(-2.1f, -0.0f),
                 bottomRight = Offset(-2.0f, 1.0f)
             ),
-            RenderedShape.Rect(
+            BoundingShape.Rect(
                 point = Point(x = -1.0f, y = 0.3f, tag = null),
                 labelAnchorX = -1.95f,
                 labelAnchorY = -0.6f,
                 topLeft = Offset(-2.0f, -0.0f),
                 bottomRight = Offset(-1.9f, 0.6f)
             ),
-            RenderedShape.Rect(
+            BoundingShape.Rect(
                 point = Point(x = 0.5f, y = 0.5f, tag = null),
                 labelAnchorX = 0.95f,
                 labelAnchorY = -1.0f,
                 topLeft = Offset(0.9f, -0.0f),
                 bottomRight = Offset(1.0f, 1.0f)
             ),
-            RenderedShape.Rect(
+            BoundingShape.Rect(
                 point = Point(x = 0.5f, y = 0.3f, tag = null),
                 labelAnchorX = 1.05f,
                 labelAnchorY = -0.6f,
                 topLeft = Offset(1.0f, -0.0f),
                 bottomRight = Offset(1.1f, 0.6f)
             ),
-            RenderedShape.Rect(
+            BoundingShape.Rect(
                 point = Point(x = 0.7f, y = 0.5f, tag = null),
                 labelAnchorX = 1.3499999f,
                 labelAnchorY = -1.0f,
                 topLeft = Offset(1.3f, -0.0f),
                 bottomRight = Offset(1.4f, 1.0f)
             ),
-            RenderedShape.Rect(
+            BoundingShape.Rect(
                 point = Point(x = 0.7f, y = 0.3f, tag = null),
                 labelAnchorX = 1.4499999f,
                 labelAnchorY = -0.6f,
                 topLeft = Offset(1.4f, -0.0f),
                 bottomRight = Offset(1.5f, 0.6f)
             ),
-            RenderedShape.Rect(
+            BoundingShape.Rect(
                 point = Point(x = 1.5f, y = 0.5f, tag = null),
                 labelAnchorX = 2.95f,
                 labelAnchorY = -1.0f,
                 topLeft = Offset(2.9f, -0.0f),
                 bottomRight = Offset(3.0f, 1.0f)
             ),
-            RenderedShape.Rect(
+            BoundingShape.Rect(
                 point = Point(x = 1.5f, y = 0.3f, tag = null),
                 labelAnchorX = 3.05f,
                 labelAnchorY = -0.6f,

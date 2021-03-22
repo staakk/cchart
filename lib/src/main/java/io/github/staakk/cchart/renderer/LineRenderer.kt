@@ -7,9 +7,13 @@ import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Stroke
 import io.github.staakk.cchart.data.Point
 
-typealias LineDrawer = DrawScope.(List<Pair<Point, Offset>>) -> List<RenderedShape>
+typealias LineDrawer = DrawScope.(List<Pair<Point, Offset>>) -> Unit
+typealias LineBoundingShapeDrawer = DrawScope.(List<Pair<Point, Offset>>) -> List<BoundingShape>
 
-fun lineRenderer(lineDrawer: LineDrawer = drawLine()) = SeriesRenderer { context, series ->
+fun lineRenderer(
+    lineDrawer: LineDrawer = drawLine(),
+    lineBoundingShapeProvider: LineBoundingShapeDrawer = lineBoundingShapeProvider()
+) = SeriesRenderer { context, series ->
     if (series.size < 2) return@SeriesRenderer emptyList()
     series.getLineInViewport(context.bounds)
         .map {
@@ -18,7 +22,10 @@ fun lineRenderer(lineDrawer: LineDrawer = drawLine()) = SeriesRenderer { context
                 y = context.dataToRendererCoordY(it.y)
             )
         }
-        .let { lineDrawer(it) }
+        .let {
+            lineDrawer(it)
+            lineBoundingShapeProvider(it)
+        }
 }
 
 fun drawLine(
@@ -28,26 +35,11 @@ fun drawLine(
     alpha: Float = 1.0f,
     blendMode: BlendMode = DrawScope.DefaultBlendMode,
 ): LineDrawer = { pointsToRender ->
-    val renderedPoints = mutableListOf<RenderedShape>()
-    renderedPoints += RenderedShape.Circle(
-        point = pointsToRender[0].first,
-        labelAnchorX = pointsToRender[0].second.x,
-        labelAnchorY = pointsToRender[0].second.y,
-        center = pointsToRender[0].second,
-        radius = 20f
-    )
     drawPath(
         path = Path().apply {
             pointsToRender.windowed(2) {
                 moveTo(it[0].second)
                 lineTo(it[1].second)
-                renderedPoints += RenderedShape.Circle(
-                    point = it[1].first,
-                    labelAnchorX = it[1].second.x,
-                    labelAnchorY = it[1].second.y,
-                    center = it[1].second,
-                    radius = 20f
-                )
             }
             close()
         },
@@ -57,7 +49,18 @@ fun drawLine(
         colorFilter = colorFilter,
         blendMode = blendMode
     )
-    renderedPoints
+}
+
+fun lineBoundingShapeProvider(radius: Float = 20f): LineBoundingShapeDrawer = { points ->
+    points.map {
+        BoundingShape.Circle(
+            point = it.first,
+            labelAnchorX = it.second.x,
+            labelAnchorY = it.second.y,
+            center = it.second,
+            radius = radius
+        )
+    }
 }
 
 private fun Path.moveTo(offset: Offset) = moveTo(offset.x, offset.y)

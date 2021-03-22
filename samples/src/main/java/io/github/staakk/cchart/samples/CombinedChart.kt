@@ -41,8 +41,8 @@ fun CombinedChartScreen() {
                 pointOf(9f, 4.7f),
             ),
             renderer = combine(
-                lineRenderer(lineDrawer = drawLine(brush = SolidColor(Color.Pink))),
-                pointRenderer(radius = 10f, circleDrawer = drawCircle(brush = SolidColor(Color.Indigo)))
+                lineRenderer(lineDrawer = drawLine(brush = SolidColor(Colors.Pink))),
+                pointRenderer(radius = 10f, circleDrawer = drawCircle(brush = SolidColor(Colors.Indigo)))
             )
         )
 

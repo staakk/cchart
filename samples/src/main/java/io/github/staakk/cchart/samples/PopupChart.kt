@@ -55,7 +55,7 @@ fun PopupChartScreen() {
             ),
             renderer = pointRenderer(
                 radius = 10f,
-                circleDrawer = drawCircle(brush = SolidColor(Color.Red))
+                circleDrawer = drawCircle(brush = SolidColor(Colors.Red))
             )
         )
 
@@ -73,7 +73,7 @@ fun PopupChartScreen() {
                     modifier = Modifier
                         .align(HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
                         .background(
-                            brush = SolidColor(Color.LightGreen),
+                            brush = SolidColor(Colors.LightGreen),
                             shape = RoundedCornerShape(4.dp),
                             alpha = 0.5f
                         )

@@ -19,7 +19,7 @@ class LineRendererTest {
 
     private val lineDrawer: LineDrawer = { pointsToDraw ->
         pointsToDraw.map {
-            RenderedShape.Circle(
+            BoundingShape.Circle(
                 point = it.first,
                 labelAnchorX = it.second.x,
                 labelAnchorY = it.second.y,
@@ -48,43 +48,43 @@ class LineRendererTest {
 
     @Test
     fun `should draw line`() {
-        val expected = listOf<RenderedShape>(
-            RenderedShape.Circle(
+        val expected = listOf<BoundingShape>(
+            BoundingShape.Circle(
                 point = Point(x = -0.5f, y = 0.5f, tag = null),
                 labelAnchorX = -1.0f,
                 labelAnchorY = -1.0f,
                 center = Offset(-1.0f, -1.0f),
                 radius = 20.0f
             ),
-            RenderedShape.Circle(
+            BoundingShape.Circle(
                 point = Point(x = 0.5f, y = 0.5f, tag = null),
                 labelAnchorX = 1.0f,
                 labelAnchorY = -1.0f,
                 center = Offset(1.0f, -1.0f),
                 radius = 20.0f
             ),
-            RenderedShape.Circle(
+            BoundingShape.Circle(
                 point = Point(x = 1.5f, y = 0.5f, tag = null),
                 labelAnchorX = 3.0f,
                 labelAnchorY = -1.0f,
                 center = Offset(3.0f, -1.0f),
                 radius = 20.0f
             ),
-            RenderedShape.Circle(
+            BoundingShape.Circle(
                 point = Point(x = 1.5f, y = 0.5f, tag = null),
                 labelAnchorX = 3.0f,
                 labelAnchorY = -1.0f,
                 center = Offset(3.0f, -1.0f),
                 radius = 20.0f
             ),
-            RenderedShape.Circle(
+            BoundingShape.Circle(
                 point = Point(x = 0.5f, y = 0.5f, tag = null),
                 labelAnchorX = 1.0f,
                 labelAnchorY = -1.0f,
                 center = Offset(1.0f, -1.0f),
                 radius = 20.0f
             ),
-            RenderedShape.Circle(
+            BoundingShape.Circle(
                 point = Point(x = -0.5f, y = 0.5f, tag = null),
                 labelAnchorX = -1.0f,
                 labelAnchorY = -1.0f,
