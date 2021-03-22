@@ -3,6 +3,8 @@ package io.github.staakk.cchart.data
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * Specifies bounds for rendering of the chart. Those values should be represented in the same
@@ -86,6 +88,13 @@ data class Viewport(
 
     fun contains(point: Point) = point.x in minX..maxX && point.y in minY..maxY
 
+    operator fun plus(other: Viewport) = Viewport(
+        minX = min(minX, other.minX),
+        maxX = max(maxX, other.maxX),
+        minY = min(minY, other.minY),
+        maxY = max(maxY, other.maxY)
+    )
+
     companion object {
         fun Iterable<Series>.getViewport(): Viewport {
             var maxX = Float.MIN_VALUE
@@ -93,12 +102,32 @@ data class Viewport(
             var maxY = Float.MIN_VALUE
             var minY = Float.MAX_VALUE
 
+            forEach { series ->
+                series.forEach { point ->
+                    if (point.x > maxX) maxX = point.x
+                    if (point.x < minX) minX = point.x
+                    if (point.y > maxY) maxY = point.y
+                    if (point.y < minY) minY = point.y
+                }
+            }
+
+            return Viewport(maxX = maxX, minX = minX, maxY = maxY, minY = minY)
+        }
+
+        fun Iterable<GroupedSeries>.getViewportFromGroupedSeries(): Viewport {
+            var maxX = Float.MIN_VALUE
+            var minX = Float.MAX_VALUE
+            var maxY = Float.MIN_VALUE
+            var minY = Float.MAX_VALUE
+
             forEach { s ->
-                s.forEach { p ->
-                    if (p.x > maxX) maxX = p.x
-                    if (p.x < minX) minX = p.x
-                    if (p.y > maxY) maxY = p.y
-                    if (p.y < minY) minY = p.y
+                s.forEach { group ->
+                    group.forEach { point ->
+                        if (point.x > maxX) maxX = point.x
+                        if (point.x < minX) minX = point.x
+                        if (point.y > maxY) maxY = point.y
+                        if (point.y < minY) minY = point.y
+                    }
                 }
             }
 

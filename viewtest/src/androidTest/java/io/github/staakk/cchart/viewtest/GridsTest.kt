@@ -48,12 +48,12 @@ class GridsTest : ScreenshotTest {
     fun multipleVertical() = runTestFor(
         gridRenderer(
             orientation = GridOrientation.VERTICAL,
-            gridLinesProvider = GridLinesProviders.fraction(2)
+            gridLinesProvider = GridLinesProviders.multiple(0.5f)
         ),
         gridRenderer(
             brush = SolidColor(Color.Red),
             orientation = GridOrientation.VERTICAL,
-            gridLinesProvider = GridLinesProviders.fraction(3)
+            gridLinesProvider = GridLinesProviders.multiple(1f / 3f)
         ),
     )
 
@@ -61,12 +61,12 @@ class GridsTest : ScreenshotTest {
     fun multipleHorizontal() = runTestFor(
         gridRenderer(
             orientation = GridOrientation.HORIZONTAL,
-            gridLinesProvider = GridLinesProviders.fraction(2)
+            gridLinesProvider = GridLinesProviders.multiple(0.5f)
         ),
         gridRenderer(
             brush = SolidColor(Color.Red),
             orientation = GridOrientation.HORIZONTAL,
-            gridLinesProvider = GridLinesProviders.fraction(3)
+            gridLinesProvider = GridLinesProviders.multiple(1f / 3f)
         ),
     )
 
@@ -88,7 +88,7 @@ class GridsTest : ScreenshotTest {
                         pointOf(8f, 4.5f),
                         pointOf(9f, 4.7f),
                     ),
-                    renderer = lineRenderer(drawLine = drawLine(brush = SolidColor(Color.Blue)))
+                    renderer = lineRenderer(lineDrawer = drawLine(brush = SolidColor(Color.Blue)))
                 )
 
                 grids.forEach(::grid)

@@ -50,7 +50,7 @@ fun DateLabelsChartScreen() {
                 )
             ),
             barGroupRenderer(
-                drawBar = drawBar { index, _ ->
+                barDrawer = drawBar { index, _ ->
                     SolidColor(
                         when (index) {
                             0 -> Color.DeepPurple

@@ -5,6 +5,8 @@ const val kotlinVersion = "1.4.30"
 object Libs {
     const val desugar = "com.android.tools:desugar_jdk_libs:1.1.1"
     const val junit = "junit:junit:4.13.2"
+    const val mockk = "io.mockk:mockk:1.11.0"
+    const val hamcrest = "org.hamcrest:hamcrest:2.2"
     const val material = "com.google.android.material:material:1.3.0"
 
     object AndroidX {

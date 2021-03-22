@@ -81,7 +81,7 @@ enum class GridOrientation {
 fun gridRenderer(
     brush: Brush = SolidColor(Color.Black),
     orientation: GridOrientation = GridOrientation.HORIZONTAL,
-    gridLinesProvider: GridLinesProvider = IntGridLinesProvider,
+    gridLinesProvider: GridLinesProvider = GridLinesProviders.intGrid,
     strokeWidth: Float = Stroke.HairlineWidth,
     cap: StrokeCap = Stroke.DefaultCap,
     pathEffect: PathEffect? = null,

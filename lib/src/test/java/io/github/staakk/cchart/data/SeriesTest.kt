@@ -16,13 +16,13 @@ class SeriesTest {
 
     @Test
     fun `should return previous and next point for line crossing the viewport`() {
-        val series = Series(listOf(
+        val series = seriesOf(
             pointOf(-1, 0.5f),
             pointOf(-0.5, 0.5f),
             pointOf(0.5, 0.5f),
             pointOf(1.5, 0.5f),
             pointOf(2.0, 0.5f),
-        ))
+        )
 
         assertEquals(
             listOf(
@@ -36,11 +36,11 @@ class SeriesTest {
 
     @Test
     fun `should return line inside viewport`() {
-        val series = Series(listOf(
+        val series = seriesOf(
             pointOf(0.1, 0.5f),
             pointOf(0.5, 0.5f),
             pointOf(0.9, 0.5f),
-        ))
+        )
 
         assertEquals(
             listOf(
@@ -54,7 +54,7 @@ class SeriesTest {
 
     @Test
     fun `should return line segments inside viewport`() {
-        val series = Series(listOf(
+        val series = seriesOf(
             pointOf(-1, 0.5f),
             pointOf(-0.5, 0.5f),
             pointOf(0.5, 0.5f),
@@ -64,7 +64,7 @@ class SeriesTest {
             pointOf(0.5, 0.5f),
             pointOf(-0.5, 0.5f),
             pointOf(-1, 0.5f),
-        ))
+        )
 
         assertEquals(
             listOf(

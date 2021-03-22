@@ -38,7 +38,7 @@ fun LineChartScreen() {
                 pointOf(8f, 4.5f),
                 pointOf(9f, 4.7f),
             ),
-            renderer = lineRenderer(drawLine = drawLine(brush = SolidColor(Color.Blue)))
+            renderer = lineRenderer(lineDrawer = drawLine(brush = SolidColor(Color.Blue)))
         )
 
         horizontalAxis(horizontalAxisRenderer())

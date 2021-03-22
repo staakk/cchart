@@ -12,24 +12,19 @@ fun interface GridLinesProvider {
     fun provide(min: Float, max: Float): List<Float>
 }
 
-/**
- * Provides grid line position for each integer number.
- */
-object IntGridLinesProvider : GridLinesProvider {
-
-    override fun provide(min: Float, max: Float) = (min.toInt()..max.toInt()).map(Int::toFloat)
-}
-
 object GridLinesProviders {
 
-    fun intGrid() = IntGridLinesProvider
-
-    fun fraction(value: Int) = GridLinesProvider { min, max ->
-        (min.toInt()..max.toInt())
-            .flatMap { intValue -> (1..value).map { intValue + it.toFloat() / value } }
+    val intGrid = GridLinesProvider { min, max ->
+        (min.toInt()..max.toInt()).map(Int::toFloat)
     }
 
-    fun multiple(value: Int) = GridLinesProvider { min, max ->
-        (min.toInt()..max.toInt()).filter { it % value != 0 }.map(Int::toFloat)
+    fun multiple(value: Float) = GridLinesProvider { min, max ->
+        var current = min - min % value
+        val result = mutableListOf<Float>()
+        while (current <= max) {
+            result += current
+            current += value
+        }
+        result
     }
 }

@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalDensity
 import io.github.staakk.cchart.axis.*
 import io.github.staakk.cchart.data.*
 import io.github.staakk.cchart.data.Viewport.Companion.getViewport
+import io.github.staakk.cchart.data.Viewport.Companion.getViewportFromGroupedSeries
 import io.github.staakk.cchart.grid.GridRenderer
 import io.github.staakk.cchart.label.*
 import io.github.staakk.cchart.renderer.*
@@ -48,7 +49,10 @@ fun Chart(
     scope.content()
 
     val viewportState = remember {
-        mutableStateOf(viewport ?: scope.series.keys.getViewport())
+        mutableStateOf(
+            viewport
+                ?: scope.series.keys.getViewport() + scope.groupedSeries.keys.getViewportFromGroupedSeries()
+        )
     }
     Chart(
         modifier = modifier,

@@ -15,7 +15,7 @@ typealias BarDrawer = DrawScope.(index: Int, Point, topLeft: Offset, Size) -> Re
 fun barGroupRenderer(
     preferredWidth: Float,
     minimalSpacing: Float = 10f,
-    drawBar: BarDrawer = drawBar()
+    barDrawer: BarDrawer = drawBar()
 ): GroupedSeriesRenderer = GroupedSeriesRenderer { context, series ->
     val renderedPoints = mutableListOf<RenderedShape>()
     val drawingBounds = getDrawingBounds(context)
@@ -40,7 +40,7 @@ fun barGroupRenderer(
 
             val topLeft = Offset(x - halfWidth, context.dataToRendererCoordY(0f))
             val size = Size(width, -y)
-            renderedPoints += drawBar(index, point, topLeft, size)
+            renderedPoints += barDrawer(index, point, topLeft, size)
         }
     }
     renderedPoints
@@ -84,7 +84,7 @@ fun drawBar(
     colorFilter: ColorFilter? = null,
     blendMode: BlendMode = DrawScope.DefaultBlendMode,
     brushProvider: (index: Int, Point) -> Brush = { _, _ -> SolidColor(Color.Black) }
-): BarDrawer = { index: Int, point: Point, topLeft: Offset, size: Size ->
+): BarDrawer = { index, point, topLeft, size ->
         drawRect(
             brush = brushProvider(index, point),
             topLeft = topLeft,

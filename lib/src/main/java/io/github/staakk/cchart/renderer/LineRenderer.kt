@@ -9,7 +9,7 @@ import io.github.staakk.cchart.data.Point
 
 typealias LineDrawer = DrawScope.(List<Pair<Point, Offset>>) -> List<RenderedShape>
 
-fun lineRenderer(drawLine: LineDrawer = drawLine()) = SeriesRenderer { context, series ->
+fun lineRenderer(lineDrawer: LineDrawer = drawLine()) = SeriesRenderer { context, series ->
     if (series.size < 2) return@SeriesRenderer emptyList()
     series.getLineInViewport(context.bounds)
         .map {
@@ -18,7 +18,7 @@ fun lineRenderer(drawLine: LineDrawer = drawLine()) = SeriesRenderer { context, 
                 y = context.dataToRendererCoordY(it.y)
             )
         }
-        .let { drawLine(it) }
+        .let { lineDrawer(it) }
 }
 
 fun drawLine(

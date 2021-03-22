@@ -56,7 +56,7 @@ class BarChartTest : ScreenshotTest {
                     ),
                     renderer = barGroupRenderer(
                         preferredWidth = 50f,
-                        drawBar = drawBar { _, _ -> SolidColor(Color.Blue) }
+                        barDrawer = drawBar { _, _ -> SolidColor(Color.Blue) }
                     )
                 )
 
@@ -124,7 +124,7 @@ class BarChartTest : ScreenshotTest {
                     ),
                     renderer = barGroupRenderer(
                         preferredWidth = 50f,
-                        drawBar = drawBar { index, _ ->
+                        barDrawer = drawBar { index, _ ->
                             val color = when (index) {
                                 0 -> Color.Blue
                                 1 -> Color.Green
@@ -200,7 +200,7 @@ class BarChartTest : ScreenshotTest {
                     renderer = barGroupRenderer(
                         preferredWidth = 50f,
                         minimalSpacing = 50f,
-                        drawBar = drawBar { index, _ ->
+                        barDrawer = drawBar { index, _ ->
                             val color = when (index) {
                                 0 -> Color.Blue
                                 1 -> Color.Green

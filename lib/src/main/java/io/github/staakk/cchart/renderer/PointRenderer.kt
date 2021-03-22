@@ -10,13 +10,13 @@ import io.github.staakk.cchart.data.Viewport
 
 typealias CircleDrawer = DrawScope.(Point, center: Offset, radius: Float) -> RenderedShape
 
-fun pointRenderer(radius: Float = 15f, drawCircle: CircleDrawer = drawCircle()) =
+fun pointRenderer(radius: Float = 15f, circleDrawer: CircleDrawer = drawCircle()) =
     SeriesRenderer { context, series ->
         series.getPointsInViewport(getDrawingBounds(context, radius))
             .map { point ->
                 val x = context.dataToRendererCoordX(point.x)
                 val y = context.dataToRendererCoordY(point.y)
-                drawCircle(this, point, Offset(x, y), radius)
+                circleDrawer(this, point, Offset(x, y), radius)
             }
     }
 

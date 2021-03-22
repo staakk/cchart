@@ -108,7 +108,6 @@ enum class VerticalAlignment {
 private class OffsetToCenterModifier(
     val x: Dp,
     val y: Dp,
-    val rtlAware: Boolean,
     val horizontalAlignment: HorizontalAlignment,
     val verticalAlignment: VerticalAlignment,
     inspectorInfo: InspectorInfo.() -> Unit
@@ -131,18 +130,16 @@ private class OffsetToCenterModifier(
         val otherModifier = other as? OffsetToCenterModifier ?: return false
 
         return x == otherModifier.x &&
-                y == otherModifier.y &&
-                rtlAware == otherModifier.rtlAware
+                y == otherModifier.y
     }
 
     override fun hashCode(): Int {
         var result = x.hashCode()
         result = 31 * result + y.hashCode()
-        result = 31 * result + rtlAware.hashCode()
         return result
     }
 
-    override fun toString(): String = "OffsetToCenterModifier(x=$x, y=$y, rtlAware=$rtlAware)"
+    override fun toString(): String = "OffsetToCenterModifier(x=$x, y=$y)"
 }
 
 internal fun Modifier.absoluteOffsetToCenter(
@@ -156,7 +153,6 @@ internal fun Modifier.absoluteOffsetToCenter(
         y = y,
         horizontalAlignment = horizontalAlignment,
         verticalAlignment = verticalAlignment,
-        rtlAware = false,
         inspectorInfo = debugInspectorInfo {
             name = "absoluteOffset"
             properties["x"] = x

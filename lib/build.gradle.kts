@@ -17,6 +17,8 @@ dependencies {
     implementation(Libs.material)
 
     testImplementation(Libs.junit)
+    testImplementation(Libs.mockk)
+    testImplementation(Libs.hamcrest)
 
     androidTestImplementations(Libs.AndroidX.androidTest)
     androidTestImplementations(Libs.Compose.androidTest)

@@ -50,7 +50,7 @@ fun BarChartScreen() {
             ),
             renderer = barGroupRenderer(
                 preferredWidth = 64f,
-                drawBar = drawBar { index, _ ->
+                barDrawer = drawBar { index, _ ->
                     SolidColor(
                         when (index) {
                             0 -> Color.Indigo

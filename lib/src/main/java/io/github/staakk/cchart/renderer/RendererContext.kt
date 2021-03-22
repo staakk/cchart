@@ -23,11 +23,11 @@ data class RendererContext(
 }
 
 fun rendererContext(
-    bounds: Viewport,
+    viewport: Viewport,
     canvasSize: Size,
 ) = RendererContext(
     canvasSize = canvasSize,
-    scaleX = canvasSize.width / bounds.width,
-    scaleY = canvasSize.height / bounds.height,
-    bounds = bounds
+    scaleX = canvasSize.width / viewport.width,
+    scaleY = canvasSize.height / viewport.height,
+    bounds = viewport
 )
