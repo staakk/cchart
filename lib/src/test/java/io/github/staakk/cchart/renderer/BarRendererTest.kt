@@ -17,16 +17,6 @@ class BarRendererTest {
 
     private val drawScope = mockk<DrawScope>()
 
-    private val barDrawer: BarDrawer = { _, point, topLeft, size ->
-        BoundingShape.Rect(
-            point = point,
-            labelAnchorX = topLeft.x + size.width / 2,
-            labelAnchorY = size.height,
-            topLeft = topLeft,
-            bottomRight = Offset(topLeft.x + size.width, topLeft.y - size.height)
-        )
-    }
-
     private val rendererContext = rendererContext(
         viewport = Viewport(minX = 0f, maxX = 1f, minY = 0f, maxY = 1f),
         canvasSize = Size(2f, 2f)
@@ -111,13 +101,11 @@ class BarRendererTest {
                 bottomRight = Offset(3.1f, 0.6f)
             )
         )
-        val result = with(
-            barGroupRenderer(
-                barDrawer = barDrawer,
-                preferredWidth = 0.1f,
-                minimalSpacing = 0.1f
-            )
-        ) {
+        val result = with(barGroupRenderer(
+            preferredWidth = 0.1f,
+            minimalSpacing = 0.1f,
+            barDrawer = { _, _, _, _ -> }
+        )) {
             drawScope.render(rendererContext, series)
         }
 

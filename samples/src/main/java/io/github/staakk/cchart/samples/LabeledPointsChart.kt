@@ -6,6 +6,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,8 +41,8 @@ fun LabeledPointsScreen() {
                 pointOf(9f, 4.7f),
             ),
             renderer = pointRenderer(
-                radius = 10f,
-                circleDrawer = drawCircle(brush = SolidColor(Colors.Red))
+                size = Size(20f, 20f),
+                pointDrawer = drawCircle(brush = SolidColor(Colors.Red))
             )
         )
 

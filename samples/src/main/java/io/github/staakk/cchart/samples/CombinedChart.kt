@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.staakk.cchart.Chart
@@ -42,7 +43,10 @@ fun CombinedChartScreen() {
             ),
             renderer = combine(
                 lineRenderer(lineDrawer = drawLine(brush = SolidColor(Colors.Pink))),
-                pointRenderer(radius = 10f, circleDrawer = drawCircle(brush = SolidColor(Colors.Indigo)))
+                pointRenderer(
+                    size = Size(20f, 20f),
+                    pointDrawer = drawCircle(brush = SolidColor(Colors.Indigo))
+                )
             )
         )
 

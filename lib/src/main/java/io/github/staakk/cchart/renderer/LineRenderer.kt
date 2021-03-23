@@ -7,12 +7,30 @@ import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Stroke
 import io.github.staakk.cchart.data.Point
 
-typealias LineDrawer = DrawScope.(List<Pair<Point, Offset>>) -> Unit
-typealias LineBoundingShapeDrawer = DrawScope.(List<Pair<Point, Offset>>) -> List<BoundingShape>
+fun interface LineDrawer {
+
+    /**
+     * Draws the line based on provided [points].
+     *
+     * @param points Points to draw the line.
+     */
+    fun DrawScope.draw(points: List<Pair<Point, Offset>>)
+}
+
+fun interface LineBoundingShapeProvider {
+
+    /**
+     * Provides bounding shapes used for data labels and on click listener of the
+     * [io.github.staakk.cchart.Chart].
+     *
+     * @param points Points to provide [BoundingShape]s for.
+     */
+    fun DrawScope.provide(points: List<Pair<Point, Offset>>): List<BoundingShape>
+}
 
 fun lineRenderer(
     lineDrawer: LineDrawer = drawLine(),
-    lineBoundingShapeProvider: LineBoundingShapeDrawer = lineBoundingShapeProvider()
+    boundingShapeProvider: LineBoundingShapeProvider = lineBoundingShapeProvider()
 ) = SeriesRenderer { context, series ->
     if (series.size < 2) return@SeriesRenderer emptyList()
     series.getLineInViewport(context.bounds)
@@ -23,8 +41,8 @@ fun lineRenderer(
             )
         }
         .let {
-            lineDrawer(it)
-            lineBoundingShapeProvider(it)
+            with(lineDrawer) { draw(it) }
+            with(boundingShapeProvider) { provide(it) }
         }
 }
 
@@ -34,7 +52,7 @@ fun drawLine(
     colorFilter: ColorFilter? = null,
     alpha: Float = 1.0f,
     blendMode: BlendMode = DrawScope.DefaultBlendMode,
-): LineDrawer = { pointsToRender ->
+) = LineDrawer { pointsToRender ->
     drawPath(
         path = Path().apply {
             pointsToRender.windowed(2) {
@@ -51,7 +69,7 @@ fun drawLine(
     )
 }
 
-fun lineBoundingShapeProvider(radius: Float = 20f): LineBoundingShapeDrawer = { points ->
+fun lineBoundingShapeProvider(radius: Float = 20f) = LineBoundingShapeProvider { points ->
     points.map {
         BoundingShape.Circle(
             point = it.first,

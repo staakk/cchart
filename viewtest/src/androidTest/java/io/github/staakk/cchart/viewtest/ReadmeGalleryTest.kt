@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.toArgb
@@ -271,8 +272,8 @@ class ReadmeGalleryTest : ScreenshotTest {
                     renderer = combine(
                         lineRenderer(lineDrawer = drawLine(brush = SolidColor(Blue))),
                         pointRenderer(
-                            radius = with(density) { 4.dp.toPx() },
-                            circleDrawer = drawCircle(brush = SolidColor(LightBlue))
+                            size = with(density) { 8.dp.toPx() }.let { Size(it, it) },
+                            pointDrawer = drawCircle(brush = SolidColor(LightBlue))
                         )
                     )
                 )
@@ -294,8 +295,8 @@ class ReadmeGalleryTest : ScreenshotTest {
                     renderer = combine(
                         lineRenderer(lineDrawer = drawLine(brush = SolidColor(Green))),
                         pointRenderer(
-                            radius = with(density) { 4.dp.toPx() },
-                            circleDrawer = drawCircle(brush = SolidColor(LightGreen))
+                            size = with(density) { 8.dp.toPx() }.let { Size(it, it) },
+                            pointDrawer = drawCircle(brush = SolidColor(LightGreen))
                         )
                     )
                 )

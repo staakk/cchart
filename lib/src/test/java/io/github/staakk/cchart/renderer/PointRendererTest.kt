@@ -13,17 +13,8 @@ import org.junit.Test
 
 class PointRendererTest {
 
+    private val circleSize = Size(0.2f, 0.2f)
     private val circleRadius = 0.1f
-
-    private val circleDrawer: CircleDrawer = { point, center, radius ->
-        BoundingShape.Circle(
-            point = point,
-            labelAnchorX = center.x,
-            labelAnchorY = center.y,
-            center = center,
-            radius = radius
-        )
-    }
 
     private val rendererContext = rendererContext(
         viewport = Viewport(minX = 0f, maxX = 1f, minY = 0f, maxY = 1f),
@@ -67,7 +58,7 @@ class PointRendererTest {
                 radius = circleRadius
             )
         )
-        val result = with(pointRenderer(radius = circleRadius, circleDrawer = circleDrawer)) {
+        val result = with(pointRenderer(size = circleSize, pointDrawer = { _, _, _ -> })) {
             drawScope.render(rendererContext, series)
         }
         assertEquals(expected, result)

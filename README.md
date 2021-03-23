@@ -159,7 +159,7 @@ Chart(
     ),
     renderer = barGroupRenderer(
       preferredWidth = 64f,
-      render = renderBar { index, _ ->
+      barDrawer = drawBar { index, _ ->
         SolidColor(
           when (index) {
             0 -> DeepPurple
@@ -232,10 +232,10 @@ Chart(
       pointOf(10f, 9.1f),
     ),
     renderer = combine(
-      lineRenderer(render = renderLine(brush = SolidColor(Blue))),
+      lineRenderer(lineDrawer = drawLine(brush = SolidColor(Blue))),
       pointRenderer(
-        radius = with(density) { 4.dp.toPx() },
-        render = renderCircle(brush = SolidColor(LightBlue))
+        size = with(density) { 8.dp.toPx() }.let { Size(it, it) },
+        pointDrawer = drawCircle(brush = SolidColor(LightBlue))
       )
     )
   )
@@ -255,10 +255,10 @@ Chart(
       pointOf(10f, 1.3f),
     ),
     renderer = combine(
-      lineRenderer(render = renderLine(brush = SolidColor(Green))),
+      lineRenderer(lineDrawer = drawLine(brush = SolidColor(Green))),
       pointRenderer(
-        radius = with(density) { 4.dp.toPx() },
-        render = renderCircle(brush = SolidColor(LightGreen))
+        size = with(density) { 8.dp.toPx() }.let { Size(it, it) },
+        pointDrawer = drawCircle(brush = SolidColor(LightGreen))
       )
     )
   )

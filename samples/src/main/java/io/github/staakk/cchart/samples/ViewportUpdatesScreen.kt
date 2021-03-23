@@ -52,8 +52,8 @@ fun ViewportUpdatesScreen() {
                     pointOf(9f, 4.7f),
                 ),
                 renderer = pointRenderer(
-                    radius = 10f,
-                    circleDrawer = drawCircle(brush = SolidColor(Colors.Indigo))
+                    size = Size(20f, 20f),
+                    pointDrawer = drawCircle(brush = SolidColor(Colors.Indigo))
                 )
             )
 

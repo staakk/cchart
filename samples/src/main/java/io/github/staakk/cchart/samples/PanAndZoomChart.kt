@@ -45,8 +45,8 @@ fun PanAndZoomScreen() {
                 pointOf(9f, 4.7f),
             ),
             renderer = pointRenderer(
-                radius = 10f,
-                circleDrawer = drawCircle(brush = SolidColor(Colors.Red))
+                size = Size(20f, 20f),
+                pointDrawer = drawCircle(brush = SolidColor(Colors.Red))
             )
         )
 

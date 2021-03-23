@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,8 +55,8 @@ fun PopupChartScreen() {
                 pointOf(9f, 4.7f),
             ),
             renderer = pointRenderer(
-                radius = 10f,
-                circleDrawer = drawCircle(brush = SolidColor(Colors.Red))
+                size = Size(20f, 20f),
+                pointDrawer = drawCircle(brush = SolidColor(Colors.Red))
             )
         )
 

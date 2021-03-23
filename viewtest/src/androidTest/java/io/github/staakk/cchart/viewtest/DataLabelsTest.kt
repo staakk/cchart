@@ -67,7 +67,7 @@ class DataLabelsTest : ScreenshotTest {
                         pointOf(6f, 1.3f),
                         pointOf(8f, 4.5f),
                     ),
-                    renderer = pointRenderer(circleDrawer = drawCircle(brush = SolidColor(Color.Blue)))
+                    renderer = pointRenderer(pointDrawer = drawCircle(brush = SolidColor(Color.Blue)))
                 )
 
                 verticalAxis(verticalAxisRenderer())

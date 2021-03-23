@@ -13,11 +13,9 @@ import org.junit.Test
 
 class LineRendererTest {
 
-    private val circleRadius = 20f
-
     private val drawScope = mockk<DrawScope>()
 
-    private val lineDrawer: LineDrawer = { pointsToDraw ->
+    private val lineBoundingShapeProvider = LineBoundingShapeProvider { pointsToDraw ->
         pointsToDraw.map {
             BoundingShape.Circle(
                 point = it.first,
@@ -92,7 +90,7 @@ class LineRendererTest {
                 radius = 20.0f
             )
         )
-        val result = with(lineRenderer(lineDrawer = lineDrawer)) {
+        val result = with(lineRenderer(lineDrawer = { })) {
             drawScope.render(rendererContext, series)
         }
         assertEquals(expected, result)

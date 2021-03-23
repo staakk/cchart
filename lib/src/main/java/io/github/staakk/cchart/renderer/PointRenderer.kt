@@ -1,6 +1,7 @@
 package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.DrawStyle
@@ -8,23 +9,43 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import io.github.staakk.cchart.data.Point
 import io.github.staakk.cchart.data.Viewport
 
-typealias CircleDrawer = DrawScope.(Point, center: Offset, radius: Float) -> Unit
-typealias CircleBoundingShapeProvider = DrawScope.(Point, center: Offset, radius: Float) -> BoundingShape
+fun interface PointDrawer {
+
+    /**
+     * Draws shape based on the provided values.
+     *
+     * @param point Point to draw.
+     * @param center Center of the shape to draw.
+     * @param size Size of the shape to draw.
+     */
+    fun DrawScope.draw(point: Point, center: Offset, size: Size)
+}
+
+fun interface PointBoundingShapeProvider {
+
+    /**
+     * Provides bounding box for the shape.
+     *
+     * @param point Point to draw
+     * @param center Center of the rendered shape.
+     * @param size Radius of the rendered shape.
+     */
+    fun DrawScope.provide(point: Point, center: Offset, size: Size): BoundingShape
+}
 
 fun pointRenderer(
-    radius: Float = 15f,
-    circleDrawer: CircleDrawer = drawCircle(),
-    boundingShapeProvider: CircleBoundingShapeProvider = circleBoundingShapeProvider()
-) =
-    SeriesRenderer { context, series ->
-        series.getPointsInViewport(getDrawingBounds(context, radius))
-            .map { point ->
-                val x = context.dataToRendererCoordX(point.x)
-                val y = context.dataToRendererCoordY(point.y)
-                circleDrawer(this, point, Offset(x, y), radius)
-                boundingShapeProvider(this, point, Offset(x, y), radius)
-            }
-    }
+    size: Size = Size(30f, 30f),
+    pointDrawer: PointDrawer = drawCircle(),
+    boundingShapeProvider: PointBoundingShapeProvider = circleBoundingShapeProvider()
+) = SeriesRenderer { context, series ->
+    series.getPointsInViewport(getDrawingBounds(context, size))
+        .map { point ->
+            val x = context.dataToRendererCoordX(point.x)
+            val y = context.dataToRendererCoordY(point.y)
+            with(pointDrawer) { draw(point, Offset(x, y), size) }
+            with(boundingShapeProvider) { provide(point, Offset(x, y), size) }
+        }
+}
 
 fun drawCircle(
     brush: Brush = SolidColor(Color.Black),
@@ -32,10 +53,10 @@ fun drawCircle(
     style: DrawStyle = Fill,
     colorFilter: ColorFilter? = null,
     blendMode: BlendMode = DrawScope.DefaultBlendMode,
-): CircleDrawer = { _, center, radius ->
+) = PointDrawer { _, center, size ->
     drawCircle(
         brush = brush,
-        radius = radius,
+        radius = size.height / 2,
         center = center,
         alpha = alpha,
         style = style,
@@ -44,10 +65,10 @@ fun drawCircle(
     )
 }
 
-private fun getDrawingBounds(rendererContext: RendererContext, radius: Float): Viewport {
+private fun getDrawingBounds(rendererContext: RendererContext, size: Size): Viewport {
     val bounds = rendererContext.bounds
-    val xScaledRadius = radius / rendererContext.scaleX
-    val yScaledRadius = radius / rendererContext.scaleY
+    val xScaledRadius = size.width / 2 / rendererContext.scaleX
+    val yScaledRadius = size.height / 2 / rendererContext.scaleY
     return Viewport(
         minX = bounds.minX - xScaledRadius,
         maxX = bounds.maxX + xScaledRadius,
@@ -57,12 +78,12 @@ private fun getDrawingBounds(rendererContext: RendererContext, radius: Float): V
 }
 
 
-fun circleBoundingShapeProvider(): CircleBoundingShapeProvider = { point, center, radius ->
+fun circleBoundingShapeProvider() = PointBoundingShapeProvider { point, center, size ->
     BoundingShape.Circle(
         point = point,
         labelAnchorX = center.x,
         labelAnchorY = center.y,
         center = center,
-        radius = radius
+        radius = size.width / 2
     )
 }

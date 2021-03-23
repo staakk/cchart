@@ -10,9 +10,45 @@ import io.github.staakk.cchart.data.Point
 import io.github.staakk.cchart.data.Viewport
 import kotlin.math.abs
 
-typealias BarDrawer = DrawScope.(index: Int, Point, topLeft: Offset, Size) -> Unit
-typealias BarBoundingShapeProvider = DrawScope.(index: Int, Point, topLeft: Offset, Size) -> BoundingShape
+fun interface BarDrawer {
 
+    /**
+     * Draws the bar.
+     *
+     * @param index Index of a bar in a group.
+     * @param point Data point to render.
+     * @param topLeft Top left corner of a bar.
+     * @param size Size of a bar.
+     */
+    fun DrawScope.draw(index: Int, point: Point, topLeft: Offset, size: Size)
+}
+
+fun interface BarBoundingShapeProvider {
+
+    /**
+     * Provides [BoundingShape] that is used for rendering data labels and on click listener of the
+     * [io.github.staakk.cchart.Chart].
+     *
+     * __Note__: [topLeft] and [size] values correspond to values provided
+     * to [BarDrawer] by [barGroupRenderer] and not to what was rendered by it.
+     *
+     * @param index Index of a bar in a group.
+     * @param point Data point to provide [BoundingShape] for.
+     * @param topLeft Top left corner of a bar.
+     * @param size Size of a bar.
+     */
+    fun DrawScope.provide(index: Int, point: Point, topLeft: Offset, size: Size): BoundingShape
+}
+
+/**
+ * Renders bars on the chart.
+ *
+ * @param preferredWidth Preferred width of the bars. If there's no enough space to maintain
+ * [minimalSpacing] distance between the bars this value will be adjusted.
+ * @param minimalSpacing Minimal spacing between the bars.
+ * @param barDrawer Draws the bars.
+ * @param boundingShapeProvider Provides bounding shapes for rendered bars.
+ */
 fun barGroupRenderer(
     preferredWidth: Float,
     minimalSpacing: Float = 10f,
@@ -42,8 +78,8 @@ fun barGroupRenderer(
 
             val topLeft = Offset(x - halfWidth, context.dataToRendererCoordY(0f))
             val size = Size(width, -y)
-            barDrawer(index, point, topLeft, size)
-            renderedPoints += boundingShapeProvider(index, point, topLeft, size)
+            with(barDrawer) { draw(index, point, topLeft, size) }
+            renderedPoints += with(boundingShapeProvider) { provide(index, point, topLeft, size) }
         }
     }
     renderedPoints
@@ -87,7 +123,7 @@ fun drawBar(
     colorFilter: ColorFilter? = null,
     blendMode: BlendMode = DrawScope.DefaultBlendMode,
     brushProvider: (index: Int, Point) -> Brush = { _, _ -> SolidColor(Color.Black) }
-): BarDrawer = { index, point, topLeft, size ->
+) = BarDrawer { index, point, topLeft, size ->
     drawRect(
         brush = brushProvider(index, point),
         topLeft = topLeft,
@@ -99,7 +135,7 @@ fun drawBar(
     )
 }
 
-fun barBoundingShapeProvider(): BarBoundingShapeProvider = { _, point, topLeft, size ->
+fun barBoundingShapeProvider() = BarBoundingShapeProvider { _, point, topLeft, size ->
     BoundingShape.Rect(
         point = point,
         labelAnchorX = topLeft.x + size.width / 2,
