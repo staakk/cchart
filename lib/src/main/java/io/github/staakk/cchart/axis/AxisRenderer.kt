@@ -28,8 +28,8 @@ fun interface HorizontalAxisRenderer : AxisRenderer {
 
 fun interface VerticalAxisRenderer : AxisRenderer {
     companion object {
-        const val Right = 0f
-        const val Left = 1f
+        const val Right = 1f
+        const val Left = 0f
     }
 }
 

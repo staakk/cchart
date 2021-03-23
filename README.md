@@ -32,6 +32,7 @@ val horizontalLabelRenderer = horizontalLabelRenderer()
 val verticalLabelRenderer = verticalLabelRenderer()
 Chart(
   modifier = Modifier
+    .padding(start = 32.dp, bottom = 32.dp)
     .aspectRatio(1f, false)
     .padding(bottom = 16.dp),
   viewport = Viewport(0f, 10f, 0f, 10f)
@@ -50,18 +51,18 @@ Chart(
       pointOf(9f, 8.3f),
       pointOf(10f, 9.1f),
     ),
-    renderer = lineRenderer(render = renderLine(brush = SolidColor(Blue)))
+    renderer = lineRenderer(lineDrawer = drawLine(brush = SolidColor(Blue)))
   )
 
   verticalAxis(
     verticalAxisRenderer(
-      brush = SolidColor(DarkGrey)
+      axisDrawer = axisDrawer(brush = SolidColor(DarkGrey))
     )
   )
 
   horizontalAxis(
     horizontalAxisRenderer(
-      brush = SolidColor(DarkGrey)
+      axisDrawer = axisDrawer(brush = SolidColor(DarkGrey))
     )
   )
 
@@ -109,30 +110,16 @@ val horizontalLabelRenderer = horizontalLabelRenderer(
       }
       return labels
     }
-
-    override fun getMaxLength(): Int = pattern.length
-
-    override fun getMaxLines(): Int = 2
   }
 )
-val verticalLabelRenderer = verticalLabelRenderer(
-  labelsProvider = object : LabelsProvider {
-    override fun provide(
-      min: Float,
-      max: Float
-    ): List<Pair<String, Float>> =
-      (min.toInt()..max.toInt())
-        .filter { it % 25 == 0 }
-        .map { "$it%" to it.toFloat() }
-
-    override fun getMaxLength(): Int = 3
-
-    override fun getMaxLines(): Int = 1
-
-  }
-)
+val verticalLabelRenderer = verticalLabelRenderer { min, max ->
+  (min.toInt()..max.toInt())
+    .filter { it % 25 == 0 }
+    .map { "$it%" to it.toFloat() }
+}
 Chart(
   modifier = Modifier
+    .padding(start = 32.dp, bottom = 32.dp)
     .aspectRatio(1f, false)
     .padding(bottom = 16.dp),
   viewport = Viewport(
@@ -173,13 +160,13 @@ Chart(
 
   verticalAxis(
     verticalAxisRenderer(
-      brush = SolidColor(DarkGrey)
+      axisDrawer = axisDrawer(brush = SolidColor(DarkGrey))
     )
   )
 
   horizontalAxis(
     horizontalAxisRenderer(
-      brush = SolidColor(DarkGrey)
+      axisDrawer = axisDrawer(brush = SolidColor(DarkGrey))
     )
   )
 
@@ -189,7 +176,7 @@ Chart(
         HorizontalAlignment.CENTER,
         VerticalAlignment.TOP
       ),
-      text = "${point.y.toInt()}%",
+      text = "${data.y.toInt()}%",
       style = TextStyle(fontSize = 12.sp)
     )
   }
@@ -213,6 +200,7 @@ val horizontalLabelRenderer = horizontalLabelRenderer()
 val density = LocalDensity.current
 Chart(
   modifier = Modifier
+    .padding(start = 32.dp, bottom = 32.dp, end = 32.dp)
     .aspectRatio(1f, false)
     .padding(bottom = 16.dp),
   viewport = Viewport(0f, 10f, 0f, 10f)
@@ -265,21 +253,21 @@ Chart(
 
   verticalAxis(
     verticalAxisRenderer(
-      brush = SolidColor(Blue),
-      location = VerticalAxisLocation.LEFT
+      axisDrawer = axisDrawer(brush = SolidColor(Blue)),
+      location = 0f
     )
   )
 
   verticalAxis(
     verticalAxisRenderer(
-      brush = SolidColor(Green),
-      location = VerticalAxisLocation.RIGHT
+      axisDrawer = axisDrawer(brush = SolidColor(Green)),
+      location = 1f
     )
   )
 
   horizontalAxis(
     horizontalAxisRenderer(
-      brush = SolidColor(DarkGrey)
+      axisDrawer = axisDrawer(brush = SolidColor(DarkGrey))
     )
   )
 
@@ -291,8 +279,8 @@ Chart(
         textSize = with(density) { 12.sp.toPx() }
         isAntiAlias = true
       },
-      location = 1f,
-      side = VerticalLabelSide.LEFT
+      location = 0f,
+      alignment = Alignment.CenterLeft
     )
   )
 
@@ -303,21 +291,10 @@ Chart(
       textSize = with(density) { 12.sp.toPx() }
       isAntiAlias = true
     },
-    location = 0f,
-    side = VerticalLabelSide.RIGHT,
-    labelsProvider = object : LabelsProvider {
-      override fun provide(
-        min: Float,
-        max: Float
-      ): List<Pair<String, Float>> {
-        return (min.toInt()..(max.toInt() + 1)).map { "${it * 2}" to it.toFloat() }
-      }
-
-      override fun getMaxLength(): Int = 4
-
-      override fun getMaxLines(): Int = 1
-    }
-  ))
+    location = 1f,
+    alignment = Alignment.CenterRight,
+    labelOffset = Offset(12f, 0f)
+  ) { min, max -> (min.toInt()..(max.toInt() + 1)).map { "${it * 2}" to it.toFloat() } })
 
   horizontalAxisLabels(horizontalLabelRenderer)
 

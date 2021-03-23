@@ -66,18 +66,18 @@ fun Content() {
 
     MenuHeader()
     LazyColumn {
-        item { Item(LINE_CHART_ID, "Line chart") { selected.value = it } }
-        item { Item(POINT_CHART_ID, "Point chart") { selected.value = it } }
-        item { Item(LABELED_POINTS_CHART, "Labeled point chart") { selected.value = it } }
-        item { Item(COMBINED_CHART_ID, "Point & line chart") { selected.value = it } }
-        item { Item(BAR_CHART_ID, "Bar chart") { selected.value = it } }
-        item { Item(DATE_LABELS_CHART, "Chart with date labels") { selected.value = it } }
-        item { Item(GRID_CHART, "Chart with grid") { selected.value = it } }
-        item { Item(PAN_AND_ZOOM_CHART, "Chart with panning and zooming") { selected.value = it } }
-        item { Item(OBSERVE_VIEWPORT_CHART, "Observing viewport") { selected.value = it } }
-        item { Item(POPUP_CHART, "Displaying popup") { selected.value = it } }
         item { Item(ANIMATED_BAR_COLOR_CHART_ID, "Animated bar color") { selected.value = it } }
         item { Item(ANIMATED_BAR_SIZE_CHART_ID, "Animated bar size") { selected.value = it } }
+        item { Item(BAR_CHART_ID, "Bar chart") { selected.value = it } }
+        item { Item(DATE_LABELS_CHART, "Date labels") { selected.value = it } }
+        item { Item(POPUP_CHART, "Displaying popup") { selected.value = it } }
+        item { Item(GRID_CHART, "Grid") { selected.value = it } }
+        item { Item(LABELED_POINTS_CHART, "Labeled point chart") { selected.value = it } }
+        item { Item(LINE_CHART_ID, "Line chart") { selected.value = it } }
+        item { Item(OBSERVE_VIEWPORT_CHART, "Observing viewport") { selected.value = it } }
+        item { Item(PAN_AND_ZOOM_CHART, "Panning and zooming") { selected.value = it } }
+        item { Item(COMBINED_CHART_ID, "Point & line chart") { selected.value = it } }
+        item { Item(POINT_CHART_ID, "Point chart") { selected.value = it } }
     }
 }
 
