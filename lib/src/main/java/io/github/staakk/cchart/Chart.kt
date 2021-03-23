@@ -42,7 +42,7 @@ fun Chart(
     minViewportSize: Size? = viewport?.size,
     maxViewportSize: Size? = viewport?.size,
     enableZoom: Boolean = false,
-    onClick: (Offset, Point) -> Unit = { _, _ -> },
+    onClick: (Offset, Data) -> Unit = { _, _ -> },
     content: ChartScope.() -> Unit
 ) {
     val scope = ChartScopeImpl()
@@ -74,7 +74,7 @@ fun Chart(
     minViewportSize: Size = chartState.viewport.size,
     maxViewportSize: Size = chartState.viewport.size,
     enableZoom: Boolean = false,
-    onClick: (Offset, Point) -> Unit = { _, _ -> },
+    onClick: (Offset, Data) -> Unit = { _, _ -> },
     content: ChartScope.() -> Unit
 ) {
     val scope = ChartScopeImpl()
@@ -100,7 +100,7 @@ private fun Chart(
     minViewportSize: Size = viewport.value.size,
     maxViewportSize: Size = viewport.value.size,
     enableZoom: Boolean = false,
-    onClick: (Offset, Point) -> Unit,
+    onClick: (Offset, Data) -> Unit,
     scope: ChartScopeImpl
 ) {
     val density = LocalDensity.current
@@ -135,7 +135,7 @@ private fun Chart(
                     detectTapGestures { offset ->
                         val point = renderedPoints.value
                             .firstOrNull { it.contains(offset.copy(y = offset.y - canvasSize.height)) }
-                            ?.point
+                            ?.data
                             ?: pointOf(
                                 rendererContext.rendererToDataCoordX(offset.x),
                                 rendererContext.rendererToDataCoordY(offset.y) + viewport.value.height
@@ -250,7 +250,7 @@ interface ChartScope {
      */
     fun series(series: GroupedSeries, renderer: GroupedSeriesRenderer)
 
-    fun anchor(point: Point, content: @Composable AnchorScope.() -> Unit)
+    fun anchor(data: Data, content: @Composable AnchorScope.() -> Unit)
 
     fun dataLabels(content: @Composable AnchorScope.() -> Unit)
 }
@@ -279,7 +279,7 @@ private class ChartScopeImpl : ChartScope {
 
     val groupedSeries: MutableMap<GroupedSeries, GroupedSeriesRenderer> = mutableMapOf()
 
-    val anchors: MutableMap<Point, @Composable AnchorScope.() -> Unit> = mutableMapOf()
+    val anchors: MutableMap<Data, @Composable AnchorScope.() -> Unit> = mutableMapOf()
 
     val dataLabels: MutableList<@Composable AnchorScope.() -> Unit> = mutableListOf()
 
@@ -311,8 +311,8 @@ private class ChartScopeImpl : ChartScope {
         groupedSeries[series] = renderer
     }
 
-    override fun anchor(point: Point, content: @Composable AnchorScope.() -> Unit) {
-        anchors[point] = content
+    override fun anchor(data: Data, content: @Composable AnchorScope.() -> Unit) {
+        anchors[data] = content
     }
 
     override fun dataLabels(content: @Composable AnchorScope.() -> Unit) {

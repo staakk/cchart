@@ -11,7 +11,7 @@ class SeriesTest {
     fun `should return empty list for line not in viewport`() {
         val series = Series(listOf(pointOf(-1f, -1f), pointOf(-0.5f, -1f)))
 
-        assertEquals(emptyList<Point>(), series.getLineInViewport(viewport))
+        assertEquals(emptyList<Data>(), series.getLineInViewport(viewport))
     }
 
     @Test

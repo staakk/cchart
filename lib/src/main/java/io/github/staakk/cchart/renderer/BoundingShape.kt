@@ -1,12 +1,12 @@
 package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.geometry.Offset
-import io.github.staakk.cchart.data.Point
+import io.github.staakk.cchart.data.Data
 import kotlin.math.pow
 
 sealed class BoundingShape {
 
-    abstract val point: Point
+    abstract val data: Data
 
     /**
      * Horizontal position at which label should be anchored.
@@ -24,7 +24,7 @@ sealed class BoundingShape {
     abstract fun contains(offset: Offset): Boolean
 
     data class Circle(
-        override val point: Point,
+        override val data: Data,
         override val labelAnchorX: Float,
         override val labelAnchorY: Float,
         val center: Offset,
@@ -36,7 +36,7 @@ sealed class BoundingShape {
     }
 
     data class Rect(
-        override val point: Point,
+        override val data: Data,
         override val labelAnchorX: Float,
         override val labelAnchorY: Float,
         val topLeft: Offset,

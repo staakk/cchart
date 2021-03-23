@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Fill
-import io.github.staakk.cchart.data.Point
+import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.data.Viewport
 
 fun interface PointDrawer {
@@ -14,11 +14,11 @@ fun interface PointDrawer {
     /**
      * Draws shape based on the provided values.
      *
-     * @param point Point to draw.
+     * @param data Point to draw.
      * @param center Center of the shape to draw.
      * @param size Size of the shape to draw.
      */
-    fun DrawScope.draw(point: Point, center: Offset, size: Size)
+    fun DrawScope.draw(data: Data, center: Offset, size: Size)
 }
 
 fun interface PointBoundingShapeProvider {
@@ -26,11 +26,11 @@ fun interface PointBoundingShapeProvider {
     /**
      * Provides bounding box for the shape.
      *
-     * @param point Point to draw
+     * @param data Point to draw
      * @param center Center of the rendered shape.
      * @param size Radius of the rendered shape.
      */
-    fun DrawScope.provide(point: Point, center: Offset, size: Size): BoundingShape
+    fun DrawScope.provide(data: Data, center: Offset, size: Size): BoundingShape
 }
 
 fun pointRenderer(
@@ -77,10 +77,9 @@ private fun getDrawingBounds(rendererContext: RendererContext, size: Size): View
     )
 }
 
-
 fun circleBoundingShapeProvider() = PointBoundingShapeProvider { point, center, size ->
     BoundingShape.Circle(
-        point = point,
+        data = point,
         labelAnchorX = center.x,
         labelAnchorY = center.y,
         center = center,

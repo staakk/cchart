@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Fill
-import io.github.staakk.cchart.data.Point
+import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.data.Viewport
 import kotlin.math.abs
 
@@ -16,11 +16,11 @@ fun interface BarDrawer {
      * Draws the bar.
      *
      * @param index Index of a bar in a group.
-     * @param point Data point to render.
+     * @param data Data point to render.
      * @param topLeft Top left corner of a bar.
      * @param size Size of a bar.
      */
-    fun DrawScope.draw(index: Int, point: Point, topLeft: Offset, size: Size)
+    fun DrawScope.draw(index: Int, data: Data, topLeft: Offset, size: Size)
 }
 
 fun interface BarBoundingShapeProvider {
@@ -33,11 +33,11 @@ fun interface BarBoundingShapeProvider {
      * to [BarDrawer] by [barGroupRenderer] and not to what was rendered by it.
      *
      * @param index Index of a bar in a group.
-     * @param point Data point to provide [BoundingShape] for.
+     * @param data Data point to provide [BoundingShape] for.
      * @param topLeft Top left corner of a bar.
      * @param size Size of a bar.
      */
-    fun DrawScope.provide(index: Int, point: Point, topLeft: Offset, size: Size): BoundingShape
+    fun DrawScope.provide(index: Int, data: Data, topLeft: Offset, size: Size): BoundingShape
 }
 
 /**
@@ -86,7 +86,7 @@ fun barGroupRenderer(
 }
 
 private fun getBarWidth(
-    groups: List<List<Point>>,
+    groups: List<List<Data>>,
     context: RendererContext,
     preferredWidth: Float,
     minimalSpacing: Float
@@ -101,7 +101,7 @@ private fun getBarWidth(
     }
 }
 
-private fun List<List<Point>>.getMinXDistance() =
+private fun List<List<Data>>.getMinXDistance() =
     windowed(2) { abs(it[0][0].x - it[1][0].x) }
         .minOrNull()
         ?: Float.MAX_VALUE
@@ -122,7 +122,7 @@ fun drawBar(
     alpha: Float = 1.0f,
     colorFilter: ColorFilter? = null,
     blendMode: BlendMode = DrawScope.DefaultBlendMode,
-    brushProvider: (index: Int, Point) -> Brush = { _, _ -> SolidColor(Color.Black) }
+    brushProvider: (index: Int, Data) -> Brush = { _, _ -> SolidColor(Color.Black) }
 ) = BarDrawer { index, point, topLeft, size ->
     drawRect(
         brush = brushProvider(index, point),
@@ -137,7 +137,7 @@ fun drawBar(
 
 fun barBoundingShapeProvider() = BarBoundingShapeProvider { _, point, topLeft, size ->
     BoundingShape.Rect(
-        point = point,
+        data = point,
         labelAnchorX = topLeft.x + size.width / 2,
         labelAnchorY = size.height,
         topLeft = topLeft,

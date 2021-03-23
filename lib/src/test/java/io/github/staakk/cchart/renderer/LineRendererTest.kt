@@ -3,7 +3,6 @@ package io.github.staakk.cchart.renderer
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import io.github.staakk.cchart.data.Point
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
@@ -14,18 +13,6 @@ import org.junit.Test
 class LineRendererTest {
 
     private val drawScope = mockk<DrawScope>()
-
-    private val lineBoundingShapeProvider = LineBoundingShapeProvider { pointsToDraw ->
-        pointsToDraw.map {
-            BoundingShape.Circle(
-                point = it.first,
-                labelAnchorX = it.second.x,
-                labelAnchorY = it.second.y,
-                center = it.second,
-                radius = 20f
-            )
-        }
-    }
 
     private val rendererContext = rendererContext(
         viewport = Viewport(minX = 0f, maxX = 1f, minY = 0f, maxY = 1f),
@@ -48,42 +35,42 @@ class LineRendererTest {
     fun `should draw line`() {
         val expected = listOf<BoundingShape>(
             BoundingShape.Circle(
-                point = Point(x = -0.5f, y = 0.5f, tag = null),
+                data = pointOf(x = -0.5f, y = 0.5f),
                 labelAnchorX = -1.0f,
                 labelAnchorY = -1.0f,
                 center = Offset(-1.0f, -1.0f),
                 radius = 20.0f
             ),
             BoundingShape.Circle(
-                point = Point(x = 0.5f, y = 0.5f, tag = null),
+                data = pointOf(x = 0.5f, y = 0.5f),
                 labelAnchorX = 1.0f,
                 labelAnchorY = -1.0f,
                 center = Offset(1.0f, -1.0f),
                 radius = 20.0f
             ),
             BoundingShape.Circle(
-                point = Point(x = 1.5f, y = 0.5f, tag = null),
+                data = pointOf(x = 1.5f, y = 0.5f),
                 labelAnchorX = 3.0f,
                 labelAnchorY = -1.0f,
                 center = Offset(3.0f, -1.0f),
                 radius = 20.0f
             ),
             BoundingShape.Circle(
-                point = Point(x = 1.5f, y = 0.5f, tag = null),
+                data = pointOf(x = 1.5f, y = 0.5f),
                 labelAnchorX = 3.0f,
                 labelAnchorY = -1.0f,
                 center = Offset(3.0f, -1.0f),
                 radius = 20.0f
             ),
             BoundingShape.Circle(
-                point = Point(x = 0.5f, y = 0.5f, tag = null),
+                data = pointOf(x = 0.5f, y = 0.5f),
                 labelAnchorX = 1.0f,
                 labelAnchorY = -1.0f,
                 center = Offset(1.0f, -1.0f),
                 radius = 20.0f
             ),
             BoundingShape.Circle(
-                point = Point(x = -0.5f, y = 0.5f, tag = null),
+                data = pointOf(x = -0.5f, y = 0.5f),
                 labelAnchorX = -1.0f,
                 labelAnchorY = -1.0f,
                 center = Offset(-1.0f, -1.0f),

@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package io.github.staakk.cchart.util
 
 import android.graphics.Paint
@@ -34,16 +36,15 @@ fun DrawScope.drawText(
         }
     drawIntoCanvas { canvas ->
         lines.forEachIndexed { index, line ->
-            val pos =
-                alignment.getDrawingPosition(
-                    position,
-                    line,
-                    index,
-                    lines.size,
-                    maxLength,
-                    textAlignment,
-                    paint
-                )
+            val pos = alignment.getDrawingPosition(
+                position,
+                line,
+                index,
+                lines.size,
+                maxLength,
+                textAlignment,
+                paint
+            )
             canvas.nativeCanvas.drawText(line.first, pos.x, pos.y, paint)
         }
     }
@@ -81,74 +82,101 @@ fun interface Alignment {
 
     companion object {
 
-        val BottomRight = Alignment { position, (_, length), lineNo, _, maxLength, textAlignment, paint ->
-            Offset(
-                x = position.x + textAlignment.getHorizontalOffset(length, maxLength),
-                y = position.y + paint.fontMetrics.lineHeight * lineNo - paint.fontMetrics.top
-            )
-        }
+        val BottomRight =
+            Alignment { position, (_, length), lineNo, _, maxLength, textAlignment, paint ->
+                Offset(
+                    x = position.x + textAlignment.getHorizontalOffset(length, maxLength),
+                    y = position.y + paint.fontMetrics.lineHeight * lineNo - paint.fontMetrics.top
+                )
+            }
 
-        val BottomCenter = Alignment { position, (_, length), lineNo, _, maxLength, textAlignment, paint ->
-            Offset(
-                x = position.x - maxLength / 2 + + textAlignment.getHorizontalOffset(length, maxLength),
-                y = position.y + paint.fontMetrics.lineHeight * lineNo - paint.fontMetrics.top
-            )
-        }
+        val BottomCenter =
+            Alignment { position, (_, length), lineNo, _, maxLength, textAlignment, paint ->
+                Offset(
+                    x = position.x - maxLength / 2 + +textAlignment.getHorizontalOffset(
+                        length,
+                        maxLength
+                    ),
+                    y = position.y + paint.fontMetrics.lineHeight * lineNo - paint.fontMetrics.top
+                )
+            }
 
-        val BottomLeft = Alignment { position, (_, length), lineNo, _, maxLength, textAlignment, paint ->
-            Offset(
-                x = position.x - maxLength + textAlignment.getHorizontalOffset(length, maxLength),
-                y = position.y + paint.fontMetrics.lineHeight * lineNo - paint.fontMetrics.top
-            )
-        }
+        val BottomLeft =
+            Alignment { position, (_, length), lineNo, _, maxLength, textAlignment, paint ->
+                Offset(
+                    x = position.x - maxLength + textAlignment.getHorizontalOffset(
+                        length,
+                        maxLength
+                    ),
+                    y = position.y + paint.fontMetrics.lineHeight * lineNo - paint.fontMetrics.top
+                )
+            }
 
-        val CenterLeft = Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
-            val lineHeight = paint.fontMetrics.lineHeight
-            Offset(
-                x = position.x - maxLength + textAlignment.getHorizontalOffset(length, maxLength),
-                y = position.y + lineHeight * (lineNo - maxLines / 2f) - paint.fontMetrics.top
-            )
-        }
+        val CenterLeft =
+            Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
+                val lineHeight = paint.fontMetrics.lineHeight
+                Offset(
+                    x = position.x - maxLength + textAlignment.getHorizontalOffset(
+                        length,
+                        maxLength
+                    ),
+                    y = position.y + lineHeight * (lineNo - maxLines / 2f) - paint.fontMetrics.top
+                )
+            }
 
-        val Center = Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
-            val lineHeight = paint.fontMetrics.lineHeight
-            Offset(
-                x = position.x - maxLength / 2 + textAlignment.getHorizontalOffset(length, maxLength),
-                y = position.y + lineHeight * (lineNo - maxLines / 2f) - paint.fontMetrics.top
-            )
-        }
+        val Center =
+            Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
+                val lineHeight = paint.fontMetrics.lineHeight
+                Offset(
+                    x = position.x - maxLength / 2 + textAlignment.getHorizontalOffset(
+                        length,
+                        maxLength
+                    ),
+                    y = position.y + lineHeight * (lineNo - maxLines / 2f) - paint.fontMetrics.top
+                )
+            }
 
-        val CenterRight = Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
-            val lineHeight = paint.fontMetrics.lineHeight
-            Offset(
-                x = position.x + textAlignment.getHorizontalOffset(length, maxLength),
-                y = position.y + lineHeight * (lineNo - maxLines / 2f) - paint.fontMetrics.top
-            )
-        }
+        val CenterRight =
+            Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
+                val lineHeight = paint.fontMetrics.lineHeight
+                Offset(
+                    x = position.x + textAlignment.getHorizontalOffset(length, maxLength),
+                    y = position.y + lineHeight * (lineNo - maxLines / 2f) - paint.fontMetrics.top
+                )
+            }
 
-        val TopLeft = Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
-            val lineHeight = paint.fontMetrics.lineHeight
-            Offset(
-                x = position.x - maxLength + textAlignment.getHorizontalOffset(length, maxLength),
-                y = position.y + lineHeight * (lineNo - maxLines) - paint.fontMetrics.top
-            )
-        }
+        val TopLeft =
+            Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
+                val lineHeight = paint.fontMetrics.lineHeight
+                Offset(
+                    x = position.x - maxLength + textAlignment.getHorizontalOffset(
+                        length,
+                        maxLength
+                    ),
+                    y = position.y + lineHeight * (lineNo - maxLines) - paint.fontMetrics.top
+                )
+            }
 
-        val TopCenter = Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
-            val lineHeight = paint.fontMetrics.lineHeight
-            Offset(
-                x = position.x - maxLength / 2 + textAlignment.getHorizontalOffset(length, maxLength),
-                y = position.y + lineHeight * (lineNo - maxLines) - paint.fontMetrics.top
-            )
-        }
+        val TopCenter =
+            Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
+                val lineHeight = paint.fontMetrics.lineHeight
+                Offset(
+                    x = position.x - maxLength / 2 + textAlignment.getHorizontalOffset(
+                        length,
+                        maxLength
+                    ),
+                    y = position.y + lineHeight * (lineNo - maxLines) - paint.fontMetrics.top
+                )
+            }
 
-        val TopRight = Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
-            val lineHeight = paint.fontMetrics.lineHeight
-            Offset(
-                x = position.x + textAlignment.getHorizontalOffset(length, maxLength),
-                y = position.y + lineHeight * (lineNo - maxLines) - paint.fontMetrics.top
-            )
-        }
+        val TopRight =
+            Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
+                val lineHeight = paint.fontMetrics.lineHeight
+                Offset(
+                    x = position.x + textAlignment.getHorizontalOffset(length, maxLength),
+                    y = position.y + lineHeight * (lineNo - maxLines) - paint.fontMetrics.top
+                )
+            }
     }
 }
 

@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
-import io.github.staakk.cchart.data.Point
+import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.renderer.BoundingShape
 
 @Composable
@@ -29,7 +29,7 @@ internal fun DataLabels(
         modifier = modifier,
         canvasSize = canvasSize,
         anchors = renderedShapes
-            .map { it.point to Offset(it.labelAnchorX, it.labelAnchorY) to labelContent }
+            .map { it.data to Offset(it.labelAnchorX, it.labelAnchorY) to labelContent }
             .toMap()
     )
 }
@@ -38,7 +38,7 @@ internal fun DataLabels(
 internal fun AnchoredViews(
     modifier: Modifier,
     canvasSize: Size,
-    anchors: Map<Pair<Point, Offset>, @Composable AnchorScope.() -> Unit>
+    anchors: Map<Pair<Data, Offset>, @Composable AnchorScope.() -> Unit>
 ) {
     val density = LocalDensity.current
     Box(
@@ -53,7 +53,7 @@ internal fun AnchoredViews(
 }
 
 data class AnchorScope(
-    val point: Point,
+    val data: Data,
     val offset: Offset,
     val canvasSize: Size,
     val density: Density

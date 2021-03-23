@@ -1,9 +1,9 @@
 package io.github.staakk.cchart.data
 
 class GroupedSeries(
-    points: List<List<Point>>
-) : List<List<Point>> by points
+    data: List<List<Data>>
+) : List<List<Data>> by data
 
-fun groupedSeriesOf(vararg points: List<Point>) = GroupedSeries(points.toList())
+fun groupedSeriesOf(vararg data: List<Data>) = GroupedSeries(data.toList())
 
-fun groupedSeriesOf(vararg points: Point) = GroupedSeries(points.map(::listOf))
+fun groupedSeriesOf(vararg data: Data) = GroupedSeries(data.map(::listOf))

@@ -219,7 +219,7 @@ class ReadmeGalleryTest : ScreenshotTest {
                             HorizontalAlignment.CENTER,
                             VerticalAlignment.TOP
                         ),
-                        text = "${point.y.toInt()}%",
+                        text = "${data.y.toInt()}%",
                         style = TextStyle(fontSize = 12.sp)
                     )
                 }

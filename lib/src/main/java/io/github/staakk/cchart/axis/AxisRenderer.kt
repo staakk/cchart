@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package io.github.staakk.cchart.axis
 
 import androidx.compose.ui.geometry.Offset
@@ -16,17 +18,18 @@ fun interface AxisRenderer {
     fun DrawScope.render(context: RendererContext)
 }
 
+
 fun interface HorizontalAxisRenderer : AxisRenderer {
     companion object {
-        const val TOP = 0.0f
-        const val BOTTOM = 1.0f
+        const val Top = 0.0f
+        const val Bottom = 1.0f
     }
 }
 
 fun interface VerticalAxisRenderer : AxisRenderer {
     companion object {
-        const val START = 0f
-        const val END = 1f
+        const val Right = 0f
+        const val Left = 1f
     }
 }
 
@@ -54,36 +57,4 @@ fun axisDrawer(
         colorFilter = colorFilter,
         blendMode = blendMode
     )
-}
-
-/**
- * Creates renderer for horizontal axis.
- */
-fun horizontalAxisRenderer(
-    location: Float = 1f,
-    axisDrawer: AxisDrawer = axisDrawer()
-) = HorizontalAxisRenderer {
-    val yPos = location * size.height
-    with(axisDrawer) {
-        draw(
-            start = Offset(0f, yPos),
-            end = Offset(size.width, yPos)
-        )
-    }
-}
-
-/**
- * Creates renderer for vertical axis.
- */
-fun verticalAxisRenderer(
-    location: Float = 0f,
-    axisDrawer: AxisDrawer = axisDrawer()
-) = VerticalAxisRenderer {
-    val xPos = location * size.width
-    with(axisDrawer) {
-        draw(
-            start = Offset(xPos, 0f),
-            end = Offset(xPos, size.height)
-        )
-    }
 }

@@ -21,7 +21,7 @@ import io.github.staakk.cchart.HorizontalAlignment
 import io.github.staakk.cchart.VerticalAlignment
 import io.github.staakk.cchart.axis.horizontalAxisRenderer
 import io.github.staakk.cchart.axis.verticalAxisRenderer
-import io.github.staakk.cchart.data.Point
+import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
@@ -34,7 +34,7 @@ import io.github.staakk.cchart.renderer.pointRenderer
 fun PopupChartScreen() {
     val horizontalLabelRenderer = horizontalLabelRenderer()
     val verticalLabelRenderer = verticalLabelRenderer()
-    val popupPosition = remember { mutableStateOf<Pair<Point, Offset>?>(null)}
+    val popupPosition = remember { mutableStateOf<Pair<Data, Offset>?>(null)}
     Chart(
         modifier = Modifier
             .padding(start = 32.dp, bottom = 32.dp)

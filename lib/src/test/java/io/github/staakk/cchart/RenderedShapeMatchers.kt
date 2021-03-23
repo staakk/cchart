@@ -17,7 +17,7 @@ class RectMatcher(
     override fun matchesSafely(item: BoundingShape?): Boolean {
         return item != null &&
                 item is BoundingShape.Rect &&
-                expected.point == item.point &&
+                expected.data == item.data &&
                 abs(expected.labelAnchorX - item.labelAnchorX) < precision &&
                 abs(expected.labelAnchorY - item.labelAnchorY) < precision &&
                 abs(expected.topLeft.x - item.topLeft.x) < precision &&

@@ -60,7 +60,7 @@ fun LabeledPointsScreen() {
             Text(
                 modifier = Modifier.padding(bottom = 4.dp)
                     .align(HorizontalAlignment.CENTER, VerticalAlignment.CENTER),
-                text = "(${point.x}, ${point.y})"
+                text = "(${data.x}, ${data.y})"
             )
         }
     }

@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Stroke
-import io.github.staakk.cchart.data.Point
+import io.github.staakk.cchart.data.Data
 
 fun interface LineDrawer {
 
@@ -14,7 +14,7 @@ fun interface LineDrawer {
      *
      * @param points Points to draw the line.
      */
-    fun DrawScope.draw(points: List<Pair<Point, Offset>>)
+    fun DrawScope.draw(points: List<Pair<Data, Offset>>)
 }
 
 fun interface LineBoundingShapeProvider {
@@ -25,7 +25,7 @@ fun interface LineBoundingShapeProvider {
      *
      * @param points Points to provide [BoundingShape]s for.
      */
-    fun DrawScope.provide(points: List<Pair<Point, Offset>>): List<BoundingShape>
+    fun DrawScope.provide(points: List<Pair<Data, Offset>>): List<BoundingShape>
 }
 
 fun lineRenderer(
@@ -72,7 +72,7 @@ fun drawLine(
 fun lineBoundingShapeProvider(radius: Float = 20f) = LineBoundingShapeProvider { points ->
     points.map {
         BoundingShape.Circle(
-            point = it.first,
+            data = it.first,
             labelAnchorX = it.second.x,
             labelAnchorY = it.second.y,
             center = it.second,

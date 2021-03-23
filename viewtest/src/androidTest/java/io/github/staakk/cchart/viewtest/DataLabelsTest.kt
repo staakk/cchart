@@ -84,7 +84,7 @@ class DataLabelsTest : ScreenshotTest {
                 dataLabels {
                     Text(
                         modifier = Modifier.align(alignments.first, alignments.second),
-                        text = "(${point.x}, ${point.y})"
+                        text = "(${data.x}, ${data.y})"
                     )
                 }
             }
