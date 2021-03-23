@@ -12,7 +12,7 @@ dependencies {
     compileOnly(gradleApi())
 
     implementation("com.android.tools.build:gradle:7.0.0-alpha08")
-    implementation(kotlin("gradle-plugin", "1.4.30"))
+    implementation(kotlin("gradle-plugin", "1.4.31"))
     implementation(kotlin("android-extensions"))
 }
 

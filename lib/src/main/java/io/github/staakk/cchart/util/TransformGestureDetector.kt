@@ -24,7 +24,7 @@ suspend fun PointerInputScope.detectTransformGestures(
             awaitFirstDown(requireUnconsumed = false)
             do {
                 val event = awaitPointerEvent()
-                val canceled = event.changes.fastAny { it.anyPositionChangeConsumed() }
+                val canceled = event.changes.fastAny { it.anyChangeConsumed() }
                 if (!canceled) {
                     val zoomChange = event.calculateZoom()
                     val panChange = event.calculatePan()
