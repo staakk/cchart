@@ -10,8 +10,6 @@ import androidx.compose.ui.unit.dp
 import androidx.test.rule.GrantPermissionRule
 import com.karumi.shot.ScreenshotTest
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.axis.HorizontalAxisLocation
-import io.github.staakk.cchart.axis.VerticalAxisLocation
 import io.github.staakk.cchart.axis.horizontalAxisRenderer
 import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.Viewport
@@ -60,11 +58,11 @@ class AxisTest : ScreenshotTest {
 
                 verticalAxis(verticalAxisRenderer())
 
-                verticalAxis(verticalAxisRenderer(location = VerticalAxisLocation.RIGHT))
+                verticalAxis(verticalAxisRenderer(location = 1f))
 
                 horizontalAxis(horizontalAxisRenderer())
 
-                horizontalAxis(horizontalAxisRenderer(location = HorizontalAxisLocation.TOP))
+                horizontalAxis(horizontalAxisRenderer(location = 0f))
             }
         }
 

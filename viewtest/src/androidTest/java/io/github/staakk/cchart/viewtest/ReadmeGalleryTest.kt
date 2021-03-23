@@ -20,7 +20,7 @@ import com.karumi.shot.ScreenshotTest
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.HorizontalAlignment
 import io.github.staakk.cchart.VerticalAlignment
-import io.github.staakk.cchart.axis.VerticalAxisLocation
+import io.github.staakk.cchart.axis.axisDrawer
 import io.github.staakk.cchart.axis.horizontalAxisRenderer
 import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.Viewport
@@ -96,13 +96,13 @@ class ReadmeGalleryTest : ScreenshotTest {
 
                 verticalAxis(
                     verticalAxisRenderer(
-                        brush = SolidColor(DarkGrey)
+                        axisDrawer = axisDrawer(brush = SolidColor(DarkGrey))
                     )
                 )
 
                 horizontalAxis(
                     horizontalAxisRenderer(
-                        brush = SolidColor(DarkGrey)
+                        axisDrawer = axisDrawer(brush = SolidColor(DarkGrey))
                     )
                 )
 
@@ -214,13 +214,13 @@ class ReadmeGalleryTest : ScreenshotTest {
 
                 verticalAxis(
                     verticalAxisRenderer(
-                        brush = SolidColor(DarkGrey)
+                        axisDrawer = axisDrawer(brush = SolidColor(DarkGrey))
                     )
                 )
 
                 horizontalAxis(
                     horizontalAxisRenderer(
-                        brush = SolidColor(DarkGrey)
+                        axisDrawer = axisDrawer(brush = SolidColor(DarkGrey))
                     )
                 )
 
@@ -306,21 +306,21 @@ class ReadmeGalleryTest : ScreenshotTest {
 
                 verticalAxis(
                     verticalAxisRenderer(
-                        brush = SolidColor(Blue),
-                        location = VerticalAxisLocation.LEFT
+                        axisDrawer = axisDrawer(brush = SolidColor(Blue)),
+                        location = 0f
                     )
                 )
 
                 verticalAxis(
                     verticalAxisRenderer(
-                        brush = SolidColor(Green),
-                        location = VerticalAxisLocation.RIGHT
+                        axisDrawer = axisDrawer(brush = SolidColor(Green)),
+                        location = 1f
                     )
                 )
 
                 horizontalAxis(
                     horizontalAxisRenderer(
-                        brush = SolidColor(DarkGrey)
+                        axisDrawer = axisDrawer(brush = SolidColor(DarkGrey))
                     )
                 )
 
