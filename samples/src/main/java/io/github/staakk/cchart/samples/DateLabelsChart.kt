@@ -92,10 +92,6 @@ object DateLabelsProvider : LabelsProvider {
         }
         return labels
     }
-
-    override fun getMaxLength(): Int = pattern.length
-
-    override fun getMaxLines(): Int = 2
 }
 
 @Preview

@@ -16,9 +16,19 @@ fun interface AxisRenderer {
     fun DrawScope.render(context: RendererContext)
 }
 
-fun interface HorizontalAxisRenderer : AxisRenderer
+fun interface HorizontalAxisRenderer : AxisRenderer {
+    companion object {
+        const val TOP = 0.0f
+        const val BOTTOM = 1.0f
+    }
+}
 
-fun interface VerticalAxisRenderer : AxisRenderer
+fun interface VerticalAxisRenderer : AxisRenderer {
+    companion object {
+        const val START = 0f
+        const val END = 1f
+    }
+}
 
 fun interface AxisDrawer {
     fun DrawScope.draw(start: Offset, end: Offset)

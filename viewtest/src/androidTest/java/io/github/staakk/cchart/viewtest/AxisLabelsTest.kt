@@ -3,6 +3,7 @@ package io.github.staakk.cchart.viewtest
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -16,9 +17,12 @@ import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.grid.gridRenderer
-import io.github.staakk.cchart.label.*
+import io.github.staakk.cchart.label.LabelsProvider
+import io.github.staakk.cchart.label.horizontalLabelRenderer
+import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.drawLine
 import io.github.staakk.cchart.renderer.lineRenderer
+import io.github.staakk.cchart.util.Alignment
 import org.junit.Rule
 import org.junit.Test
 
@@ -38,20 +42,28 @@ class AxisLabelsTest : ScreenshotTest {
     fun labels() {
         composeRule.setContent {
             val verticalLabels = verticalLabelRenderer()
-            val rightSideVerticalLabels = verticalLabelRenderer(side = VerticalLabelSide.RIGHT)
+            val rightSideVerticalLabels = verticalLabelRenderer(
+                alignment = Alignment.CenterRight,
+                labelOffset = Offset(12f, 0f)
+            )
             val rightLocationVerticalLabels =
-                verticalLabelRenderer(location = VerticalLabelLocation.RIGHT)
+                verticalLabelRenderer(location = 1f)
             val rightSideRightLocationVerticalLabels = verticalLabelRenderer(
-                location = VerticalLabelLocation.RIGHT,
-                side = VerticalLabelSide.RIGHT
+                location = 1f,
+                alignment = Alignment.CenterRight,
+                labelOffset = Offset(12f, 0f)
             )
             val horizontalLabels = horizontalLabelRenderer()
-            val aboveHorizontalLabels = horizontalLabelRenderer(side = HorizontalLabelSide.ABOVE)
+            val aboveHorizontalLabels = horizontalLabelRenderer(
+                alignment = Alignment.TopCenter,
+                labelOffset = Offset(0f, -12f)
+            )
             val topHorizontalLabels =
-                horizontalLabelRenderer(location = HorizontalLabelLocation.TOP)
+                horizontalLabelRenderer(location = 0f)
             val topAboveHorizontalLabels = horizontalLabelRenderer(
-                location = HorizontalLabelLocation.TOP,
-                side = HorizontalLabelSide.ABOVE
+                location = 0f,
+                alignment = Alignment.TopCenter,
+                labelOffset = Offset(0f, -12f)
             )
             Chart(
                 modifier = Modifier
@@ -108,32 +120,36 @@ class AxisLabelsTest : ScreenshotTest {
         composeRule.setContent {
             val verticalLabels = verticalLabelRenderer(labelsProvider = MultiLineLabelsProvider)
             val rightSideVerticalLabels = verticalLabelRenderer(
-                side = VerticalLabelSide.RIGHT,
+                alignment = Alignment.CenterRight,
+                labelOffset = Offset(12f, 0f),
                 labelsProvider = MultiLineLabelsProvider
             )
             val rightLocationVerticalLabels =
                 verticalLabelRenderer(
-                    location = VerticalLabelLocation.RIGHT,
+                    location = 1f,
                     labelsProvider = MultiLineLabelsProvider
                 )
             val rightSideRightLocationVerticalLabels = verticalLabelRenderer(
-                location = VerticalLabelLocation.RIGHT,
-                side = VerticalLabelSide.RIGHT,
+                location = 1f,
+                alignment = Alignment.CenterRight,
+                labelOffset = Offset(12f, 0f),
                 labelsProvider = MultiLineLabelsProvider
             )
             val horizontalLabels = horizontalLabelRenderer(labelsProvider = MultiLineLabelsProvider)
             val aboveHorizontalLabels = horizontalLabelRenderer(
-                side = HorizontalLabelSide.ABOVE,
-                labelsProvider = MultiLineLabelsProvider
+                alignment = Alignment.TopCenter,
+                labelsProvider = MultiLineLabelsProvider,
+                labelOffset = Offset(0f, -12f)
             )
             val topHorizontalLabels =
                 horizontalLabelRenderer(
-                    location = HorizontalLabelLocation.TOP,
+                    location = 0f,
                     labelsProvider = MultiLineLabelsProvider
                 )
             val topAboveHorizontalLabels = horizontalLabelRenderer(
-                location = HorizontalLabelLocation.TOP,
-                side = HorizontalLabelSide.ABOVE,
+                location = 0f,
+                alignment = Alignment.TopCenter,
+                labelOffset = Offset(0f, -12f),
                 labelsProvider = MultiLineLabelsProvider
             )
             Chart(
@@ -192,9 +208,5 @@ class AxisLabelsTest : ScreenshotTest {
         override fun provide(min: Float, max: Float): List<Pair<String, Float>> {
             return (min.toInt()..(max.toInt() + 1)).map { "$it\n$it$it" to it.toFloat() }
         }
-
-        override fun getMaxLength(): Int = 10
-
-        override fun getMaxLines(): Int = 2
     }
 }

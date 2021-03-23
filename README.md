@@ -291,7 +291,7 @@ Chart(
         textSize = with(density) { 12.sp.toPx() }
         isAntiAlias = true
       },
-      location = VerticalLabelLocation.LEFT,
+      location = 1f,
       side = VerticalLabelSide.LEFT
     )
   )
@@ -303,7 +303,7 @@ Chart(
       textSize = with(density) { 12.sp.toPx() }
       isAntiAlias = true
     },
-    location = VerticalLabelLocation.RIGHT,
+    location = 0f,
     side = VerticalLabelSide.RIGHT,
     labelsProvider = object : LabelsProvider {
       override fun provide(

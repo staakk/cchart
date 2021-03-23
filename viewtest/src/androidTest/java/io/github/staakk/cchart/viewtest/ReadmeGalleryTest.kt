@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -29,9 +30,12 @@ import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.grid.GridOrientation
 import io.github.staakk.cchart.grid.gridRenderer
-import io.github.staakk.cchart.label.*
+import io.github.staakk.cchart.label.LabelsProvider
+import io.github.staakk.cchart.label.horizontalLabelRenderer
+import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.*
 import io.github.staakk.cchart.renderer.CompositeSeriesRenderer.Companion.combine
+import io.github.staakk.cchart.util.Alignment
 import org.junit.Rule
 import org.junit.Test
 import java.time.LocalDate
@@ -149,28 +153,13 @@ class ReadmeGalleryTest : ScreenshotTest {
                         }
                         return labels
                     }
-
-                    override fun getMaxLength(): Int = pattern.length
-
-                    override fun getMaxLines(): Int = 2
                 }
             )
-            val verticalLabelRenderer = verticalLabelRenderer(
-                labelsProvider = object : LabelsProvider {
-                    override fun provide(
-                        min: Float,
-                        max: Float
-                    ): List<Pair<String, Float>> =
-                        (min.toInt()..max.toInt())
-                            .filter { it % 25 == 0 }
-                            .map { "$it%" to it.toFloat() }
-
-                    override fun getMaxLength(): Int = 3
-
-                    override fun getMaxLines(): Int = 1
-
-                }
-            )
+            val verticalLabelRenderer = verticalLabelRenderer { min, max ->
+                (min.toInt()..max.toInt())
+                    .filter { it % 25 == 0 }
+                    .map { "$it%" to it.toFloat() }
+            }
             Chart(
                 modifier = Modifier
                     .padding(start = 32.dp, bottom = 32.dp)
@@ -332,8 +321,8 @@ class ReadmeGalleryTest : ScreenshotTest {
                             textSize = with(density) { 12.sp.toPx() }
                             isAntiAlias = true
                         },
-                        location = VerticalLabelLocation.LEFT,
-                        side = VerticalLabelSide.LEFT
+                        location = 0f,
+                        alignment = Alignment.CenterLeft
                     )
                 )
 
@@ -344,21 +333,10 @@ class ReadmeGalleryTest : ScreenshotTest {
                         textSize = with(density) { 12.sp.toPx() }
                         isAntiAlias = true
                     },
-                    location = VerticalLabelLocation.RIGHT,
-                    side = VerticalLabelSide.RIGHT,
-                    labelsProvider = object : LabelsProvider {
-                        override fun provide(
-                            min: Float,
-                            max: Float
-                        ): List<Pair<String, Float>> {
-                            return (min.toInt()..(max.toInt() + 1)).map { "${it * 2}" to it.toFloat() }
-                        }
-
-                        override fun getMaxLength(): Int = 4
-
-                        override fun getMaxLines(): Int = 1
-                    }
-                ))
+                    location = 1f,
+                    alignment = Alignment.CenterRight,
+                    labelOffset = Offset(12f, 0f)
+                ) { min, max -> (min.toInt()..(max.toInt() + 1)).map { "${it * 2}" to it.toFloat() } })
 
                 horizontalAxisLabels(horizontalLabelRenderer)
 
