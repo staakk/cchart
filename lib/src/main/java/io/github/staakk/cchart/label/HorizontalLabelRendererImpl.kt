@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import io.github.staakk.cchart.util.Alignment
+import io.github.staakk.cchart.util.TextAlignment
 import io.github.staakk.cchart.util.drawText
 
 @Composable
@@ -16,6 +17,7 @@ fun horizontalLabelRenderer(
     labelsTypeface: Typeface = Typeface.DEFAULT,
     location: Float = 1f,
     alignment: Alignment = Alignment.BottomCenter,
+    textAlignment: TextAlignment = TextAlignment.Left,
     labelOffset: Offset = Offset(0f, 12f),
     labelsProvider: LabelsProvider = IntLabelsProvider,
 ): HorizontalLabelRenderer {
@@ -25,13 +27,21 @@ fun horizontalLabelRenderer(
         textSize = with(density) { labelsTextSize.toPx() }
         isAntiAlias = true
     }
-    return horizontalLabelRenderer(paint, location, alignment, labelOffset, labelsProvider)
+    return horizontalLabelRenderer(
+        paint,
+        location,
+        alignment,
+        textAlignment,
+        labelOffset,
+        labelsProvider
+    )
 }
 
 fun horizontalLabelRenderer(
     paint: Paint,
     location: Float = 1f,
     alignment: Alignment = Alignment.BottomCenter,
+    textAlignment: TextAlignment = TextAlignment.Left,
     labelOffset: Offset = Offset(0f, 12f),
     labelsProvider: LabelsProvider = IntLabelsProvider
 ): HorizontalLabelRenderer = HorizontalLabelRenderer { context ->
@@ -42,12 +52,13 @@ fun horizontalLabelRenderer(
             if (x > 0 && x + textWidth < size.width) {
                 drawText(
                     text = text,
-                    alignment = alignment,
                     position = Offset(
                         x = context.dataToRendererCoordX(offset),
                         y = location * size.height
                     ) + labelOffset,
-                    paint
+                    alignment = alignment,
+                    textAlignment = textAlignment,
+                    paint = paint
                 )
             }
         }

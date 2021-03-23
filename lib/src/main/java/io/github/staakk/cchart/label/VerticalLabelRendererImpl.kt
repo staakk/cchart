@@ -7,12 +7,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import io.github.staakk.cchart.util.Alignment
-import io.github.staakk.cchart.util.countLines
-import io.github.staakk.cchart.util.drawText
-import io.github.staakk.cchart.util.lineHeight
-
-enum class VerticalLabelSide { RIGHT, LEFT }
+import io.github.staakk.cchart.util.*
 
 @Composable
 fun verticalLabelRenderer(
@@ -20,6 +15,7 @@ fun verticalLabelRenderer(
     labelsTypeface: Typeface = Typeface.DEFAULT,
     location: Float = 0f,
     alignment: Alignment = Alignment.CenterLeft,
+    textAlignment: TextAlignment = TextAlignment.Left,
     labelOffset: Offset = Offset(-12f, 0f),
     labelsProvider: LabelsProvider = IntLabelsProvider,
 ): VerticalLabelRenderer {
@@ -29,13 +25,21 @@ fun verticalLabelRenderer(
         textSize = with(density) { labelsTextSize.toPx() }
         isAntiAlias = true
     }
-    return verticalLabelRenderer(paint, location, alignment, labelOffset, labelsProvider)
+    return verticalLabelRenderer(
+        paint,
+        location,
+        alignment,
+        textAlignment,
+        labelOffset,
+        labelsProvider
+    )
 }
 
 fun verticalLabelRenderer(
     paint: Paint,
     location: Float = 0f,
     alignment: Alignment = Alignment.CenterLeft,
+    textAlignment: TextAlignment = TextAlignment.Left,
     labelOffset: Offset = Offset(-12f, 0f),
     labelsProvider: LabelsProvider = IntLabelsProvider
 ) = VerticalLabelRenderer { context ->
@@ -51,7 +55,8 @@ fun verticalLabelRenderer(
                         x = location * size.width,
                         y = y
                     ) + labelOffset,
-                    paint
+                    textAlignment = textAlignment,
+                    paint = paint
                 )
             }
         }
