@@ -3,6 +3,7 @@ package io.github.staakk.cchart.samples
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.axis.horizontalAxisRenderer
 import io.github.staakk.cchart.axis.verticalAxisRenderer
@@ -36,7 +38,9 @@ fun AnimatedBarSizeChartScreen() {
     }
 
     Chart(
-        modifier = Modifier.aspectRatio(1f, false),
+        modifier = Modifier
+            .padding(start = 32.dp, bottom = 32.dp)
+            .aspectRatio(1f, false),
         viewport = Viewport(0f, 6f, 0f, 5f)
     ) {
         series(

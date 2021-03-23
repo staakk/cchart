@@ -72,6 +72,7 @@ class ReadmeGalleryTest : ScreenshotTest {
             val verticalLabelRenderer = verticalLabelRenderer()
             Chart(
                 modifier = Modifier
+                    .padding(start = 32.dp, bottom = 32.dp)
                     .aspectRatio(1f, false)
                     .padding(bottom = 16.dp),
                 viewport = Viewport(0f, 10f, 0f, 10f)
@@ -172,6 +173,7 @@ class ReadmeGalleryTest : ScreenshotTest {
             )
             Chart(
                 modifier = Modifier
+                    .padding(start = 32.dp, bottom = 32.dp)
                     .aspectRatio(1f, false)
                     .padding(bottom = 16.dp),
                 viewport = Viewport(
@@ -251,6 +253,7 @@ class ReadmeGalleryTest : ScreenshotTest {
             val density = LocalDensity.current
             Chart(
                 modifier = Modifier
+                    .padding(start = 32.dp, bottom = 32.dp, end = 32.dp)
                     .aspectRatio(1f, false)
                     .padding(bottom = 16.dp),
                 viewport = Viewport(0f, 10f, 0f, 10f)

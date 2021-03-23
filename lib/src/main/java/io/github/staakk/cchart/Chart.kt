@@ -103,22 +103,9 @@ private fun Chart(
     onClick: (Offset, Point) -> Unit,
     scope: ChartScopeImpl
 ) {
-    val leftLabelSize = scope.verticalLabelRenderers.getMinLabelMaxSize()
-    val rightLabelSize = scope.verticalLabelRenderers.getMaxLabelMaxSize()
-    val topLabelSize = scope.horizontalLabelRenderers.getMinLabelMaxSize()
-    val bottomLabelSize = scope.horizontalLabelRenderers.getMaxLabelMaxSize()
-
     val density = LocalDensity.current
-    val paddingValues = with(density) {
-        PaddingValues(
-            start = leftLabelSize.width.toDp(),
-            end = rightLabelSize.width.toDp(),
-            top = topLabelSize.height.toDp(),
-            bottom = bottomLabelSize.height.toDp(),
-        )
-    }
 
-    BoxWithConstraints(modifier = modifier.then(Modifier.padding(paddingValues))) {
+    BoxWithConstraints(modifier = modifier) {
         val renderedPoints = remember { mutableStateOf(listOf<BoundingShape>()) }
         val canvasSize = with(density) { Size(width = maxWidth.toPx(), height = maxHeight.toPx()) }
         val rendererContext = rendererContext(viewport.value, canvasSize)
@@ -194,7 +181,7 @@ private fun Chart(
 
         scope.dataLabels.forEach {
             DataLabels(
-                modifier = modifier,
+                modifier = Modifier,
                 renderedShapes = renderedPoints.value,
                 canvasSize = canvasSize,
                 labelContent = it
@@ -202,7 +189,7 @@ private fun Chart(
         }
 
         AnchoredViews(
-            modifier = modifier,
+            modifier = Modifier,
             canvasSize = canvasSize,
             anchors = scope.anchors.mapKeys {
                 it.key to Offset(
@@ -213,14 +200,6 @@ private fun Chart(
         )
     }
 }
-
-private fun List<LabelRenderer>.getMinLabelMaxSize() = filter { it.getNormalisedPosition() < 0.5f }
-    .minByOrNull { it.getNormalisedPosition() }
-    ?.getMaxLabelSize() ?: Size.Zero
-
-private fun List<LabelRenderer>.getMaxLabelMaxSize() = filter { it.getNormalisedPosition() > 0.5f }
-    .maxByOrNull { it.getNormalisedPosition() }
-    ?.getMaxLabelSize() ?: Size.Zero
 
 /**
  * Receiver scope which is used by the [Chart].

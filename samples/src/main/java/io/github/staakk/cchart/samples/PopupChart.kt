@@ -36,7 +36,9 @@ fun PopupChartScreen() {
     val verticalLabelRenderer = verticalLabelRenderer()
     val popupPosition = remember { mutableStateOf<Pair<Point, Offset>?>(null)}
     Chart(
-        modifier = Modifier.aspectRatio(1f, false),
+        modifier = Modifier
+            .padding(start = 32.dp, bottom = 32.dp)
+            .aspectRatio(1f, false),
         viewport = Viewport(0f, 10f, 0f, 5f),
         onClick = { offset, point ->
             popupPosition.value = point to offset

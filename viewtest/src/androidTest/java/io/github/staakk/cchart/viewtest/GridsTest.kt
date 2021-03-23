@@ -73,7 +73,8 @@ class GridsTest : ScreenshotTest {
     private fun runTestFor(vararg grids: GridRenderer) {
         composeRule.setContent {
             Chart(
-                modifier = Modifier.aspectRatio(1f, false),
+                modifier = Modifier
+                    .aspectRatio(1f, false),
                 viewport = Viewport(0f, 10f, 0f, 5f)
             ) {
                 series(

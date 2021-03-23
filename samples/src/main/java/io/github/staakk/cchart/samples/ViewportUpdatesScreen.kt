@@ -32,7 +32,9 @@ fun ViewportUpdatesScreen() {
         val viewport = Viewport(0f, 10f, 0f, 5f)
         val chartState = remember { ChartState(viewport) }
         Chart(
-            modifier = Modifier.aspectRatio(1f, false),
+            modifier = Modifier
+                .padding(start = 32.dp, bottom = 32.dp)
+                .aspectRatio(1f, false),
             chartState = chartState,
             maxViewport = Viewport(-10f, 20f, -5f, 10f),
             minViewportSize = Size(5f, 5f),

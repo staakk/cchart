@@ -1,11 +1,13 @@
 package io.github.staakk.cchart.viewtest
 
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.unit.dp
 import androidx.test.rule.GrantPermissionRule
 import com.karumi.shot.ScreenshotTest
 import io.github.staakk.cchart.Chart
@@ -57,6 +59,7 @@ class DataLabelsTest : ScreenshotTest {
             val verticalLabelRenderer = verticalLabelRenderer()
             Chart(
                 modifier = Modifier
+                    .padding(start = 32.dp, bottom = 32.dp)
                     .aspectRatio(1f, false),
                 viewport = Viewport(0f, 10f, 0f, 5f)
             ) {

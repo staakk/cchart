@@ -3,7 +3,6 @@ package io.github.staakk.cchart.label
 import android.graphics.Paint
 import android.graphics.Typeface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
@@ -40,10 +39,6 @@ private class HorizontalLabelRendererImpl(
                     }
                 }
         }
-    }
-
-    override fun getMaxLabelSize(): Size = labelsProvider.getMaxLabelMaxSize(paint).let {
-        it.copy(height = it.height + axisDistance)
     }
 
     private fun getYPosition(drawScope: DrawScope, lineNo: Int, linesCount: Int): Float {
