@@ -77,5 +77,8 @@ private fun PointerEvent.calculateDirection(): Offset {
             }
         }
     val length = direction.getDistance()
+    if (length == 0f) {
+        return Offset(0f, 0f)
+    }
     return Offset(abs(direction.x / length), abs(direction.y / length))
 }
