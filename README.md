@@ -13,6 +13,11 @@ __Table of contents:__
     - [Point renderer](#point-renderer)
     - [Line renderer](#line-renderer)
     - [Bar renderer](#bar-renderer)
+  - [Axis](#axis)
+  - [Data labels](#data-labels)
+  - [Popups, arbitrary views on the chart](#popups-arbitrary-views-on-the-chart)
+  - [Zooming and panning](#zooming-and-panning)
+  - [Animation](#animation)
 
 ## Dependencies
 
@@ -441,3 +446,177 @@ fun barGroupRenderer(
 ): GroupedSeriesRenderer
 ```
 
+## Axis
+
+The axis can be added to the chart by using `horizontalAxis()` and `verticalAxis()` functions.
+
+```kotlin 
+Chart(
+    // Configuration of the chart
+) {
+    // Adding series etc.
+    
+    horizontalAxis(horizontalAxisRenderer)
+
+    verticalAxis(verticalAxisRenderer)
+}
+```
+
+The axis renderers can be created using the following functions:
+
+```kotlin
+/**
+ * Creates renderer for horizontal axis.
+ *
+ * @param location Location of the axis in percents.
+ * @param axisDrawer Function drawing the axis.
+ */
+fun horizontalAxisRenderer(
+    location: Float = HorizontalAxisRenderer.Bottom,
+    axisDrawer: AxisDrawer = axisDrawer()
+): HorizontalAxisRenderer
+
+/**
+ * Creates renderer for vertical axis.
+ *
+ * @param location Location of the axis in percents.
+ * @param axisDrawer Function drawing the axis.
+ */
+fun verticalAxisRenderer(
+    location: Float = VerticalAxisRenderer.Left,
+    axisDrawer: AxisDrawer = axisDrawer()
+): VerticalAxisRenderer
+```
+
+It is also possible to customize how the axis is drawn by providing custom `AxisDrawer` or using existing one with different parameters.
+
+Labels for the axis can be provided via `horizontalAxisLabels()` and `verticalAxisLabels()` functions:
+
+```kotlin 
+Chart(
+    // Configuration of the chart
+) {
+    // Adding series etc.
+    
+    horizontalAxisLabels(horizontalAxisLabelsRenderer)
+
+    verticalAxisLabels(verticalAxisLabelsRenderer)
+}
+```
+
+The labels renderers can be created by using the following:
+
+```kotlin
+/**
+ * Creates a [HorizontalLabelRenderer].
+ *
+ * @param paint Paint to draw the labels text with.
+ * @param location Location of the label in percents.
+ * @param alignment The alignment of the label relative to the position at which it should be
+ * rendered.
+ * @param textAlignment The alignment of the label text.
+ * @param labelOffset Offset of the label position relative to the position at which it should be
+ * rendered.
+ * @param labelsProvider Provides the labels text and position for the given range.
+ */
+fun horizontalLabelRenderer(
+    paint: Paint,
+    location: Float = 1f,
+    alignment: Alignment = Alignment.BottomCenter,
+    textAlignment: TextAlignment = TextAlignment.Left,
+    labelOffset: Offset = Offset(0f, 12f),
+    labelsProvider: LabelsProvider = IntLabelsProvider
+): HorizontalLabelRenderer
+
+/**
+ * Creates a [VerticalLabelRenderer].
+ *
+ * @param paint Paint to draw the labels text with.
+ * @param location Location of the label in percents.
+ * @param alignment The alignment of the label relative to the position at which it should be
+ * rendered.
+ * @param textAlignment The alignment of the label text.
+ * @param labelOffset Offset of the label position relative to the position at which it should be
+ * rendered.
+ * @param labelsProvider Provides the labels text and position for the given range.
+ */
+fun verticalLabelRenderer(
+    paint: Paint,
+    location: Float = 0f,
+    alignment: Alignment = Alignment.CenterLeft,
+    textAlignment: TextAlignment = TextAlignment.Left,
+    labelOffset: Offset = Offset(-12f, 0f),
+    labelsProvider: LabelsProvider = IntLabelsProvider
+): VerticalLabelRenderer
+```
+
+The labels can be further customized by providing implementation of the label renderers.
+
+## Data labels
+
+In order to create labels for data one can use `dataLabels()` function as follows. 
+
+```kotlin 
+Chart(
+    // Configuration of the chart
+) {
+    // Adding series etc.
+    
+    dataLabels {
+      Text(
+          modifier = Modifier.padding(bottom = 4.dp)
+              .align(HorizontalAlignment.CENTER, VerticalAlignment.CENTER),
+          text = "(${data.x}, ${data.y})"
+      )
+    }
+}
+```
+
+In order to position the label `align(HorizontalAlignment, VerticalAlignment)` modifier can be used. All the data related to the point for which the label is rendered can be accessed through the `AnchorScope`.
+
+## Popups, arbitrary views on the chart
+
+__cchart__ offers possibility to add any view to the chart at anchored position. This can be done by using the following API: 
+
+```kotlin 
+Chart(
+    // Configuration of the chart
+) {
+    // Adding series etc.
+    
+   anchor(point) {
+    Text(
+        modifier = Modifier
+            .align(HorizontalAlignment.CENTER, VerticalAlignment.CENTER),
+        text = "Click to close"
+    )
+   }
+}
+```
+
+This can be used to create popups, buttons or to display additional information on the chart.
+
+## Zooming and panning
+
+Panning can be enabled by just providing `maxViewport` param to the `Chart`. To enable zooming `minViewportSize`, `maxViewportSize` should be provided and `enableZoom` must be set to `true`.
+
+```kotlin
+Chart(
+    modifier = Modifier
+        .padding(start = 32.dp, bottom = 32.dp)
+        .aspectRatio(1f, false),
+    viewport = Viewport(0f, 10f, 0f, 5f),
+    maxViewport = Viewport(-10f, 20f, -5f, 10f),
+    minViewportSize = Size(5f, 5f),
+    maxViewportSize = Size(10f, 10f),
+    enableZoom = true
+)
+```
+
+## Animation
+
+For implementing animation see [this example](samples/src/main/java/io/github/staakk/cchart/samples/AnimatedBarSizeChart.kt).
+
+## Observing the chart
+
+For observing chart's viewport see [this example](samples/src/main/java/io/github/staakk/cchart/samples/ViewportUpdatesScreen.kt)

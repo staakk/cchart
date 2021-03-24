@@ -35,6 +35,18 @@ fun verticalLabelRenderer(
     )
 }
 
+/**
+ * Creates a [VerticalLabelRenderer].
+ *
+ * @param paint Paint to draw the labels text with.
+ * @param location Location of the label in percents.
+ * @param alignment The alignment of the label relative to the position at which it should be
+ * rendered.
+ * @param textAlignment The alignment of the label text.
+ * @param labelOffset Offset of the label position relative to the position at which it should be
+ * rendered.
+ * @param labelsProvider Provides the labels text and position for the given range.
+ */
 fun verticalLabelRenderer(
     paint: Paint,
     location: Float = 0f,
