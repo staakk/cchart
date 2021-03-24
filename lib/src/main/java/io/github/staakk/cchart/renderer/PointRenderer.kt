@@ -33,6 +33,15 @@ fun interface PointBoundingShapeProvider {
     fun DrawScope.provide(data: Data, center: Offset, size: Size): BoundingShape
 }
 
+/**
+ * Creates [SeriesRenderer] that renders points.
+ *
+ * @param size Size of the points to render in pixels.
+ * @param pointDrawer A function drawing the point.
+ * @param boundingShapeProvider Provider of the [BoundingShape].
+ *
+ * @see [io.github.staakk.cchart.ChartScope.series]
+ */
 fun pointRenderer(
     size: Size = Size(30f, 30f),
     pointDrawer: PointDrawer = drawCircle(),

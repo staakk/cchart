@@ -24,6 +24,8 @@ import io.github.staakk.cchart.renderer.pointRenderer
 fun PointChartScreen() {
     val horizontalLabelRenderer = horizontalLabelRenderer()
     val verticalLabelRenderer = verticalLabelRenderer()
+    val horizontalAxisRenderer = horizontalAxisRenderer()
+    val verticalAxisRenderer = verticalAxisRenderer()
 
     Chart(
         modifier = Modifier
@@ -49,11 +51,11 @@ fun PointChartScreen() {
             )
         )
 
-        horizontalAxis(horizontalAxisRenderer())
+        horizontalAxis(horizontalAxisRenderer)
 
         horizontalAxisLabels(horizontalLabelRenderer)
 
-        verticalAxis(verticalAxisRenderer())
+        verticalAxis(verticalAxisRenderer)
 
         verticalAxisLabels(verticalLabelRenderer)
     }

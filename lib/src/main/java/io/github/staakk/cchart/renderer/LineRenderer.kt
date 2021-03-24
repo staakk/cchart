@@ -28,6 +28,12 @@ fun interface LineBoundingShapeProvider {
     fun DrawScope.provide(points: List<Pair<Data, Offset>>): List<BoundingShape>
 }
 
+/**
+ * Creates [SeriesRenderer] that renders a line.
+ *
+ * @param lineDrawer A function drawing the line.
+ * @param boundingShapeProvider Provider of the [BoundingShape]s for the rendered line.
+ */
 fun lineRenderer(
     lineDrawer: LineDrawer = drawLine(),
     boundingShapeProvider: LineBoundingShapeProvider = lineBoundingShapeProvider()

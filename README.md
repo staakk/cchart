@@ -2,23 +2,41 @@
 
 Flexible and simple library for creating charts using Jetpack Compose.
 
-### Disclaimer: this is not production ready code. I've created this lib to explore some custom drawing options of Jetpack Compose
+__Note__: currently this library is under development and is using some beta/alpha release components.
 
-## Features
+__Table of contents:__
+- [Compose chart](#compose-chart)
+  - [Dependencies](#dependencies)
+  - [Examples](#examples)
+  - [Creating basic chart](#creating-basic-chart)
+  - [Series renderers](#series-renderers)
+    - [Point renderer](#point-renderer)
+    - [Line renderer](#line-renderer)
+    - [Bar renderer](#bar-renderer)
 
-* Multiple chart types supported out of the box:
-    * Bar chart (also with grouping bars)
-    * Line chart
-    * Points chart
-    * Combinations of all the above
-* Zooming and panning
-* Customisation flexibility:
-    * Adjustable drawing of axis, labels, chart's data
-    * Customisable grids
-    * Possibility to provide own renderers for chart's elements
-* Adding labels for data on chart
+## Dependencies
 
-Here are few examples together with the code:
+You can add __cchart__ to your project by simply adding it as dependency:
+```
+allprojects {
+  repositories {
+    ...
+    maven { url 'https://jitpack.io' }
+  }
+}
+```
+
+```
+dependencies {
+        implementation 'com.github.staakk:cchart:$version'
+}
+```
+
+Where `version` can be either a tag or a commit hash.
+
+## Examples
+
+Here are few examples together with the code, for more examples check out [the samples](samples/src/main/java/io/github/staakk/cchart/samples).
 
 ![Image of the chart](viewtest/screenshots/debug/io.github.staakk.cchart.viewtest.ReadmeGalleryTest_lineChart.png)
 <details>
@@ -308,4 +326,118 @@ Chart(
 ```
 </details>
 
-For more examples check out [the samples](samples/src/main/java/io/github/staakk/cchart/samples).
+## Creating basic chart
+
+Example below creates a basic chart with data rendered as points. It also features horizontal and vertical axis together with labels. 
+
+```kotlin
+// Create axis and label renderers.
+val horizontalLabelRenderer = horizontalLabelRenderer()
+val verticalLabelRenderer = verticalLabelRenderer()
+val horizontalAxisRenderer = horizontalAxisRenderer()
+val verticalAxisRenderer = verticalAxisRenderer()
+
+Chart(
+    modifier = Modifier
+        // Additional padding so the labels can be visible.
+        .padding(start = 32.dp, bottom = 32.dp)
+        // Let's make the chart square.
+        .aspectRatio(1f, false),
+    // The viewport of the chart.
+    viewport = Viewport(0f, 10f, 0f, 5f)
+) {
+    // Adds series of data to the chart.
+    series(
+        seriesOf(
+            pointOf(2f, 1.5f),
+            pointOf(4f, 3.5f),
+            pointOf(6f, 1.3f),
+            pointOf(9f, 4.7f),
+        ),
+        // The points will be rendered as red circles 20px in diameter.
+        renderer = pointRenderer(
+            size = Size(20f, 20f),
+            pointDrawer = drawCircle(brush = SolidColor(Colors.Red))
+        )
+    )
+
+    // The following four lines set the axis and the labels for them.
+    horizontalAxis(horizontalAxisRenderer)
+
+    horizontalAxisLabels(horizontalLabelRenderer)
+
+    verticalAxis(verticalAxisRenderer)
+
+    verticalAxisLabels(verticalLabelRenderer)
+}
+```
+
+## Series renderers
+
+### Point renderer
+
+The point renderer can be created by using `pointRenderer()` function. It can be used to render a `Series`.
+
+```kotlin
+/**
+ * Creates [SeriesRenderer] that renders points.
+ *
+ * @param size Size of the points to render in pixels.
+ * @param pointDrawer A function drawing the point.
+ * @param boundingShapeProvider Provider of the [BoundingShape].
+ *
+ * @see [io.github.staakk.cchart.ChartScope.series]
+ */
+fun pointRenderer(
+    size: Size = Size(30f, 30f),
+    pointDrawer: PointDrawer = drawCircle(),
+    boundingShapeProvider: PointBoundingShapeProvider = circleBoundingShapeProvider()
+): SeriesRenderer
+```
+By default this function will render a filled circle of diameter 30px. The default `circleBoundingShapeProvider()` will provide a bounding shape for it also as a circle with 30px diameter.
+
+One can customize the drawn shape and its bounding shape by providing custom implementation of `PointDrawer` and `PointBoundingShapeProvider`.
+
+### Line renderer
+
+The line renderer can be created by using `lineRenderer()` function. It can be used to render a `Series`.
+
+```kotlin
+/**
+ * Creates [SeriesRenderer] that renders a line.
+ *
+ * @param lineDrawer A function drawing the line.
+ * @param boundingShapeProvider Provider of the [BoundingShape]s for the rendered line.
+ *
+ * @see [io.github.staakk.cchart.ChartScope.series]
+ */
+fun lineRenderer(
+    lineDrawer: LineDrawer = drawLine(),
+    boundingShapeProvider: LineBoundingShapeProvider = lineBoundingShapeProvider()
+): Series Renderer
+```
+
+### Bar renderer
+
+The bar renderer can be created by using `barGroupRenderer()` function. It can be used to render a `GroupedSeries`.
+
+```kotlin
+/**
+ * Renders bars on the chart.
+ *
+ * @param preferredWidth Preferred width of the bars. If there's no enough space to maintain
+ * [minimalSpacing] distance between the bars this value will be adjusted.
+ * @param minimalSpacing Minimal spacing between the bars.
+ * @param barDrawer Draws the bars.
+ * @param boundingShapeProvider Provides bounding shapes for rendered bars.
+ *
+ * @see [io.github.staakk.cchart.ChartScope.series]
+ */
+fun barGroupRenderer(
+    preferredWidth: Float,
+    minimalSpacing: Float = 10f,
+    barDrawer: BarDrawer = drawBar(),
+    boundingShapeProvider: BarBoundingShapeProvider = barBoundingShapeProvider()
+): GroupedSeriesRenderer
+```
+

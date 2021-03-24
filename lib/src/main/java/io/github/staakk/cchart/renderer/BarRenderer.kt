@@ -48,6 +48,8 @@ fun interface BarBoundingShapeProvider {
  * @param minimalSpacing Minimal spacing between the bars.
  * @param barDrawer Draws the bars.
  * @param boundingShapeProvider Provides bounding shapes for rendered bars.
+ *
+ * @see [io.github.staakk.cchart.ChartScope.series]
  */
 fun barGroupRenderer(
     preferredWidth: Float,
