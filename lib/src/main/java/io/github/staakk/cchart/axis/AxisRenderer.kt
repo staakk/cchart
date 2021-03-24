@@ -18,7 +18,6 @@ fun interface AxisRenderer {
     fun DrawScope.render(context: RendererContext)
 }
 
-
 fun interface HorizontalAxisRenderer : AxisRenderer {
     companion object {
         const val Top = 0.0f

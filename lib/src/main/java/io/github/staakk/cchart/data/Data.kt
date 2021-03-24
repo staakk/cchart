@@ -4,22 +4,16 @@ package io.github.staakk.cchart.data
 /**
  * Data to be represented by the chart.
  */
-sealed class Data {
+interface Data {
 
-    abstract val x: Float
+    val x: Float
 
-    abstract val y: Float
-
-    /**
-     * Additional data.
-     */
-    abstract val tag: Any?
+    val y: Float
 
     data class Point(
         override val x: Float,
         override val y: Float,
-        override val tag: Any?
-    ) : Data()
+    ) : Data
 }
 
-fun pointOf(x: Number, y: Number, tag: Any? = null) = Data.Point(x.toFloat(), y.toFloat(), tag)
+fun pointOf(x: Number, y: Number) = Data.Point(x.toFloat(), y.toFloat())
