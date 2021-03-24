@@ -72,7 +72,7 @@ class ClickListenerTest {
     @Test
     fun shouldRegisterClickOnData() {
         var data: Data? = null
-        val point40percent = pointOf(4f, 4f, "tag")
+        val point40percent = pointOf(4f, 4f)
         composeRule.setContent {
             Chart(
                 modifier = Modifier

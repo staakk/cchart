@@ -4,8 +4,8 @@ IMAGE="system-images;android-29;default;x86"
 NAME="viewtest"
 ABI="x86"
 
-SDK_MANAGER="$ANDROID_SDK_ROOT/tools/bin/sdkmanager"
-AVD_MANAGER="$ANDROID_SDK_ROOT/tools/bin/avdmanager"
+SDK_MANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
+AVD_MANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager"
 EMULATOR="$ANDROID_SDK_ROOT/emulator/emulator"
 
 function is_image_installed {
