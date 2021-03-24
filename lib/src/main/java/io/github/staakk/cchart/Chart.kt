@@ -250,8 +250,14 @@ interface ChartScope {
      */
     fun series(series: GroupedSeries, renderer: GroupedSeriesRenderer)
 
+    /**
+     * Adds composable view at the place represented by [data].
+     */
     fun anchor(data: Data, content: @Composable AnchorScope.() -> Unit)
 
+    /**
+     * Adds labels defined by [content] to the data on the chart.
+     */
     fun dataLabels(content: @Composable AnchorScope.() -> Unit)
 }
 
