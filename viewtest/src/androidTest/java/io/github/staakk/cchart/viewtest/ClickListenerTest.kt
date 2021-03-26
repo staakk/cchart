@@ -15,7 +15,7 @@ import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
-import io.github.staakk.cchart.renderer.drawCircle
+import io.github.staakk.cchart.renderer.circleDrawer
 import io.github.staakk.cchart.renderer.pointRenderer
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -56,7 +56,7 @@ class ClickListenerTest {
                         pointOf(8f, 8f),
                         pointOf(10f, 10f),
                     ),
-                    renderer = pointRenderer(pointDrawer = drawCircle(brush = SolidColor(Color.Blue)))
+                    renderer = pointRenderer(pointDrawer = circleDrawer(brush = SolidColor(Color.Blue)))
                 )
             }
         }
@@ -93,7 +93,7 @@ class ClickListenerTest {
                         pointOf(8f, 8f),
                         pointOf(10f, 10f),
                     ),
-                    renderer = pointRenderer(pointDrawer = drawCircle(brush = SolidColor(Color.Blue)))
+                    renderer = pointRenderer(pointDrawer = circleDrawer(brush = SolidColor(Color.Blue)))
                 )
             }
         }

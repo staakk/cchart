@@ -22,8 +22,8 @@ import io.github.staakk.cchart.data.groupedSeriesOf
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
+import io.github.staakk.cchart.renderer.barDrawer
 import io.github.staakk.cchart.renderer.barGroupRenderer
-import io.github.staakk.cchart.renderer.drawBar
 
 @Composable
 fun AnimatedBarColorChartScreen() {
@@ -39,7 +39,7 @@ fun AnimatedBarColorChartScreen() {
     }
 
     val color1 = remember { Animatable(Color.DarkGray) }
-    LaunchedEffect(color0) {
+    LaunchedEffect(color1) {
         color1.animateTo(
             Colors.Green,
             animationSpec = spring(stiffness = Spring.StiffnessVeryLow)
@@ -77,7 +77,7 @@ fun AnimatedBarColorChartScreen() {
             ),
             renderer = barGroupRenderer(
                 preferredWidth = 64f,
-                barDrawer = drawBar { index, _ ->
+                barDrawer = barDrawer { index, _ ->
                     SolidColor(
                         when (index) {
                             0 -> color0.value

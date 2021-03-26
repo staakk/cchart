@@ -21,6 +21,7 @@ import io.github.staakk.cchart.data.groupedSeriesOf
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
+import io.github.staakk.cchart.renderer.barDrawer
 import io.github.staakk.cchart.renderer.barGroupRenderer
 
 @Composable
@@ -35,6 +36,16 @@ fun AnimatedBarSizeChartScreen() {
     )
     LaunchedEffect(heightScale) {
         trigger.value = true
+    }
+
+    val barDrawer = barDrawer { index, _ ->
+        SolidColor(
+            when (index) {
+                0 -> Colors.Blue
+                1 -> Colors.Red
+                else -> Colors.Pink
+            }
+        )
     }
 
     Chart(
@@ -68,18 +79,15 @@ fun AnimatedBarSizeChartScreen() {
             ),
             renderer = barGroupRenderer(
                 preferredWidth = 64f,
-                barDrawer = { index, _, topLeft, size ->
-                    drawRect(
-                        brush = SolidColor(
-                            when (index) {
-                                0 -> Colors.Blue
-                                1 -> Colors.Red
-                                else -> Colors.Pink
-                            }
-                        ),
-                        topLeft = topLeft,
-                        size = size.copy(height = size.height * heightScale.value)
-                    )
+                barDrawer = { index, data, topLeft, size ->
+                    with(barDrawer) {
+                        draw(
+                            index = index,
+                            data = data,
+                            topLeft = topLeft,
+                            size = size.copy(height = size.height * heightScale.value)
+                        )
+                    }
                 }
             )
         )

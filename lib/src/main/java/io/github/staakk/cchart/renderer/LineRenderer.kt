@@ -35,7 +35,7 @@ fun interface LineBoundingShapeProvider {
  * @param boundingShapeProvider Provider of the [BoundingShape]s for the rendered line.
  */
 fun lineRenderer(
-    lineDrawer: LineDrawer = drawLine(),
+    lineDrawer: LineDrawer = lineDrawer(),
     boundingShapeProvider: LineBoundingShapeProvider = lineBoundingShapeProvider()
 ) = SeriesRenderer { context, series ->
     if (series.size < 2) return@SeriesRenderer emptyList()
@@ -52,7 +52,7 @@ fun lineRenderer(
         }
 }
 
-fun drawLine(
+fun lineDrawer(
     brush: Brush = SolidColor(Color.Black),
     style: DrawStyle = Stroke(width = 5f, cap = StrokeCap.Round),
     colorFilter: ColorFilter? = null,

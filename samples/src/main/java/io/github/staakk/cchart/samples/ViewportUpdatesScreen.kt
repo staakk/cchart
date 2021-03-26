@@ -21,7 +21,7 @@ import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
-import io.github.staakk.cchart.renderer.drawCircle
+import io.github.staakk.cchart.renderer.circleDrawer
 import io.github.staakk.cchart.renderer.pointRenderer
 
 @Composable
@@ -55,7 +55,7 @@ fun ViewportUpdatesScreen() {
                 ),
                 renderer = pointRenderer(
                     size = Size(20f, 20f),
-                    pointDrawer = drawCircle(brush = SolidColor(Colors.Indigo))
+                    pointDrawer = circleDrawer(brush = SolidColor(Colors.Indigo))
                 )
             )
 

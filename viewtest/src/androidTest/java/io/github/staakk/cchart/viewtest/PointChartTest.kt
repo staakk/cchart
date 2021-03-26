@@ -17,7 +17,7 @@ import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
-import io.github.staakk.cchart.renderer.drawCircle
+import io.github.staakk.cchart.renderer.circleDrawer
 import io.github.staakk.cchart.renderer.pointRenderer
 import org.junit.Rule
 import org.junit.Test
@@ -56,7 +56,7 @@ class PointChartTest : ScreenshotTest {
                         pointOf(8f, 4.5f),
                         pointOf(9f, 4.7f),
                     ),
-                    renderer = pointRenderer(pointDrawer = drawCircle(brush = SolidColor(Color.Blue)))
+                    renderer = pointRenderer(pointDrawer = circleDrawer(brush = SolidColor(Color.Blue)))
                 )
 
                 verticalAxis(verticalAxisRenderer())

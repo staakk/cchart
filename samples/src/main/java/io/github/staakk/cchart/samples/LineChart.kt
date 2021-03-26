@@ -16,7 +16,7 @@ import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
-import io.github.staakk.cchart.renderer.drawLine
+import io.github.staakk.cchart.renderer.lineDrawer
 import io.github.staakk.cchart.renderer.lineRenderer
 
 @Composable
@@ -42,7 +42,7 @@ fun LineChartScreen() {
                 pointOf(8f, 4.5f),
                 pointOf(9f, 4.7f),
             ),
-            renderer = lineRenderer(lineDrawer = drawLine(brush = SolidColor(Colors.Blue)))
+            renderer = lineRenderer(lineDrawer = lineDrawer(brush = SolidColor(Colors.Blue)))
         )
 
         horizontalAxis(horizontalAxisRenderer())

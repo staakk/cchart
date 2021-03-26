@@ -17,8 +17,8 @@ import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.label.LabelsProvider
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
+import io.github.staakk.cchart.renderer.barDrawer
 import io.github.staakk.cchart.renderer.barGroupRenderer
-import io.github.staakk.cchart.renderer.drawBar
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -54,7 +54,7 @@ fun DateLabelsChartScreen() {
                 )
             ),
             barGroupRenderer(
-                barDrawer = drawBar { index, _ ->
+                barDrawer = barDrawer { index, _ ->
                     SolidColor(
                         when (index) {
                             0 -> Colors.DeepPurple

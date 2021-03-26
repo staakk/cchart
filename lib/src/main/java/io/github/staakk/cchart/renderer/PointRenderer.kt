@@ -44,7 +44,7 @@ fun interface PointBoundingShapeProvider {
  */
 fun pointRenderer(
     size: Size = Size(30f, 30f),
-    pointDrawer: PointDrawer = drawCircle(),
+    pointDrawer: PointDrawer = circleDrawer(),
     boundingShapeProvider: PointBoundingShapeProvider = circleBoundingShapeProvider()
 ) = SeriesRenderer { context, series ->
     series.getPointsInViewport(getDrawingBounds(context, size))
@@ -56,7 +56,7 @@ fun pointRenderer(
         }
 }
 
-fun drawCircle(
+fun circleDrawer(
     brush: Brush = SolidColor(Color.Black),
     alpha: Float = 1.0f,
     style: DrawStyle = Fill,

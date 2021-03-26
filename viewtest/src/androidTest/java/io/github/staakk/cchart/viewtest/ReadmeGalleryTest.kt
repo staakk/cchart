@@ -95,7 +95,7 @@ class ReadmeGalleryTest : ScreenshotTest {
                         pointOf(9f, 8.3f),
                         pointOf(10f, 9.1f),
                     ),
-                    renderer = lineRenderer(lineDrawer = drawLine(brush = SolidColor(Blue)))
+                    renderer = lineRenderer(lineDrawer = lineDrawer(brush = SolidColor(Blue)))
                 )
 
                 verticalAxis(
@@ -189,7 +189,7 @@ class ReadmeGalleryTest : ScreenshotTest {
                     ),
                     renderer = barGroupRenderer(
                         preferredWidth = 64f,
-                        barDrawer = drawBar { index, _ ->
+                        barDrawer = barDrawer { index, _ ->
                             SolidColor(
                                 when (index) {
                                     0 -> DeepPurple
@@ -262,10 +262,10 @@ class ReadmeGalleryTest : ScreenshotTest {
                         pointOf(10f, 9.1f),
                     ),
                     renderer = combine(
-                        lineRenderer(lineDrawer = drawLine(brush = SolidColor(Blue))),
+                        lineRenderer(lineDrawer = lineDrawer(brush = SolidColor(Blue))),
                         pointRenderer(
                             size = with(density) { 8.dp.toPx() }.let { Size(it, it) },
-                            pointDrawer = drawCircle(brush = SolidColor(LightBlue))
+                            pointDrawer = circleDrawer(brush = SolidColor(LightBlue))
                         )
                     )
                 )
@@ -285,10 +285,10 @@ class ReadmeGalleryTest : ScreenshotTest {
                         pointOf(10f, 1.3f),
                     ),
                     renderer = combine(
-                        lineRenderer(lineDrawer = drawLine(brush = SolidColor(Green))),
+                        lineRenderer(lineDrawer = lineDrawer(brush = SolidColor(Green))),
                         pointRenderer(
                             size = with(density) { 8.dp.toPx() }.let { Size(it, it) },
-                            pointDrawer = drawCircle(brush = SolidColor(LightGreen))
+                            pointDrawer = circleDrawer(brush = SolidColor(LightGreen))
                         )
                     )
                 )

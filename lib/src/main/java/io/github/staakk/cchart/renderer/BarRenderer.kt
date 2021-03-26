@@ -54,7 +54,7 @@ fun interface BarBoundingShapeProvider {
 fun barGroupRenderer(
     preferredWidth: Float,
     minimalSpacing: Float = 10f,
-    barDrawer: BarDrawer = drawBar(),
+    barDrawer: BarDrawer = barDrawer(),
     boundingShapeProvider: BarBoundingShapeProvider = barBoundingShapeProvider()
 ): GroupedSeriesRenderer = GroupedSeriesRenderer { context, series ->
     val renderedPoints = mutableListOf<BoundingShape>()
@@ -119,7 +119,7 @@ private fun getDrawingBounds(rendererContext: RendererContext): Viewport {
     )
 }
 
-fun drawBar(
+fun barDrawer(
     style: DrawStyle = Fill,
     alpha: Float = 1.0f,
     colorFilter: ColorFilter? = null,
