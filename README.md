@@ -1,5 +1,7 @@
 # Compose chart
 
+[![](https://jitpack.io/v/staakk/cchart.svg)](https://jitpack.io/#staakk/cchart)
+
 Flexible and simple library for creating charts using Jetpack Compose.
 
 __Note__: currently this library is under development and is using some beta/alpha release components.
