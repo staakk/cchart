@@ -3,5 +3,5 @@ object Config {
     const val compileSdkVersion = 30
     const val targetSdkVersion = 30
     const val version = 1
-    const val versionName = "1.0.0"
+    const val versionName = "0.1.0"
 }
