@@ -21,8 +21,8 @@ private class SimpleGridRenderer(
 
     override fun DrawScope.render(context: RendererContext) {
         gridLinesProvider.provide(
-            orientation.getMin(context.bounds),
-            orientation.getMax(context.bounds)
+            orientation.getMin(context.viewport),
+            orientation.getMax(context.viewport)
         ).forEach {
             drawLine(
                 brush = brush,
@@ -63,7 +63,7 @@ enum class GridOrientation {
             Offset(context.dataToRendererCoordX(value), 0f)
 
         override fun getEnd(drawScope: DrawScope, context: RendererContext, value: Float) =
-            Offset(context.dataToRendererCoordX(value), -drawScope.size.height)
+            Offset(context.dataToRendererCoordX(value), drawScope.size.height)
     };
 
     abstract fun getMin(bounds: Viewport): Float

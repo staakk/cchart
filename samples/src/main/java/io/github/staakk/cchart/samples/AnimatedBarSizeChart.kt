@@ -84,7 +84,7 @@ fun AnimatedBarSizeChartScreen() {
                         draw(
                             index = index,
                             data = data,
-                            topLeft = topLeft,
+                            baseLeft = topLeft,
                             size = size.copy(height = size.height * heightScale.value)
                         )
                     }

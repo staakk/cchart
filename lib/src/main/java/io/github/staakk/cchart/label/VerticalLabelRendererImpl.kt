@@ -55,11 +55,11 @@ fun verticalLabelRenderer(
     labelOffset: Offset = Offset(-12f, 0f),
     labelsProvider: LabelsProvider = IntLabelsProvider
 ) = VerticalLabelRenderer { context ->
-    labelsProvider.provide(context.bounds.minY, context.bounds.maxY)
+    labelsProvider.provide(context.viewport.minY, context.viewport.maxY)
         .forEach { (text, offset) ->
             val textHeight = paint.fontMetrics.lineHeight * (text.countLines() - 1)
-            val y = size.height + context.dataToRendererCoordY(offset) - textHeight / 2
-            if (y - textHeight > 0f && y + textHeight / 2 < size.height) {
+            val y = context.dataToRendererCoordY(offset) - textHeight / 2
+            if (y + textHeight / 2 < size.height && y - textHeight / 2 > 0f) {
                 drawText(
                     text = text,
                     alignment = alignment,

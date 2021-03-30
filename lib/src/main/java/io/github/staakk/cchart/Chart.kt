@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.clipRect
-import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import io.github.staakk.cchart.axis.*
@@ -134,34 +133,29 @@ private fun Chart(
                 .pointerInput(renderedPoints) {
                     detectTapGestures { offset ->
                         val point = renderedPoints.value
-                            .firstOrNull { it.contains(offset.copy(y = offset.y - canvasSize.height)) }
+                            .firstOrNull { it.contains(offset) }
                             ?.data
                             ?: pointOf(
                                 rendererContext.rendererToDataCoordX(offset.x),
-                                rendererContext.rendererToDataCoordY(offset.y) + viewport.value.height
+                                rendererContext.rendererToDataCoordY(offset.y)
                             )
                         onClick(offset, point)
                     }
                 }
         ) drawScope@{
             clipRect {
-                translate(
-                    0f,
-                    size.height - rendererContext.dataToRendererCoordY(rendererContext.bounds.minY)
-                ) {
-                    scope.gridRenderers.forEach { renderer ->
-                        with(renderer) { this@drawScope.render(rendererContext) }
-                    }
-
-                    val points = mutableListOf<BoundingShape>()
-                    points += scope.series.flatMap { (series, renderer) ->
-                        with(renderer) { this@drawScope.render(rendererContext, series) }
-                    }
-                    points += scope.groupedSeries.flatMap { (series, renderer) ->
-                        with(renderer) { this@drawScope.render(rendererContext, series) }
-                    }
-                    renderedPoints.value = points
+                scope.gridRenderers.forEach { renderer ->
+                    with(renderer) { this@drawScope.render(rendererContext) }
                 }
+
+                val points = mutableListOf<BoundingShape>()
+                points += scope.series.flatMap { (series, renderer) ->
+                    with(renderer) { this@drawScope.render(rendererContext, series) }
+                }
+                points += scope.groupedSeries.flatMap { (series, renderer) ->
+                    with(renderer) { this@drawScope.render(rendererContext, series) }
+                }
+                renderedPoints.value = points
             }
 
             scope.horizontalAxisRenderers.forEach {

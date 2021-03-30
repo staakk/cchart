@@ -17,10 +17,10 @@ fun interface BarDrawer {
      *
      * @param index Index of a bar in a group.
      * @param data Data point to render.
-     * @param topLeft Top left corner of a bar.
+     * @param baseLeft Coordinate of the left corner at the base of the bar.
      * @param size Size of a bar.
      */
-    fun DrawScope.draw(index: Int, data: Data, topLeft: Offset, size: Size)
+    fun DrawScope.draw(index: Int, data: Data, baseLeft: Offset, size: Size)
 }
 
 fun interface BarBoundingShapeProvider {
@@ -29,15 +29,15 @@ fun interface BarBoundingShapeProvider {
      * Provides [BoundingShape] that is used for rendering data labels and on click listener of the
      * [io.github.staakk.cchart.Chart].
      *
-     * __Note__: [topLeft] and [size] values correspond to values provided
+     * __Note__: [baseLeft] and [size] values correspond to values provided
      * to [BarDrawer] by [barGroupRenderer] and not to what was rendered by it.
      *
      * @param index Index of a bar in a group.
      * @param data Data point to provide [BoundingShape] for.
-     * @param topLeft Top left corner of a bar.
+     * @param baseLeft Coordinate of the left corner at the base of the bar.
      * @param size Size of a bar.
      */
-    fun DrawScope.provide(index: Int, data: Data, topLeft: Offset, size: Size): BoundingShape
+    fun DrawScope.provide(index: Int, data: Data, baseLeft: Offset, size: Size): BoundingShape
 }
 
 /**
@@ -78,10 +78,10 @@ fun barGroupRenderer(
                 context.dataToRendererCoordX(point.x) + unitOffset * width + (1 - groupSize % 2) * halfWidth
             val y = context.dataToRendererSizeY(point.y)
 
-            val topLeft = Offset(x - halfWidth, context.dataToRendererCoordY(0f))
-            val size = Size(width, -y)
-            with(barDrawer) { draw(index, point, topLeft, size) }
-            renderedPoints += with(boundingShapeProvider) { provide(index, point, topLeft, size) }
+            val baseLeft = Offset(x - halfWidth, context.dataToRendererCoordY(0f))
+            val size = Size(width, y)
+            with(barDrawer) { draw(index, point, baseLeft, size) }
+            renderedPoints += with(boundingShapeProvider) { provide(index, point, baseLeft, size) }
         }
     }
     renderedPoints
@@ -109,7 +109,7 @@ private fun List<List<Data>>.getMinXDistance() =
         ?: Float.MAX_VALUE
 
 private fun getDrawingBounds(rendererContext: RendererContext): Viewport {
-    val canvasBounds = rendererContext.bounds
+    val canvasBounds = rendererContext.viewport
     val canvasWidth = rendererContext.canvasSize.width
     return Viewport(
         maxX = canvasBounds.maxX + canvasWidth / 2,
@@ -125,10 +125,10 @@ fun barDrawer(
     colorFilter: ColorFilter? = null,
     blendMode: BlendMode = DrawScope.DefaultBlendMode,
     brushProvider: (index: Int, Data) -> Brush = { _, _ -> SolidColor(Color.Black) }
-) = BarDrawer { index, point, topLeft, size ->
+) = BarDrawer { index, point, baseLeft, size ->
     drawRect(
         brush = brushProvider(index, point),
-        topLeft = topLeft,
+        topLeft = baseLeft.copy(y = baseLeft.y - size.height),
         size = size,
         style = style,
         alpha = alpha,
@@ -137,12 +137,12 @@ fun barDrawer(
     )
 }
 
-fun barBoundingShapeProvider() = BarBoundingShapeProvider { _, point, topLeft, size ->
+fun barBoundingShapeProvider() = BarBoundingShapeProvider { _, point, baseLeft, size ->
     BoundingShape.Rect(
         data = point,
-        labelAnchorX = topLeft.x + size.width / 2,
-        labelAnchorY = size.height,
-        topLeft = topLeft,
-        bottomRight = Offset(topLeft.x + size.width, topLeft.y - size.height)
+        labelAnchorX = baseLeft.x + size.width / 2,
+        labelAnchorY = baseLeft.y - size.height,
+        topLeft = baseLeft.copy(y = baseLeft.y - size.height),
+        bottomRight = Offset(baseLeft.x + size.width, baseLeft.y)
     )
 }

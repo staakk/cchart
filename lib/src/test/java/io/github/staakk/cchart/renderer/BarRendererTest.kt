@@ -41,63 +41,63 @@ class BarRendererTest {
     )
 
     @Test
-    fun `should draw line`() {
+    fun `should draw bars`() {
         val expected = listOf(
             BoundingShape.Rect(
-                data = pointOf(x = -1.0f, y = 0.5f),
+                data = pointOf(x = -1f, y = 0.5f),
                 labelAnchorX = -2.05f,
-                labelAnchorY = -1.0f,
-                topLeft = Offset(-2.1f, -0.0f),
-                bottomRight = Offset(-2.0f, 1.0f)
+                labelAnchorY = 1f,
+                topLeft = Offset(-2.1f, 1f),
+                bottomRight = Offset(-2.0f, 2f)
             ),
             BoundingShape.Rect(
                 data = pointOf(x = -1.0f, y = 0.3f),
                 labelAnchorX = -1.95f,
-                labelAnchorY = -0.6f,
-                topLeft = Offset(-2.0f, -0.0f),
-                bottomRight = Offset(-1.9f, 0.6f)
+                labelAnchorY = 1.4f,
+                topLeft = Offset(-2.0f, 1.4f),
+                bottomRight = Offset(-1.9f, 2.0f)
             ),
             BoundingShape.Rect(
                 data = pointOf(x = 0.5f, y = 0.5f),
                 labelAnchorX = 0.95f,
-                labelAnchorY = -1.0f,
-                topLeft = Offset(0.9f, -0.0f),
-                bottomRight = Offset(1.0f, 1.0f)
+                labelAnchorY = 1f,
+                topLeft = Offset(0.9f, 1f),
+                bottomRight = Offset(1f, 2f)
             ),
             BoundingShape.Rect(
                 data = pointOf(x = 0.5f, y = 0.3f),
                 labelAnchorX = 1.05f,
-                labelAnchorY = -0.6f,
-                topLeft = Offset(1.0f, -0.0f),
-                bottomRight = Offset(1.1f, 0.6f)
+                labelAnchorY = 1.4f,
+                topLeft = Offset(1.0f, 1.4f),
+                bottomRight = Offset(1.1f, 2f)
             ),
             BoundingShape.Rect(
                 data = pointOf(x = 0.7f, y = 0.5f),
                 labelAnchorX = 1.3499999f,
-                labelAnchorY = -1.0f,
-                topLeft = Offset(1.3f, -0.0f),
-                bottomRight = Offset(1.4f, 1.0f)
+                labelAnchorY = 1f,
+                topLeft = Offset(1.3f, 1f),
+                bottomRight = Offset(1.4f, 2f)
             ),
             BoundingShape.Rect(
                 data = pointOf(x = 0.7f, y = 0.3f),
                 labelAnchorX = 1.4499999f,
-                labelAnchorY = -0.6f,
-                topLeft = Offset(1.4f, -0.0f),
-                bottomRight = Offset(1.5f, 0.6f)
+                labelAnchorY = 1.4f,
+                topLeft = Offset(1.4f, 1.4f),
+                bottomRight = Offset(1.5f, 2f)
             ),
             BoundingShape.Rect(
                 data = pointOf(x = 1.5f, y = 0.5f),
                 labelAnchorX = 2.95f,
-                labelAnchorY = -1.0f,
-                topLeft = Offset(2.9f, -0.0f),
-                bottomRight = Offset(3.0f, 1.0f)
+                labelAnchorY = 1f,
+                topLeft = Offset(2.9f, 1f),
+                bottomRight = Offset(3f, 2f)
             ),
             BoundingShape.Rect(
                 data = pointOf(x = 1.5f, y = 0.3f),
                 labelAnchorX = 3.05f,
-                labelAnchorY = -0.6f,
-                topLeft = Offset(3.0f, -0.0f),
-                bottomRight = Offset(3.1f, 0.6f)
+                labelAnchorY = 1.4f,
+                topLeft = Offset(3.0f, 1.4f),
+                bottomRight = Offset(3.1f, 2f)
             )
         )
         val result = with(barGroupRenderer(

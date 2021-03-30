@@ -39,7 +39,7 @@ fun lineRenderer(
     boundingShapeProvider: LineBoundingShapeProvider = lineBoundingShapeProvider()
 ) = SeriesRenderer { context, series ->
     if (series.size < 2) return@SeriesRenderer emptyList()
-    series.getLineInViewport(context.bounds)
+    series.getLineInViewport(context.viewport)
         .map {
             it to Offset(
                 x = context.dataToRendererCoordX(it.x),

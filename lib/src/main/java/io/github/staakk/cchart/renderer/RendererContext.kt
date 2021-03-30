@@ -7,19 +7,19 @@ data class RendererContext(
     val canvasSize: Size,
     val scaleX: Float,
     val scaleY: Float,
-    val bounds: Viewport,
+    val viewport: Viewport,
 ) {
-    fun dataToRendererCoordX(x: Float) = (x - bounds.minX) * scaleX
+    fun dataToRendererCoordX(x: Float) = (x - viewport.minX) * scaleX
 
-    fun dataToRendererCoordY(y: Float) = -(y - bounds.minY) * scaleY
+    fun dataToRendererCoordY(y: Float) = canvasSize.height - (y - viewport.minY) * scaleY
 
     fun dataToRendererSizeX(x: Float) = x * scaleX
 
     fun dataToRendererSizeY(y: Float) = y * scaleY
 
-    fun rendererToDataCoordX(x: Float) = x / scaleX + bounds.minX
+    fun rendererToDataCoordX(x: Float) = x / scaleX + viewport.minX
 
-    fun rendererToDataCoordY(y: Float) = -y / scaleY + bounds.minY
+    fun rendererToDataCoordY(y: Float) = (canvasSize.height - y) / scaleY - viewport.minY
 }
 
 fun rendererContext(
@@ -29,5 +29,5 @@ fun rendererContext(
     canvasSize = canvasSize,
     scaleX = canvasSize.width / viewport.width,
     scaleY = canvasSize.height / viewport.height,
-    bounds = viewport
+    viewport = viewport
 )

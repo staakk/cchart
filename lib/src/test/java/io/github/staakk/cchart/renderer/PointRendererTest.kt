@@ -38,22 +38,22 @@ class PointRendererTest {
             BoundingShape.Circle(
                 data = pointOf(x = 0f, y = 0.2f),
                 labelAnchorX = 0f,
-                labelAnchorY = -0.4f,
-                center = Offset(0f, -0.4f),
+                labelAnchorY = 1.6f,
+                center = Offset(0f, 1.6f),
                 radius = circleRadius
             ),
             BoundingShape.Circle(
                 data = pointOf(x = 0.5f, y = 1f),
                 labelAnchorX = 1f,
-                labelAnchorY = -2f,
-                center = Offset(1f, -2f),
+                labelAnchorY = 0f,
+                center = Offset(1f, 0f),
                 radius = circleRadius
             ),
             BoundingShape.Circle(
                 data = pointOf(x = 1f, y = 1f),
                 labelAnchorX = 2f,
-                labelAnchorY = -2f,
-                center = Offset(2f, -2f),
+                labelAnchorY = 0f,
+                center = Offset(2f, 0f),
                 radius = circleRadius
             )
         )

@@ -37,43 +37,43 @@ class LineRendererTest {
             BoundingShape.Circle(
                 data = pointOf(x = -0.5f, y = 0.5f),
                 labelAnchorX = -1.0f,
-                labelAnchorY = -1.0f,
-                center = Offset(-1.0f, -1.0f),
+                labelAnchorY = 1.0f,
+                center = Offset(-1.0f, 1.0f),
                 radius = 20.0f
             ),
             BoundingShape.Circle(
                 data = pointOf(x = 0.5f, y = 0.5f),
                 labelAnchorX = 1.0f,
-                labelAnchorY = -1.0f,
-                center = Offset(1.0f, -1.0f),
+                labelAnchorY = 1.0f,
+                center = Offset(1.0f, 1.0f),
                 radius = 20.0f
             ),
             BoundingShape.Circle(
                 data = pointOf(x = 1.5f, y = 0.5f),
                 labelAnchorX = 3.0f,
-                labelAnchorY = -1.0f,
-                center = Offset(3.0f, -1.0f),
+                labelAnchorY = 1.0f,
+                center = Offset(3.0f, 1.0f),
                 radius = 20.0f
             ),
             BoundingShape.Circle(
                 data = pointOf(x = 1.5f, y = 0.5f),
                 labelAnchorX = 3.0f,
-                labelAnchorY = -1.0f,
-                center = Offset(3.0f, -1.0f),
+                labelAnchorY = 1.0f,
+                center = Offset(3.0f, 1.0f),
                 radius = 20.0f
             ),
             BoundingShape.Circle(
                 data = pointOf(x = 0.5f, y = 0.5f),
                 labelAnchorX = 1.0f,
-                labelAnchorY = -1.0f,
-                center = Offset(1.0f, -1.0f),
+                labelAnchorY = 1.0f,
+                center = Offset(1.0f, 1.0f),
                 radius = 20.0f
             ),
             BoundingShape.Circle(
                 data = pointOf(x = -0.5f, y = 0.5f),
                 labelAnchorX = -1.0f,
-                labelAnchorY = -1.0f,
-                center = Offset(-1.0f, -1.0f),
+                labelAnchorY = 1.0f,
+                center = Offset(-1.0f, 1.0f),
                 radius = 20.0f
             )
         )

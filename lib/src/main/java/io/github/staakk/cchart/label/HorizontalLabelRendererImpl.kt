@@ -57,7 +57,7 @@ fun horizontalLabelRenderer(
     labelOffset: Offset = Offset(0f, 12f),
     labelsProvider: LabelsProvider = IntLabelsProvider
 ): HorizontalLabelRenderer = HorizontalLabelRenderer { context ->
-    labelsProvider.provide(context.bounds.minX, context.bounds.maxX)
+    labelsProvider.provide(context.viewport.minX, context.viewport.maxX)
         .forEach { (text, offset) ->
             val textWidth = paint.measureText(text)
             val x = context.dataToRendererCoordX(offset) - textWidth / 2

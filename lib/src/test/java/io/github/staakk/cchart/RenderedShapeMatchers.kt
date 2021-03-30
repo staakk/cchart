@@ -11,7 +11,7 @@ class RectMatcher(
     private val precision: Float = 0.001f
 ) : TypeSafeMatcher<BoundingShape>() {
     override fun describeTo(description: Description?) {
-        description?.appendText("RenderedShape.Rect")
+        description?.appendText("$expected")
     }
 
     override fun matchesSafely(item: BoundingShape?): Boolean {

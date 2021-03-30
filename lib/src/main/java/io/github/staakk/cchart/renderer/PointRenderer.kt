@@ -75,7 +75,7 @@ fun circleDrawer(
 }
 
 private fun getDrawingBounds(rendererContext: RendererContext, size: Size): Viewport {
-    val bounds = rendererContext.bounds
+    val bounds = rendererContext.viewport
     val xScaledRadius = size.width / 2 / rendererContext.scaleX
     val yScaledRadius = size.height / 2 / rendererContext.scaleY
     return Viewport(

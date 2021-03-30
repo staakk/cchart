@@ -64,7 +64,7 @@ data class AnchorScope(
         verticalAlignment: VerticalAlignment
     ): Modifier = absoluteOffsetToCenter(
         with(density) { offset.x.toDp() },
-        with(density) { canvasSize.height.toDp() + offset.y.toDp() },
+        with(density) { offset.y.toDp() },
         horizontalAlignment,
         verticalAlignment
     )
