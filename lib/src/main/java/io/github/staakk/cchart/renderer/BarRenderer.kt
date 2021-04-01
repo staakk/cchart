@@ -20,7 +20,7 @@ fun interface BarDrawer {
      * @param baseLeft Coordinate of the left corner at the base of the bar.
      * @param size Size of a bar.
      */
-    fun DrawScope.draw(index: Int, data: Data, baseLeft: Offset, size: Size)
+    fun RendererScope.draw(index: Int, data: Data<*>, baseLeft: Offset, size: Size)
 }
 
 fun interface BarBoundingShapeProvider {
@@ -29,15 +29,14 @@ fun interface BarBoundingShapeProvider {
      * Provides [BoundingShape] that is used for rendering data labels and on click listener of the
      * [io.github.staakk.cchart.Chart].
      *
-     * __Note__: [baseLeft] and [size] values correspond to values provided
-     * to [BarDrawer] by [barGroupRenderer] and not to what was rendered by it.
+     * __Note__: [baseLeft] and [size] values are the same as passed to the [BarDrawer].
      *
      * @param index Index of a bar in a group.
      * @param data Data point to provide [BoundingShape] for.
      * @param baseLeft Coordinate of the left corner at the base of the bar.
      * @param size Size of a bar.
      */
-    fun DrawScope.provide(index: Int, data: Data, baseLeft: Offset, size: Size): BoundingShape
+    fun RendererScope.provide(index: Int, data: Data<*>, baseLeft: Offset, size: Size): BoundingShape
 }
 
 /**
@@ -56,9 +55,9 @@ fun barGroupRenderer(
     minimalSpacing: Float = 10f,
     barDrawer: BarDrawer = barDrawer(),
     boundingShapeProvider: BarBoundingShapeProvider = barBoundingShapeProvider()
-): GroupedSeriesRenderer = GroupedSeriesRenderer { context, series ->
+): GroupedSeriesRenderer = GroupedSeriesRenderer { series ->
     val renderedPoints = mutableListOf<BoundingShape>()
-    val drawingBounds = getDrawingBounds(context)
+    val drawingBounds = getDrawingBounds(chartContext)
     val groups = series.filter {
         if (it.isEmpty()) false
         else {
@@ -66,34 +65,36 @@ fun barGroupRenderer(
             first.x in drawingBounds.minX..drawingBounds.maxX
         }
     }
-    val width = getBarWidth(groups, context, preferredWidth, minimalSpacing)
+    val width = getBarWidth(groups, chartContext, preferredWidth, minimalSpacing)
 
     groups.forEach { group ->
         val groupSize = group.size
-        group.forEachIndexed { index, point ->
+        group.forEachIndexed { index, point : Data<*> ->
             val unitOffset = -groupSize / 2 + index
             val halfWidth = width / 2f
 
             val x =
-                context.dataToRendererCoordX(point.x) + unitOffset * width + (1 - groupSize % 2) * halfWidth
-            val y = context.dataToRendererSizeY(point.y)
+                chartContext.toRendererX(point.x) + unitOffset * width - (groupSize % 2) * halfWidth
+            val y = chartContext.toRendererHeight(point.y)
 
-            val baseLeft = Offset(x - halfWidth, context.dataToRendererCoordY(0f))
+            val baseLeft = Offset(x, chartContext.toRendererY(0f))
             val size = Size(width, y)
             with(barDrawer) { draw(index, point, baseLeft, size) }
-            renderedPoints += with(boundingShapeProvider) { provide(index, point, baseLeft, size) }
+            renderedPoints += with(boundingShapeProvider) {
+                provide(index, point, baseLeft, size)
+            }
         }
     }
     renderedPoints
 }
 
 private fun getBarWidth(
-    groups: List<List<Data>>,
-    context: RendererContext,
+    groups: List<List<Data<*>>>,
+    context: ChartContext,
     preferredWidth: Float,
     minimalSpacing: Float
 ): Float {
-    val minXDistance = context.dataToRendererSizeX(groups.getMinXDistance())
+    val minXDistance = context.toRendererWidth(groups.getMinXDistance())
     val maxItemsNo = groups.maxByOrNull { it.size }?.size ?: 1
     val pointWidth = maxItemsNo * preferredWidth
     return if (minXDistance - pointWidth < minimalSpacing) {
@@ -103,14 +104,14 @@ private fun getBarWidth(
     }
 }
 
-private fun List<List<Data>>.getMinXDistance() =
+private fun List<List<Data<*>>>.getMinXDistance() =
     windowed(2) { abs(it[0][0].x - it[1][0].x) }
         .minOrNull()
         ?: Float.MAX_VALUE
 
-private fun getDrawingBounds(rendererContext: RendererContext): Viewport {
-    val canvasBounds = rendererContext.viewport
-    val canvasWidth = rendererContext.canvasSize.width
+private fun getDrawingBounds(chartContext: ChartContext): Viewport {
+    val canvasBounds = chartContext.viewport
+    val canvasWidth = chartContext.canvasSize.width
     return Viewport(
         maxX = canvasBounds.maxX + canvasWidth / 2,
         minX = canvasBounds.minX - canvasWidth / 2,
@@ -124,7 +125,7 @@ fun barDrawer(
     alpha: Float = 1.0f,
     colorFilter: ColorFilter? = null,
     blendMode: BlendMode = DrawScope.DefaultBlendMode,
-    brushProvider: (index: Int, Data) -> Brush = { _, _ -> SolidColor(Color.Black) }
+    brushProvider: (index: Int, Data<*>) -> Brush = { _, _ -> SolidColor(Color.Black) }
 ) = BarDrawer { index, point, baseLeft, size ->
     drawRect(
         brush = brushProvider(index, point),

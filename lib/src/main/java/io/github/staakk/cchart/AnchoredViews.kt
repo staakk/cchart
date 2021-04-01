@@ -38,7 +38,7 @@ internal fun DataLabels(
 internal fun AnchoredViews(
     modifier: Modifier,
     canvasSize: Size,
-    anchors: Map<Pair<Data, Offset>, @Composable AnchorScope.() -> Unit>
+    anchors: Map<Pair<Data<*>, Offset>, @Composable AnchorScope.() -> Unit>
 ) {
     val density = LocalDensity.current
     Box(
@@ -53,7 +53,7 @@ internal fun AnchoredViews(
 }
 
 data class AnchorScope(
-    val data: Data,
+    val data: Data<*>,
     val offset: Offset,
     val canvasSize: Size,
     val density: Density

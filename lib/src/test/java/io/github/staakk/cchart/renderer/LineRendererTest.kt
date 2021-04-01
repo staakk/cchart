@@ -14,7 +14,7 @@ class LineRendererTest {
 
     private val drawScope = mockk<DrawScope>()
 
-    private val rendererContext = rendererContext(
+    private val rendererContext = chartContext(
         viewport = Viewport(minX = 0f, maxX = 1f, minY = 0f, maxY = 1f),
         canvasSize = Size(2f, 2f)
     )

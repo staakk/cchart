@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.drawscope.Stroke
 import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.data.Viewport
 
@@ -14,11 +15,11 @@ fun interface PointDrawer {
     /**
      * Draws shape based on the provided values.
      *
-     * @param data Point to draw.
-     * @param center Center of the shape to draw.
+     * @param chartData Point to draw in the chart space.
+     * @param rendererData Point to draw in the renderer space.
      * @param size Size of the shape to draw.
      */
-    fun DrawScope.draw(data: Data, center: Offset, size: Size)
+    fun RendererScope.draw(chartData: Data<*>, rendererData: Data<*>, size: Size)
 }
 
 fun interface PointBoundingShapeProvider {
@@ -26,11 +27,11 @@ fun interface PointBoundingShapeProvider {
     /**
      * Provides bounding box for the shape.
      *
-     * @param data Point to draw
-     * @param center Center of the rendered shape.
+     * @param chartData Point to create bounding box for in the chart space.
+     * @param rendererData Point to create bounding box for in the renderer space.
      * @param size Radius of the rendered shape.
      */
-    fun DrawScope.provide(data: Data, center: Offset, size: Size): BoundingShape
+    fun RendererScope.provide(chartData: Data<*>, rendererData: Data<*>, size: Size): BoundingShape
 }
 
 /**
@@ -46,13 +47,12 @@ fun pointRenderer(
     size: Size = Size(30f, 30f),
     pointDrawer: PointDrawer = circleDrawer(),
     boundingShapeProvider: PointBoundingShapeProvider = circleBoundingShapeProvider()
-) = SeriesRenderer { context, series ->
-    series.getPointsInViewport(getDrawingBounds(context, size))
+) = SeriesRenderer { series ->
+    series.getPointsInViewport(getDrawingBounds(chartContext, size))
         .map { point ->
-            val x = context.dataToRendererCoordX(point.x)
-            val y = context.dataToRendererCoordY(point.y)
-            with(pointDrawer) { draw(point, Offset(x, y), size) }
-            with(boundingShapeProvider) { provide(point, Offset(x, y), size) }
+            val rendererData = point.toRendererData(chartContext)
+            with(pointDrawer) { draw(point, rendererData, size) }
+            with(boundingShapeProvider) { provide(point, rendererData, size) }
         }
 }
 
@@ -61,12 +61,12 @@ fun circleDrawer(
     alpha: Float = 1.0f,
     style: DrawStyle = Fill,
     colorFilter: ColorFilter? = null,
-    blendMode: BlendMode = DrawScope.DefaultBlendMode,
-) = PointDrawer { _, center, size ->
+    blendMode: BlendMode = DrawScope.DefaultBlendMode
+) = PointDrawer { _, rendererData, size ->
     drawCircle(
         brush = brush,
         radius = size.height / 2,
-        center = center,
+        center = Offset(rendererData.x, rendererData.y),
         alpha = alpha,
         style = style,
         colorFilter = colorFilter,
@@ -74,10 +74,48 @@ fun circleDrawer(
     )
 }
 
-private fun getDrawingBounds(rendererContext: RendererContext, size: Size): Viewport {
-    val bounds = rendererContext.viewport
-    val xScaledRadius = size.width / 2 / rendererContext.scaleX
-    val yScaledRadius = size.height / 2 / rendererContext.scaleY
+fun circleWithError(
+    brush: Brush = SolidColor(Color.Black),
+    alpha: Float = 1.0f,
+    strokeWidth: Float = Stroke.HairlineWidth,
+    cap: StrokeCap = Stroke.DefaultCap,
+    colorFilter: ColorFilter? = null,
+    pathEffect: PathEffect? = null,
+    blendMode: BlendMode = DrawScope.DefaultBlendMode,
+    circleDrawer: PointDrawer = circleDrawer()
+) = PointDrawer { chartData, rendererData, size ->
+    if (rendererData is Data.PointWithError) {
+        val center = rendererData.toOffset()
+        drawLine(
+            start = Offset(center.x, center.y + rendererData.errorY),
+            end = Offset(center.x, center.y - rendererData.errorY),
+            brush = brush,
+            alpha = alpha,
+            colorFilter = colorFilter,
+            blendMode = blendMode,
+            strokeWidth = strokeWidth,
+            cap = cap,
+            pathEffect = pathEffect
+        )
+        drawLine(
+            start = Offset(center.x + rendererData.errorX, center.y),
+            end = Offset(center.x - rendererData.errorX, center.y),
+            brush = brush,
+            alpha = alpha,
+            colorFilter = colorFilter,
+            blendMode = blendMode,
+            strokeWidth = strokeWidth,
+            cap = cap,
+            pathEffect = pathEffect
+        )
+    }
+    with(circleDrawer) { draw(chartData, rendererData, size) }
+}
+
+private fun getDrawingBounds(chartContext: ChartContext, size: Size): Viewport {
+    val bounds = chartContext.viewport
+    val xScaledRadius = size.width / 2 / chartContext.scaleX
+    val yScaledRadius = size.height / 2 / chartContext.scaleY
     return Viewport(
         minX = bounds.minX - xScaledRadius,
         maxX = bounds.maxX + xScaledRadius,
@@ -86,12 +124,12 @@ private fun getDrawingBounds(rendererContext: RendererContext, size: Size): View
     )
 }
 
-fun circleBoundingShapeProvider() = PointBoundingShapeProvider { point, center, size ->
+fun circleBoundingShapeProvider() = PointBoundingShapeProvider { chartData, rendererData, size ->
     BoundingShape.Circle(
-        data = point,
-        labelAnchorX = center.x,
-        labelAnchorY = center.y,
-        center = center,
+        data = chartData,
+        labelAnchorX = rendererData.x,
+        labelAnchorY = rendererData.y,
+        center = Offset(rendererData.x, rendererData.y),
         radius = size.width / 2
     )
 }

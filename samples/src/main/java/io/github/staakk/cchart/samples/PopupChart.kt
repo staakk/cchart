@@ -34,7 +34,7 @@ import io.github.staakk.cchart.renderer.pointRenderer
 fun PopupChartScreen() {
     val horizontalLabelRenderer = horizontalLabelRenderer()
     val verticalLabelRenderer = verticalLabelRenderer()
-    val popupPosition = remember { mutableStateOf<Pair<Data, Offset>?>(null)}
+    val popupPosition = remember { mutableStateOf<Pair<Data<*>, Offset>?>(null)}
     Chart(
         modifier = Modifier
             .padding(start = 32.dp, bottom = 32.dp)

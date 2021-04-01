@@ -6,7 +6,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
-import io.github.staakk.cchart.renderer.RendererContext
+import io.github.staakk.cchart.renderer.ChartContext
 
 /**
  * Interface for axis renderers.
@@ -15,7 +15,7 @@ fun interface AxisRenderer {
     /**
      * Function called when axis needs to be drawn.
      */
-    fun DrawScope.render(context: RendererContext)
+    fun DrawScope.render(context: ChartContext)
 }
 
 fun interface HorizontalAxisRenderer : AxisRenderer {

@@ -26,8 +26,8 @@ import io.github.staakk.cchart.util.detectTransformGestures
  * Creates chart for visualising data.
  *
  * @param modifier Modifier to apply to this layout node.
- * @param viewport The viewport for the chart. Should be expressed int the same coordinate
- * system as the data represented on the chart.
+ * @param viewport The viewport for the chart. Should be expressed int the same space
+ * as the data represented on the chart.
  * @param maxViewport The maximal viewport that can be displayed by this chart.
  * @param minViewportSize Minimal size of the viewport.
  * @param maxViewportSize Maximal size of the viewport.
@@ -41,7 +41,7 @@ fun Chart(
     minViewportSize: Size? = viewport?.size,
     maxViewportSize: Size? = viewport?.size,
     enableZoom: Boolean = false,
-    onClick: (Offset, Data) -> Unit = { _, _ -> },
+    onClick: (Offset, Data<*>) -> Unit = { _, _ -> },
     content: ChartScope.() -> Unit
 ) {
     val scope = ChartScopeImpl()
@@ -73,7 +73,7 @@ fun Chart(
     minViewportSize: Size = chartState.viewport.size,
     maxViewportSize: Size = chartState.viewport.size,
     enableZoom: Boolean = false,
-    onClick: (Offset, Data) -> Unit = { _, _ -> },
+    onClick: (Offset, Data<*>) -> Unit = { _, _ -> },
     content: ChartScope.() -> Unit
 ) {
     val scope = ChartScopeImpl()
@@ -99,7 +99,7 @@ private fun Chart(
     minViewportSize: Size = viewport.value.size,
     maxViewportSize: Size = viewport.value.size,
     enableZoom: Boolean = false,
-    onClick: (Offset, Data) -> Unit,
+    onClick: (Offset, Data<*>) -> Unit,
     scope: ChartScopeImpl
 ) {
     val density = LocalDensity.current
@@ -107,7 +107,7 @@ private fun Chart(
     BoxWithConstraints(modifier = modifier) {
         val renderedPoints = remember { mutableStateOf(listOf<BoundingShape>()) }
         val canvasSize = with(density) { Size(width = maxWidth.toPx(), height = maxHeight.toPx()) }
-        val rendererContext = rendererContext(viewport.value, canvasSize)
+        val rendererContext = chartContext(viewport.value, canvasSize)
 
         Canvas(
             modifier = Modifier
@@ -136,8 +136,8 @@ private fun Chart(
                             .firstOrNull { it.contains(offset) }
                             ?.data
                             ?: pointOf(
-                                rendererContext.rendererToDataCoordX(offset.x),
-                                rendererContext.rendererToDataCoordY(offset.y)
+                                rendererContext.toChartX(offset.x),
+                                rendererContext.toChartY(offset.y)
                             )
                         onClick(offset, point)
                     }
@@ -149,11 +149,13 @@ private fun Chart(
                 }
 
                 val points = mutableListOf<BoundingShape>()
-                points += scope.series.flatMap { (series, renderer) ->
-                    with(renderer) { this@drawScope.render(rendererContext, series) }
-                }
-                points += scope.groupedSeries.flatMap { (series, renderer) ->
-                    with(renderer) { this@drawScope.render(rendererContext, series) }
+                with(RendererScope(this, rendererContext)) {
+                    points += scope.series.flatMap { (series, renderer) ->
+                        with(renderer) { render(series) }
+                    }
+                    points += scope.groupedSeries.flatMap { (series, renderer) ->
+                        with(renderer) { render(series) }
+                    }
                 }
                 renderedPoints.value = points
             }
@@ -187,8 +189,8 @@ private fun Chart(
             canvasSize = canvasSize,
             anchors = scope.anchors.mapKeys {
                 it.key to Offset(
-                    x = rendererContext.dataToRendererCoordX(it.key.x),
-                    y = rendererContext.dataToRendererCoordY(it.key.y)
+                    x = rendererContext.toRendererX(it.key.x),
+                    y = rendererContext.toRendererY(it.key.y)
                 )
             }
         )
@@ -247,7 +249,7 @@ interface ChartScope {
     /**
      * Adds composable view at the place represented by [data].
      */
-    fun anchor(data: Data, content: @Composable AnchorScope.() -> Unit)
+    fun anchor(data: Data<*>, content: @Composable AnchorScope.() -> Unit)
 
     /**
      * Adds labels defined by [content] to the data on the chart.
@@ -279,7 +281,7 @@ private class ChartScopeImpl : ChartScope {
 
     val groupedSeries: MutableMap<GroupedSeries, GroupedSeriesRenderer> = mutableMapOf()
 
-    val anchors: MutableMap<Data, @Composable AnchorScope.() -> Unit> = mutableMapOf()
+    val anchors: MutableMap<Data<*>, @Composable AnchorScope.() -> Unit> = mutableMapOf()
 
     val dataLabels: MutableList<@Composable AnchorScope.() -> Unit> = mutableListOf()
 
@@ -311,7 +313,7 @@ private class ChartScopeImpl : ChartScope {
         groupedSeries[series] = renderer
     }
 
-    override fun anchor(data: Data, content: @Composable AnchorScope.() -> Unit) {
+    override fun anchor(data: Data<*>, content: @Composable AnchorScope.() -> Unit) {
         anchors[data] = content
     }
 

@@ -58,7 +58,7 @@ fun verticalLabelRenderer(
     labelsProvider.provide(context.viewport.minY, context.viewport.maxY)
         .forEach { (text, offset) ->
             val textHeight = paint.fontMetrics.lineHeight * (text.countLines() - 1)
-            val y = context.dataToRendererCoordY(offset) - textHeight / 2
+            val y = context.toRendererY(offset) - textHeight / 2
             if (y + textHeight / 2 < size.height && y - textHeight / 2 > 0f) {
                 drawText(
                     text = text,

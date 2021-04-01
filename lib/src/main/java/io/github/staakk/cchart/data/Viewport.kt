@@ -8,7 +8,7 @@ import kotlin.math.min
 
 /**
  * Specifies bounds for rendering of the chart. Those values should be represented in the same
- * coordinate system as the data provided for the chart.
+ * space as the data provided for the chart.
  */
 data class Viewport(
     val minX: Float,
@@ -86,7 +86,7 @@ data class Viewport(
         return Viewport(minX = newMinX, maxX = newMaxX, minY = newMinY, maxY = newMaxY)
     }
 
-    fun contains(data: Data) = data.x in minX..maxX && data.y in minY..maxY
+    fun contains(data: Data<*>) = data.x in minX..maxX && data.y in minY..maxY
 
     operator fun plus(other: Viewport) = Viewport(
         minX = min(minX, other.minX),

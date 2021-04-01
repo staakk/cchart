@@ -5,16 +5,16 @@ import io.github.staakk.cchart.util.indexOfFirstFrom
 /**
  * Series of data to be represented by the [io.github.staakk.cchart.Chart]
  *
- * @param data Data points in this series.
+ * @param data Data in this series.
  */
 class Series(
-    data: List<Data>,
-): List<Data> by data {
+    data: List<Data<*>>,
+): List<Data<*>> by data {
 
     fun getPointsInViewport(viewport: Viewport) = filter(viewport::contains)
 
-    fun getLineInViewport(viewport: Viewport): List<Data> {
-        val result = mutableListOf<Data>()
+    fun getLineInViewport(viewport: Viewport): List<Data<*>> {
+        val result = mutableListOf<Data<*>>()
         var index = 0
         while (index < size) {
             val startIndex = indexOfFirstFrom(index) { viewport.contains(it) }
@@ -35,4 +35,4 @@ class Series(
     }
 }
 
-fun seriesOf(vararg data: Data) = Series(data.toList())
+fun seriesOf(vararg data: Data<*>) = Series(data.toList())

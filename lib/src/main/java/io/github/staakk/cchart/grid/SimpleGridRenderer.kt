@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import io.github.staakk.cchart.data.Viewport
-import io.github.staakk.cchart.renderer.RendererContext
+import io.github.staakk.cchart.renderer.ChartContext
 
 private class SimpleGridRenderer(
     private val brush: Brush,
@@ -19,7 +19,7 @@ private class SimpleGridRenderer(
     private val gridLinesProvider: GridLinesProvider,
 ) : GridRenderer {
 
-    override fun DrawScope.render(context: RendererContext) {
+    override fun DrawScope.render(context: ChartContext) {
         gridLinesProvider.provide(
             orientation.getMin(context.viewport),
             orientation.getMax(context.viewport)
@@ -48,31 +48,31 @@ enum class GridOrientation {
 
         override fun getMax(bounds: Viewport) = bounds.maxY
 
-        override fun getStart(drawScope: DrawScope, context: RendererContext, value: Float) =
-            Offset(0f, context.dataToRendererCoordY(value))
+        override fun getStart(drawScope: DrawScope, context: ChartContext, value: Float) =
+            Offset(0f, context.toRendererY(value))
 
-        override fun getEnd(drawScope: DrawScope, context: RendererContext, value: Float) =
-            Offset(drawScope.size.width, context.dataToRendererCoordY(value))
+        override fun getEnd(drawScope: DrawScope, context: ChartContext, value: Float) =
+            Offset(drawScope.size.width, context.toRendererY(value))
     },
     VERTICAL {
         override fun getMin(bounds: Viewport) = bounds.minX
 
         override fun getMax(bounds: Viewport) = bounds.maxX
 
-        override fun getStart(drawScope: DrawScope, context: RendererContext, value: Float) =
-            Offset(context.dataToRendererCoordX(value), 0f)
+        override fun getStart(drawScope: DrawScope, context: ChartContext, value: Float) =
+            Offset(context.toRendererX(value), 0f)
 
-        override fun getEnd(drawScope: DrawScope, context: RendererContext, value: Float) =
-            Offset(context.dataToRendererCoordX(value), drawScope.size.height)
+        override fun getEnd(drawScope: DrawScope, context: ChartContext, value: Float) =
+            Offset(context.toRendererX(value), drawScope.size.height)
     };
 
     abstract fun getMin(bounds: Viewport): Float
 
     abstract fun getMax(bounds: Viewport): Float
 
-    abstract fun getStart(drawScope: DrawScope, context: RendererContext, value: Float): Offset
+    abstract fun getStart(drawScope: DrawScope, context: ChartContext, value: Float): Offset
 
-    abstract fun getEnd(drawScope: DrawScope, context: RendererContext, value: Float): Offset
+    abstract fun getEnd(drawScope: DrawScope, context: ChartContext, value: Float): Offset
 }
 
 /**

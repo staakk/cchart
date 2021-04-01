@@ -60,12 +60,12 @@ fun horizontalLabelRenderer(
     labelsProvider.provide(context.viewport.minX, context.viewport.maxX)
         .forEach { (text, offset) ->
             val textWidth = paint.measureText(text)
-            val x = context.dataToRendererCoordX(offset) - textWidth / 2
+            val x = context.toRendererX(offset) - textWidth / 2
             if (x > 0 && x + textWidth < size.width) {
                 drawText(
                     text = text,
                     position = Offset(
-                        x = context.dataToRendererCoordX(offset),
+                        x = context.toRendererX(offset),
                         y = location * size.height
                     ) + labelOffset,
                     alignment = alignment,

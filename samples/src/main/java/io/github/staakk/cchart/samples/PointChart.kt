@@ -18,6 +18,7 @@ import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.circleDrawer
+import io.github.staakk.cchart.renderer.circleWithError
 import io.github.staakk.cchart.renderer.pointRenderer
 
 @Composable
@@ -47,7 +48,10 @@ fun PointChartScreen() {
             ),
             renderer = pointRenderer(
                 size = Size(20f, 20f),
-                pointDrawer = circleDrawer(brush = SolidColor(Colors.Red))
+                pointDrawer = circleWithError(
+                    brush = SolidColor(Colors.Red),
+                    circleDrawer = circleDrawer(brush = SolidColor(Colors.Red))
+                )
             )
         )
 

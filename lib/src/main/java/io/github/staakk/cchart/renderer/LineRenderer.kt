@@ -12,9 +12,9 @@ fun interface LineDrawer {
     /**
      * Draws the line based on provided [points].
      *
-     * @param points Points to draw the line.
+     * @param points Points to draw the line with.
      */
-    fun DrawScope.draw(points: List<Pair<Data, Offset>>)
+    fun RendererScope.draw(points: List<LinePoint>)
 }
 
 fun interface LineBoundingShapeProvider {
@@ -25,8 +25,13 @@ fun interface LineBoundingShapeProvider {
      *
      * @param points Points to provide [BoundingShape]s for.
      */
-    fun DrawScope.provide(points: List<Pair<Data, Offset>>): List<BoundingShape>
+    fun RendererScope.provide(points: List<LinePoint>): List<BoundingShape>
 }
+
+data class LinePoint(
+    val chartPoint: Data<*>,
+    val rendererPoint: Data<*>
+)
 
 /**
  * Creates [SeriesRenderer] that renders a line.
@@ -37,18 +42,16 @@ fun interface LineBoundingShapeProvider {
 fun lineRenderer(
     lineDrawer: LineDrawer = lineDrawer(),
     boundingShapeProvider: LineBoundingShapeProvider = lineBoundingShapeProvider()
-) = SeriesRenderer { context, series ->
+) = SeriesRenderer { series ->
+    val rendererScope = RendererScope(this, chartContext)
     if (series.size < 2) return@SeriesRenderer emptyList()
-    series.getLineInViewport(context.viewport)
-        .map {
-            it to Offset(
-                x = context.dataToRendererCoordX(it.x),
-                y = context.dataToRendererCoordY(it.y)
-            )
-        }
+    series.getLineInViewport(chartContext.viewport)
+        .map { LinePoint(it, it.toRendererData(chartContext)) }
         .let {
-            with(lineDrawer) { draw(it) }
-            with(boundingShapeProvider) { provide(it) }
+            with(rendererScope) {
+                with(lineDrawer) { draw(it) }
+                with(boundingShapeProvider) { provide(it) }
+            }
         }
 }
 
@@ -62,8 +65,8 @@ fun lineDrawer(
     drawPath(
         path = Path().apply {
             pointsToRender.windowed(2) {
-                moveTo(it[0].second)
-                lineTo(it[1].second)
+                moveTo(it[0].rendererPoint.toOffset())
+                lineTo(it[1].rendererPoint.toOffset())
             }
             close()
         },
@@ -78,10 +81,10 @@ fun lineDrawer(
 fun lineBoundingShapeProvider(radius: Float = 20f) = LineBoundingShapeProvider { points ->
     points.map {
         BoundingShape.Circle(
-            data = it.first,
-            labelAnchorX = it.second.x,
-            labelAnchorY = it.second.y,
-            center = it.second,
+            data = it.chartPoint,
+            labelAnchorX = it.rendererPoint.x,
+            labelAnchorY = it.rendererPoint.y,
+            center = it.rendererPoint.toOffset(),
             radius = radius
         )
     }
