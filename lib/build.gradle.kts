@@ -2,7 +2,8 @@ plugins {
     id("com.android.library")
     id("common-config")
     id("maven-publish")
-    id("org.jetbrains.dokka") version "1.4.20"
+    id("org.jetbrains.dokka") version "1.4.32"
+    id("com.github.ben-manes.versions") version "0.38.0"
 }
 
 android {
@@ -26,7 +27,7 @@ dependencies {
 
 val sourcesJar by tasks.creating(Jar::class) {
     archiveClassifier.set("sources")
-    from(android.sourceSets.getByName("main").java.srcDirs)
+    from(android.sourceSets.getByName("main").java.srcDirs())
 }
 
 val javadocJar by tasks.creating(Jar::class) {

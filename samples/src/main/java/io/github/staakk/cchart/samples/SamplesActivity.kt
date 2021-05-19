@@ -20,18 +20,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-const val LINE_CHART_ID = 0
-const val POINT_CHART_ID = 1
-const val COMBINED_CHART_ID = 2
-const val BAR_CHART_ID = 3
-const val DATE_LABELS_CHART = 4
-const val GRID_CHART = 5
-const val PAN_AND_ZOOM_CHART = 6
-const val LABELED_POINTS_CHART = 7
-const val OBSERVE_VIEWPORT_CHART = 8
-const val POPUP_CHART = 9
-const val ANIMATED_BAR_COLOR_CHART_ID = 10
-const val ANIMATED_BAR_SIZE_CHART_ID = 11
+private val screens: List<Pair<@Composable () -> Unit, String>> = listOf(
+    @Composable { AnimatedBarColorChartScreen() } to "Animated bar color",
+    @Composable { AnimatedBarSizeChartScreen() } to "Animated bar size",
+    @Composable { BarChartScreen() } to "Bar chart",
+    @Composable { DateLabelsChartScreen() } to "Date labels",
+    @Composable { PopupChartScreen() } to "Displaying popup",
+    @Composable { GridChartScreen() } to "Grid",
+    @Composable { LabeledPointsScreen() } to "Labeled point chart",
+    @Composable { LineChartScreen() } to "Line chart",
+    @Composable { ViewportUpdatesScreen() } to "Observing viewport",
+    @Composable { PanAndZoomScreen() } to "Panning and zooming",
+    @Composable { CombinedChartScreen() } to "Point & line chart",
+    @Composable { CombinedChartScreen() } to "Point & line chart",
+    @Composable { PointChartScreen() } to "Point chart"
+)
 
 class SamplesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,40 +52,8 @@ class SamplesActivity : AppCompatActivity() {
 @Composable
 fun Content() {
     val selected = remember { mutableStateOf(0) }
-    when (selected.value) {
-        LINE_CHART_ID -> LineChartScreen()
-        POINT_CHART_ID -> PointChartScreen()
-        COMBINED_CHART_ID -> CombinedChartScreen()
-        BAR_CHART_ID -> BarChartScreen()
-        DATE_LABELS_CHART -> DateLabelsChartScreen()
-        GRID_CHART -> GridChartScreen()
-        PAN_AND_ZOOM_CHART -> PanAndZoomScreen()
-        LABELED_POINTS_CHART -> LabeledPointsScreen()
-        OBSERVE_VIEWPORT_CHART -> ViewportUpdatesScreen()
-        POPUP_CHART -> PopupChartScreen()
-        ANIMATED_BAR_COLOR_CHART_ID -> AnimatedBarColorChartScreen()
-        ANIMATED_BAR_SIZE_CHART_ID -> AnimatedBarSizeChartScreen()
-    }
+    screens[selected.value].first()
 
-    MenuHeader()
-    LazyColumn {
-        item { Item(ANIMATED_BAR_COLOR_CHART_ID, "Animated bar color") { selected.value = it } }
-        item { Item(ANIMATED_BAR_SIZE_CHART_ID, "Animated bar size") { selected.value = it } }
-        item { Item(BAR_CHART_ID, "Bar chart") { selected.value = it } }
-        item { Item(DATE_LABELS_CHART, "Date labels") { selected.value = it } }
-        item { Item(POPUP_CHART, "Displaying popup") { selected.value = it } }
-        item { Item(GRID_CHART, "Grid") { selected.value = it } }
-        item { Item(LABELED_POINTS_CHART, "Labeled point chart") { selected.value = it } }
-        item { Item(LINE_CHART_ID, "Line chart") { selected.value = it } }
-        item { Item(OBSERVE_VIEWPORT_CHART, "Observing viewport") { selected.value = it } }
-        item { Item(PAN_AND_ZOOM_CHART, "Panning and zooming") { selected.value = it } }
-        item { Item(COMBINED_CHART_ID, "Point & line chart") { selected.value = it } }
-        item { Item(POINT_CHART_ID, "Point chart") { selected.value = it } }
-    }
-}
-
-@Composable
-fun MenuHeader() {
     Text(
         modifier = Modifier
             .fillMaxWidth()
@@ -90,16 +61,18 @@ fun MenuHeader() {
         text = "Select one of the examples below",
         style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold)
     )
-}
-
-@Composable
-fun Item(index: Int, text: String, onSelected: (Int) -> Unit) {
-    Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onSelected(index) }
-            .padding(16.dp),
-        text = text,
-        style = TextStyle(fontSize = 14.sp)
-    )
+    LazyColumn {
+        screens.forEachIndexed { index, (_, name) ->
+            item {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { selected.value = index }
+                        .padding(16.dp),
+                    text = name,
+                    style = TextStyle(fontSize = 14.sp)
+                )
+            }
+        }
+    }
 }

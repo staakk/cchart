@@ -1,6 +1,6 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
-const val kotlinVersion = "1.4.31"
+const val kotlinVersion = "1.4.32"
 
 object Libs {
     const val desugar = "com.android.tools:desugar_jdk_libs:1.1.1"
@@ -23,7 +23,7 @@ object Libs {
     }
 
     object Compose {
-        const val version = "1.0.0-beta02"
+        const val version = "1.0.0-beta07"
 
         const val animation = "androidx.compose.animation:animation:$version"
         const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -35,7 +35,7 @@ object Libs {
         const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
         const val ui = "androidx.compose.ui:ui:$version"
         const val uiUtil = "androidx.compose.ui:ui-util:$version"
-        const val activity = "androidx.activity:activity-compose:1.3.0-alpha02"
+        const val activity = "androidx.activity:activity-compose:1.3.0-alpha08"
 
         const val uiTest = "androidx.compose.ui:ui-test:$version"
         const val uiTestJUnit = "androidx.compose.ui:ui-test-junit4:$version"

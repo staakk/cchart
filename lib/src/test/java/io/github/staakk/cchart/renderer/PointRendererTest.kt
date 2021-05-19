@@ -58,7 +58,7 @@ class PointRendererTest {
             )
         )
         val result = with(pointRenderer(size = circleSize, pointDrawer = { _, _, _ -> })) {
-            drawScope.render(rendererContext, series)
+            RendererScope(drawScope, rendererContext).render(series)
         }
         assertEquals(expected, result)
     }

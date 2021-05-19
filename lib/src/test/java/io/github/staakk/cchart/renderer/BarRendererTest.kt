@@ -105,7 +105,7 @@ class BarRendererTest {
             minimalSpacing = 0.1f,
             barDrawer = { _, _, _, _ -> }
         )) {
-            drawScope.render(rendererContext, series)
+            RendererScope(drawScope, rendererContext).render(series)
         }
 
         assertThat("", result, contains(*expected.map { matchesRect(it) }.toTypedArray()))

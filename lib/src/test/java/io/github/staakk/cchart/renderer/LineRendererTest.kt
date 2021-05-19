@@ -78,7 +78,7 @@ class LineRendererTest {
             )
         )
         val result = with(lineRenderer(lineDrawer = { })) {
-            drawScope.render(rendererContext, series)
+            RendererScope(drawScope, rendererContext).render(series)
         }
         assertEquals(expected, result)
     }
