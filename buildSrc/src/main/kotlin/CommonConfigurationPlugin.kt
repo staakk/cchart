@@ -14,8 +14,8 @@ class CommonConfigurationPlugin : Plugin<Project> {
             androidExt.apply {
                 compileSdkVersion(Config.compileSdkVersion)
                 defaultConfig {
-                    targetSdkVersion(Config.targetSdkVersion)
-                    minSdkVersion(Config.minSdkVersion)
+                    targetSdk = Config.targetSdkVersion
+                    minSdk = Config.minSdkVersion
 
                     versionCode = Config.version
                     versionName = Config.versionName

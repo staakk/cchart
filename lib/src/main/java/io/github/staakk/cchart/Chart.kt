@@ -17,7 +17,6 @@ import io.github.staakk.cchart.axis.*
 import io.github.staakk.cchart.data.*
 import io.github.staakk.cchart.data.Viewport.Companion.getViewport
 import io.github.staakk.cchart.data.Viewport.Companion.getViewportFromGroupedSeries
-import io.github.staakk.cchart.grid.GridRenderer
 import io.github.staakk.cchart.label.*
 import io.github.staakk.cchart.renderer.*
 import io.github.staakk.cchart.util.detectTransformGestures
@@ -197,127 +196,10 @@ private fun Chart(
     }
 }
 
-/**
- * Receiver scope which is used by the [Chart].
- */
-interface ChartScope {
-
-    /**
-     * Adds the [gridRenderer] for this chart. Calling this function multiple times results in
-     * multiple renderers being added.
-     *
-     * @param gridRenderer Renderer to be set.
-     *
-     * @see [io.github.staakk.cchart.grid.gridRenderer]
-     */
-    fun grid(gridRenderer: GridRenderer)
-
-    /**
-     * Adds [axisRenderer] for this chart. Calling this function multiple times results in
-     * multiple renderers being added.
-     */
-    fun horizontalAxis(axisRenderer: HorizontalAxisRenderer = horizontalAxisRenderer())
-
-    /**
-     * Adds [axisRenderer] for this chart. Calling this function multiple times results in
-     * multiple renderers being added.
-     */
-    fun verticalAxis(axisRenderer: VerticalAxisRenderer = verticalAxisRenderer())
-
-    /**
-     * Adds [labelRenderer] for this chart. Calling this function multiple times results in
-     * multiple renderers being added.
-     */
-    fun horizontalAxisLabels(labelRenderer: HorizontalLabelRenderer)
-
-    /**
-     * Adds [labelRenderer] for this chart. Calling this function multiple times results in
-     * multiple renderers being added.
-     */
-    fun verticalAxisLabels(labelRenderer: VerticalLabelRenderer)
-
-    /**
-     * Adds series of data to the chart.
-     */
-    fun series(series: Series, renderer: SeriesRenderer)
-
-    /**
-     * Adds series of data to the chart.
-     */
-    fun series(series: GroupedSeries, renderer: GroupedSeriesRenderer)
-
-    /**
-     * Adds composable view at the place represented by [data].
-     */
-    fun anchor(data: Data<*>, content: @Composable AnchorScope.() -> Unit)
-
-    /**
-     * Adds labels defined by [content] to the data on the chart.
-     */
-    fun dataLabels(content: @Composable AnchorScope.() -> Unit)
-}
-
 class ChartState(
     viewport: Viewport
 ) {
     internal val viewportState = mutableStateOf(viewport)
 
     val viewport: Viewport get() = viewportState.value
-}
-
-private class ChartScopeImpl : ChartScope {
-
-    val horizontalAxisRenderers = mutableListOf<HorizontalAxisRenderer>()
-
-    val verticalAxisRenderer = mutableListOf<VerticalAxisRenderer>()
-
-    val horizontalLabelRenderers = mutableListOf<HorizontalLabelRenderer>()
-
-    val verticalLabelRenderers = mutableListOf<VerticalLabelRenderer>()
-
-    val gridRenderers: MutableList<GridRenderer> = mutableListOf()
-
-    val series: MutableMap<Series, SeriesRenderer> = mutableMapOf()
-
-    val groupedSeries: MutableMap<GroupedSeries, GroupedSeriesRenderer> = mutableMapOf()
-
-    val anchors: MutableMap<Data<*>, @Composable AnchorScope.() -> Unit> = mutableMapOf()
-
-    val dataLabels: MutableList<@Composable AnchorScope.() -> Unit> = mutableListOf()
-
-    override fun grid(gridRenderer: GridRenderer) {
-        gridRenderers.add(gridRenderer)
-    }
-
-    override fun horizontalAxis(axisRenderer: HorizontalAxisRenderer) {
-        horizontalAxisRenderers.add(axisRenderer)
-    }
-
-    override fun verticalAxis(axisRenderer: VerticalAxisRenderer) {
-        verticalAxisRenderer.add(axisRenderer)
-    }
-
-    override fun horizontalAxisLabels(labelRenderer: HorizontalLabelRenderer) {
-        horizontalLabelRenderers.add(labelRenderer)
-    }
-
-    override fun verticalAxisLabels(labelRenderer: VerticalLabelRenderer) {
-        verticalLabelRenderers.add(labelRenderer)
-    }
-
-    override fun series(series: Series, renderer: SeriesRenderer) {
-        this.series[series] = renderer
-    }
-
-    override fun series(series: GroupedSeries, renderer: GroupedSeriesRenderer) {
-        groupedSeries[series] = renderer
-    }
-
-    override fun anchor(data: Data<*>, content: @Composable AnchorScope.() -> Unit) {
-        anchors[data] = content
-    }
-
-    override fun dataLabels(content: @Composable AnchorScope.() -> Unit) {
-        dataLabels.add(content)
-    }
 }
