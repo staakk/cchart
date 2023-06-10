@@ -10,6 +10,7 @@ android {
 
         testInstrumentationRunner = "com.karumi.shot.ShotTestRunner"
     }
+    namespace = "io.github.staakk.cchart.viewtest"
 }
 
 dependencies {
