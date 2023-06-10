@@ -1,9 +1,9 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
-const val kotlinVersion = "1.5.30"
+const val kotlinVersion = "1.7.20"
 
 object Libs {
-    const val desugar = "com.android.tools:desugar_jdk_libs:1.1.5"
+    const val desugar = "com.android.tools:desugar_jdk_libs:1.2.2"
     const val junit = "junit:junit:4.13.2"
     const val mockk = "io.mockk:mockk:1.12.0"
     const val hamcrest = "org.hamcrest:hamcrest:2.2"
@@ -22,14 +22,14 @@ object Libs {
     }
 
     object Compose {
-        const val version = "1.0.3"
+        const val version = "1.3.2"
 
         const val animation = "androidx.compose.animation:animation:$version"
-        const val foundation = "androidx.compose.foundation:foundation:$version"
-        const val foundationLayout = "androidx.compose.foundation:foundation-layout:$version"
+        const val foundation = "androidx.compose.foundation:foundation:1.3.1"
+        const val foundationLayout = "androidx.compose.foundation:foundation-layout:1.3.1"
         const val materialIcons =
-            "androidx.compose.material:material-icons-extended:$version"
-        const val material = "androidx.compose.material:material:$version"
+            "androidx.compose.material:material-icons-extended:1.3.1"
+        const val material = "androidx.compose.material:material:1.3.1"
         const val runtime = "androidx.compose.runtime:runtime:$version"
         const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
         const val ui = "androidx.compose.ui:ui:$version"

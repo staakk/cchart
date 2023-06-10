@@ -7,7 +7,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:7.4.2")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath("com.karumi:shot:5.10.3")
+        classpath("app.cash.paparazzi:paparazzi-gradle-plugin:1.3.0")
     }
 }
 
@@ -16,7 +16,7 @@ allprojects {
         google()
         mavenCentral()
         maven("https://kotlin.bintray.com/kotlinx/")
-        @Suppress("JcenterRepositoryObsolete") // Required by dokka plugin
+        @Suppress("JcenterRepositoryObsolete", "DEPRECATION") // Required by dokka plugin
         jcenter()
     }
 }

@@ -1,15 +1,10 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("common-config")
-    id("shot")
+    id("app.cash.paparazzi")
 }
 
 android {
-    defaultConfig {
-        applicationId = "io.github.staakk.cchart.viewtest"
-
-        testInstrumentationRunner = "com.karumi.shot.ShotTestRunner"
-    }
     namespace = "io.github.staakk.cchart.viewtest"
 }
 
