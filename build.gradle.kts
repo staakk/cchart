@@ -2,7 +2,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven("https://kotlin.bintray.com/kotlinx")
+//        maven("https://kotlin.bintray.com/kotlinx")
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.4.2")
@@ -15,7 +15,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven("https://kotlin.bintray.com/kotlinx/")
+//        maven("https://kotlin.bintray.com/kotlinx/")
         @Suppress("JcenterRepositoryObsolete", "DEPRECATION") // Required by dokka plugin
         jcenter()
     }
