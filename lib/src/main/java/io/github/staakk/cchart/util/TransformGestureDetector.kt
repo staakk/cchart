@@ -14,53 +14,51 @@ import kotlin.math.abs
 suspend fun PointerInputScope.detectTransformGestures(
     onGesture: (centroid: Offset, pan: Offset, zoom: Float, direction: Offset) -> Unit
 ) {
-    forEachGesture {
-        awaitPointerEventScope {
-            var zoom = 1f
-            var pan = Offset.Zero
-            var pastTouchSlop = false
-            val touchSlop = viewConfiguration.touchSlop
+    awaitEachGesture {
+        var zoom = 1f
+        var pan = Offset.Zero
+        var pastTouchSlop = false
+        val touchSlop = viewConfiguration.touchSlop
 
-            awaitFirstDown(requireUnconsumed = false)
-            do {
-                val event = awaitPointerEvent()
-                val canceled = event.changes.fastAny { it.anyChangeConsumed() }
-                if (!canceled) {
-                    val zoomChange = event.calculateZoom()
-                    val panChange = event.calculatePan()
+        awaitFirstDown(requireUnconsumed = false)
+        do {
+            val event = awaitPointerEvent()
+            val canceled = event.changes.fastAny { it.isConsumed }
+            if (!canceled) {
+                val zoomChange = event.calculateZoom()
+                val panChange = event.calculatePan()
 
-                    if (!pastTouchSlop) {
-                        zoom *= zoomChange
-                        pan += panChange
+                if (!pastTouchSlop) {
+                    zoom *= zoomChange
+                    pan += panChange
 
-                        val centroidSize = event.calculateCentroidSize(useCurrent = false)
-                        val zoomMotion = abs(1 - zoom) * centroidSize
-                        val panMotion = pan.getDistance()
+                    val centroidSize = event.calculateCentroidSize(useCurrent = false)
+                    val zoomMotion = abs(1 - zoom) * centroidSize
+                    val panMotion = pan.getDistance()
 
-                        if (zoomMotion > touchSlop ||
-                            panMotion > touchSlop
-                        ) {
-                            pastTouchSlop = true
-                        }
+                    if (zoomMotion > touchSlop ||
+                        panMotion > touchSlop
+                    ) {
+                        pastTouchSlop = true
                     }
+                }
 
-                    if (pastTouchSlop) {
-                        val centroid = event.calculateCentroid(useCurrent = false)
-                        val direction = event.calculateDirection()
-                        if (zoomChange != 1f ||
-                            panChange != Offset.Zero
-                        ) {
-                            onGesture(centroid, panChange, zoomChange, direction)
-                        }
-                        event.changes.fastForEach {
-                            if (it.positionChanged()) {
-                                it.consumeAllChanges()
-                            }
+                if (pastTouchSlop) {
+                    val centroid = event.calculateCentroid(useCurrent = false)
+                    val direction = event.calculateDirection()
+                    if (zoomChange != 1f ||
+                        panChange != Offset.Zero
+                    ) {
+                        onGesture(centroid, panChange, zoomChange, direction)
+                    }
+                    event.changes.fastForEach {
+                        if (it.positionChanged()) {
+                            it.consume()
                         }
                     }
                 }
-            } while (!canceled && event.changes.fastAny { it.pressed })
-        }
+            }
+        } while (!canceled && event.changes.fastAny { it.pressed })
     }
 }
 
