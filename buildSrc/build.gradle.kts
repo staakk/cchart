@@ -18,9 +18,17 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        register("common-config") {
-            id = "common-config"
-            implementationClass = "CommonConfigurationPlugin"
+        register("application") {
+            id = "staakk.android.application"
+            implementationClass = "AndroidApplicationConventionPlugin"
+        }
+        register("library") {
+            id = "staakk.android.library"
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
+        register("compose") {
+            id = "staakk.android.compose"
+            implementationClass = "AndroidComposeConventionPlugin"
         }
     }
 }

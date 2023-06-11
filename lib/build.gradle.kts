@@ -1,9 +1,9 @@
 @Suppress("DSL_SCOPE_VIOLATION") // Until Gradle 8.1
 plugins {
-    id(libs.plugins.android.library.get().pluginId)
+    id("staakk.android.library")
+    id("staakk.android.compose")
     alias(libs.plugins.dokka)
     alias(libs.plugins.versions)
-    id("common-config")
     id("maven-publish")
 }
 
@@ -11,21 +11,14 @@ android {
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeVersion.get()
-    }
     namespace = "io.github.staakk.cchart"
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.android.desugar)
-
     implementation(libs.bundles.androidx)
-    implementation(libs.bundles.compose)
     implementation(libs.material)
 
     testImplementation(libs.bundles.test.tools)
-    testImplementation(libs.bundles.compose.test)
     testImplementation(libs.bundles.androidx.test)
 }
 

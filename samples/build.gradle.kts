@@ -1,7 +1,6 @@
-@Suppress("DSL_SCOPE_VIOLATION") // Until Gradle 8.1
 plugins {
-    id(libs.plugins.android.application.get().pluginId)
-    id("common-config")
+    id("staakk.android.application")
+    id("staakk.android.compose")
 }
 
 android {
@@ -11,16 +10,9 @@ android {
     }
 
     namespace = basePackage
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeVersion.get()
-    }
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.android.desugar)
-
     implementation(libs.bundles.androidx)
-    implementation(libs.bundles.compose)
     implementation(project(":lib"))
 }
