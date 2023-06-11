@@ -1,9 +1,6 @@
 # TODO
 
-* Move dependencies to toml file
 * Update dependencies
-* Review options for sharing configuration
-* Run screenshot tests without emulator
 * Review samples
 * Review and unify drawing logic
 * Make the API more declarative, especially configurable renderers
