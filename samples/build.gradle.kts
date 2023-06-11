@@ -1,17 +1,26 @@
+@Suppress("DSL_SCOPE_VIOLATION") // Until Gradle 8.1
 plugins {
-    id("com.android.application")
+    id(libs.plugins.android.application.get().pluginId)
     id("common-config")
 }
 
 android {
+    val basePackage = "io.github.staakk.cchart.samples"
     defaultConfig {
-        applicationId = "io.github.staakk.cchart.app"
+        applicationId = basePackage
     }
-    namespace = "io.github.staakk.cchart.samples"
+
+    namespace = basePackage
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composeVersion.get()
+    }
 }
 
 dependencies {
-    implementations(Libs.AndroidX.main)
-    implementations(Libs.Compose.main)
+    coreLibraryDesugaring(libs.android.desugar)
+
+    implementation(libs.bundles.androidx)
+    implementation(libs.bundles.compose)
     implementation(project(":lib"))
 }

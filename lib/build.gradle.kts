@@ -1,29 +1,32 @@
+@Suppress("DSL_SCOPE_VIOLATION") // Until Gradle 8.1
 plugins {
-    id("com.android.library")
+    id(libs.plugins.android.library.get().pluginId)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.versions)
     id("common-config")
     id("maven-publish")
-    id("org.jetbrains.dokka") version "1.4.32"
-    id("com.github.ben-manes.versions") version "0.39.0"
 }
 
 android {
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composeVersion.get()
+    }
     namespace = "io.github.staakk.cchart"
 }
 
 dependencies {
-    implementations(Libs.AndroidX.main)
-    implementations(Libs.Compose.main)
-    implementation(Libs.material)
+    coreLibraryDesugaring(libs.android.desugar)
 
-    testImplementation(Libs.junit)
-    testImplementation(Libs.mockk)
-    testImplementation(Libs.hamcrest)
+    implementation(libs.bundles.androidx)
+    implementation(libs.bundles.compose)
+    implementation(libs.material)
 
-    androidTestImplementations(Libs.AndroidX.androidTest)
-    androidTestImplementations(Libs.Compose.androidTest)
+    testImplementation(libs.bundles.test.tools)
+    testImplementation(libs.bundles.compose.test)
+    testImplementation(libs.bundles.androidx.test)
 }
 
 val sourcesJar by tasks.creating(Jar::class) {

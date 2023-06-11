@@ -35,13 +35,6 @@ class CommonConfigurationPlugin : Plugin<Project> {
 
                 buildFeatures.compose = true
 
-                composeOptions {
-                    kotlinCompilerExtensionVersion = Libs.Compose.version
-                }
-
-                target.dependencies {
-                    add("coreLibraryDesugaring", Libs.desugar)
-                }
                 packagingOptions {
                     resources.excludes += "META-INF/AL2.0"
                     resources.excludes += "META-INF/LGPL2.1"
