@@ -1,4 +1,5 @@
 @file:Suppress("unused")
+
 package io.github.staakk.cchart.viewtest
 
 import android.graphics.Paint
@@ -26,6 +27,7 @@ import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.groupedSeriesOf
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
+import io.github.staakk.cchart.dsl.lineStyle
 import io.github.staakk.cchart.grid.GridOrientation
 import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.label.LabelsProvider
@@ -90,13 +92,13 @@ class ReadmeGalleryTest {
 
                 verticalAxis(
                     verticalAxisRenderer(
-                        axisDrawer = axisDrawer(brush = SolidColor(DarkGrey))
+                        axisDrawer = axisDrawer { brush = SolidColor(DarkGrey) }
                     )
                 )
 
                 horizontalAxis(
                     horizontalAxisRenderer(
-                        axisDrawer = axisDrawer(brush = SolidColor(DarkGrey))
+                        axisDrawer = axisDrawer { brush = SolidColor(DarkGrey) }
                     )
                 )
 
@@ -106,8 +108,8 @@ class ReadmeGalleryTest {
 
                 grid(
                     gridRenderer(
-                        brush = SolidColor(LightGrey),
-                        orientation = GridOrientation.HORIZONTAL
+                        orientation = GridOrientation.HORIZONTAL,
+                        lineStyle = lineStyle { brush = SolidColor(LightGrey) }
                     )
                 )
             }
@@ -191,13 +193,13 @@ class ReadmeGalleryTest {
 
                 verticalAxis(
                     verticalAxisRenderer(
-                        axisDrawer = axisDrawer(brush = SolidColor(DarkGrey))
+                        axisDrawer = axisDrawer { brush = SolidColor(DarkGrey) }
                     )
                 )
 
                 horizontalAxis(
                     horizontalAxisRenderer(
-                        axisDrawer = axisDrawer(brush = SolidColor(DarkGrey))
+                        axisDrawer = axisDrawer { brush = SolidColor(DarkGrey) }
                     )
                 )
 
@@ -251,7 +253,7 @@ class ReadmeGalleryTest {
                         lineRenderer(lineDrawer { brush = SolidColor(Blue) }),
                         pointRenderer(
                             size = with(density) { 8.dp.toPx() }.let { Size(it, it) },
-                            pointDrawer = circleDrawer(brush = SolidColor(LightBlue))
+                            pointDrawer = circleDrawer { brush = SolidColor(LightBlue) }
                         )
                     )
                 )
@@ -274,28 +276,28 @@ class ReadmeGalleryTest {
                         lineRenderer(lineDrawer { brush = SolidColor(Green) }),
                         pointRenderer(
                             size = with(density) { 8.dp.toPx() }.let { Size(it, it) },
-                            pointDrawer = circleDrawer(brush = SolidColor(LightGreen))
+                            pointDrawer = circleDrawer { brush = SolidColor(LightGreen) }
                         )
                     )
                 )
 
                 verticalAxis(
                     verticalAxisRenderer(
-                        axisDrawer = axisDrawer(brush = SolidColor(Blue)),
+                        axisDrawer = axisDrawer { brush = SolidColor(Blue) },
                         location = 0f
                     )
                 )
 
                 verticalAxis(
                     verticalAxisRenderer(
-                        axisDrawer = axisDrawer(brush = SolidColor(Green)),
+                        axisDrawer = axisDrawer { brush = SolidColor(Green) },
                         location = 1f
                     )
                 )
 
                 horizontalAxis(
                     horizontalAxisRenderer(
-                        axisDrawer = axisDrawer(brush = SolidColor(DarkGrey))
+                        axisDrawer = axisDrawer { brush = SolidColor(DarkGrey) }
                     )
                 )
 
@@ -328,8 +330,8 @@ class ReadmeGalleryTest {
 
                 grid(
                     gridRenderer(
-                        brush = SolidColor(LightGrey),
-                        orientation = GridOrientation.HORIZONTAL
+                        orientation = GridOrientation.HORIZONTAL,
+                        lineStyle = lineStyle { brush = SolidColor(LightGrey) }
                     )
                 )
             }

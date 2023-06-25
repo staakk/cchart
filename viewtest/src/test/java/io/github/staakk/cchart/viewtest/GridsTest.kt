@@ -8,6 +8,7 @@ import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
+import io.github.staakk.cchart.dsl.lineStyle
 import io.github.staakk.cchart.grid.GridLinesProviders
 import io.github.staakk.cchart.grid.GridOrientation
 import io.github.staakk.cchart.grid.GridRenderer
@@ -40,9 +41,9 @@ class GridsTest {
             gridLinesProvider = GridLinesProviders.multiple(0.5f)
         ),
         gridRenderer(
-            brush = SolidColor(Color.Red),
             orientation = GridOrientation.VERTICAL,
-            gridLinesProvider = GridLinesProviders.multiple(1f / 3f)
+            gridLinesProvider = GridLinesProviders.multiple(1f / 3f),
+            lineStyle { brush = SolidColor(Color.Red) }
         ),
     )
 
@@ -53,9 +54,9 @@ class GridsTest {
             gridLinesProvider = GridLinesProviders.multiple(0.5f)
         ),
         gridRenderer(
-            brush = SolidColor(Color.Red),
             orientation = GridOrientation.HORIZONTAL,
-            gridLinesProvider = GridLinesProviders.multiple(1f / 3f)
+            gridLinesProvider = GridLinesProviders.multiple(1f / 3f),
+            lineStyle { brush = SolidColor(Color.Red) }
         ),
     )
 

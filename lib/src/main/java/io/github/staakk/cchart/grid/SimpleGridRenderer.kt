@@ -5,37 +5,36 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import io.github.staakk.cchart.data.Viewport
+import io.github.staakk.cchart.dsl.LineStyle
 import io.github.staakk.cchart.renderer.ChartContext
 
 private class SimpleGridRenderer(
-    private val brush: Brush,
     private val orientation: GridOrientation,
-    private val strokeWidth: Float,
-    private val cap: StrokeCap,
-    private val pathEffect: PathEffect?,
-    private val alpha: Float,
-    private val colorFilter: ColorFilter?,
-    private val blendMode: BlendMode,
     private val gridLinesProvider: GridLinesProvider,
+    private val lineStyle: LineStyle,
 ) : GridRenderer {
 
     override fun DrawScope.render(context: ChartContext) {
-        gridLinesProvider.provide(
-            orientation.getMin(context.viewport),
-            orientation.getMax(context.viewport)
-        ).forEach {
-            drawLine(
-                brush = brush,
-                start = orientation.getStart(this, context, it),
-                end = orientation.getEnd(this, context, it),
-                strokeWidth = strokeWidth,
-                cap = cap,
-                pathEffect = pathEffect,
-                alpha = alpha,
-                colorFilter = colorFilter,
-                blendMode = blendMode
+        gridLinesProvider
+            .provide(
+                orientation.getMin(context.viewport),
+                orientation.getMax(context.viewport)
             )
-        }
+            .forEach {
+                with(lineStyle) {
+                    drawLine(
+                        start = orientation.getStart(this@render, context, it),
+                        end = orientation.getEnd(this@render, context, it),
+                        cap = cap,
+                        pathEffect = pathEffect,
+                        alpha = alpha,
+                        brush = brush,
+                        colorFilter = colorFilter,
+                        strokeWidth = strokeWidth,
+                        blendMode = blendMode
+                    )
+                }
+            }
     }
 }
 
@@ -79,23 +78,11 @@ enum class GridOrientation {
  * Creates renderer for the grid.
  */
 fun gridRenderer(
-    brush: Brush = SolidColor(Color.Black),
     orientation: GridOrientation = GridOrientation.HORIZONTAL,
     gridLinesProvider: GridLinesProvider = GridLinesProviders.intGrid,
-    strokeWidth: Float = Stroke.HairlineWidth,
-    cap: StrokeCap = Stroke.DefaultCap,
-    pathEffect: PathEffect? = null,
-    alpha: Float = 0.2f,
-    colorFilter: ColorFilter? = null,
-    blendMode: BlendMode = DrawScope.DefaultBlendMode,
+    lineStyle: LineStyle = LineStyle(),
 ): GridRenderer = SimpleGridRenderer(
-    brush,
     orientation,
-    strokeWidth,
-    cap,
-    pathEffect,
-    alpha,
-    colorFilter,
-    blendMode,
-    gridLinesProvider
+    gridLinesProvider,
+    lineStyle,
 )

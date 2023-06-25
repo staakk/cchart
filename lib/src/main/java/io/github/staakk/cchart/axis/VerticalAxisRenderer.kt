@@ -1,6 +1,7 @@
 package io.github.staakk.cchart.axis
 
 import androidx.compose.ui.geometry.Offset
+import io.github.staakk.cchart.dsl.LineStyle
 
 /**
  * Creates renderer for vertical axis.
@@ -10,7 +11,7 @@ import androidx.compose.ui.geometry.Offset
  */
 fun verticalAxisRenderer(
     location: Float = VerticalAxisRenderer.Left,
-    axisDrawer: AxisDrawer = axisDrawer()
+    axisDrawer: AxisDrawer = axisDrawer(LineStyle())
 ) = VerticalAxisRenderer {
     val xPos = location * size.width
     with(axisDrawer) {

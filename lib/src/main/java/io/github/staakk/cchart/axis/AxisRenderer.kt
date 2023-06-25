@@ -6,6 +6,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import io.github.staakk.cchart.dsl.LineStyle
 import io.github.staakk.cchart.renderer.ChartContext
 
 /**
@@ -36,24 +37,20 @@ fun interface AxisDrawer {
     fun DrawScope.draw(start: Offset, end: Offset)
 }
 
-fun axisDrawer(
-    brush: Brush = SolidColor(Color.Black),
-    strokeWidth: Float = Stroke.HairlineWidth,
-    alpha: Float = 1f,
-    pathEffect: PathEffect? = null,
-    cap: StrokeCap = Stroke.DefaultCap,
-    colorFilter: ColorFilter? = null,
-    blendMode: BlendMode = DrawScope.DefaultBlendMode,
-) = AxisDrawer { start, end ->
-    drawLine(
-        brush = brush,
-        strokeWidth = strokeWidth,
-        pathEffect = pathEffect,
-        cap = cap,
-        alpha = alpha,
-        start = start,
-        end = end,
-        colorFilter = colorFilter,
-        blendMode = blendMode
-    )
+fun axisDrawer(builder: LineStyle.() -> Unit) = axisDrawer(LineStyle().apply(builder))
+
+fun axisDrawer(lineStyle: LineStyle) = AxisDrawer { start, end ->
+    with(lineStyle) {
+        drawLine(
+            start = start,
+            end = end,
+            strokeWidth = strokeWidth,
+            alpha = alpha,
+            brush = brush,
+            pathEffect = pathEffect,
+            cap = cap,
+            colorFilter = colorFilter,
+            blendMode = blendMode
+        )
+    }
 }
