@@ -43,7 +43,7 @@ fun GridChartScreen() {
                 pointOf(8f, 4.5f),
                 pointOf(9f, 4.7f),
             ),
-            renderer = lineRenderer(lineDrawer = lineDrawer(brush = SolidColor(Colors.Blue)))
+            renderer = lineRenderer(lineDrawer = lineDrawer { brush = SolidColor(Colors.Blue) })
         )
 
         horizontalAxis(horizontalAxisRenderer())

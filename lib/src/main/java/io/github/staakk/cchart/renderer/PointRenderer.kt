@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.data.Viewport
+import io.github.staakk.cchart.dsl.PrimitiveStyle
 
 fun interface PointDrawer {
 
@@ -45,7 +46,7 @@ fun interface PointBoundingShapeProvider {
  */
 fun pointRenderer(
     size: Size = Size(30f, 30f),
-    pointDrawer: PointDrawer = circleDrawer(),
+    pointDrawer: PointDrawer = circleDrawer(PrimitiveStyle()),
     boundingShapeProvider: PointBoundingShapeProvider = circleBoundingShapeProvider()
 ) = SeriesRenderer { series ->
     series.getPointsInViewport(getDrawingBounds(chartContext, size))
@@ -55,61 +56,21 @@ fun pointRenderer(
             with(boundingShapeProvider) { provide(point, rendererData, size) }
         }
 }
+fun circleDrawer(builder: PrimitiveStyle.() -> Unit) = circleDrawer(PrimitiveStyle().apply(builder))
 
-fun circleDrawer(
-    brush: Brush = SolidColor(Color.Black),
-    alpha: Float = 1.0f,
-    style: DrawStyle = Fill,
-    colorFilter: ColorFilter? = null,
-    blendMode: BlendMode = DrawScope.DefaultBlendMode
-) = PointDrawer { _, rendererData, size ->
-    drawCircle(
-        brush = brush,
-        radius = size.height / 2,
-        center = Offset(rendererData.x, rendererData.y),
-        alpha = alpha,
-        style = style,
-        colorFilter = colorFilter,
-        blendMode = blendMode,
-    )
-}
-
-fun circleWithError(
-    brush: Brush = SolidColor(Color.Black),
-    alpha: Float = 1.0f,
-    strokeWidth: Float = Stroke.HairlineWidth,
-    cap: StrokeCap = Stroke.DefaultCap,
-    colorFilter: ColorFilter? = null,
-    pathEffect: PathEffect? = null,
-    blendMode: BlendMode = DrawScope.DefaultBlendMode,
-    circleDrawer: PointDrawer = circleDrawer()
-) = PointDrawer { chartData, rendererData, size ->
-    if (rendererData is Data.PointWithError) {
-        val center = rendererData.toOffset()
-        drawLine(
-            start = Offset(center.x, center.y + rendererData.errorY),
-            end = Offset(center.x, center.y - rendererData.errorY),
-            brush = brush,
+fun circleDrawer(primitiveStyle: PrimitiveStyle) = PointDrawer { _, rendererData, size ->
+    // TODO change to drawOval
+    with(primitiveStyle) {
+        drawCircle(
+            radius = size.height / 2,
+            center = Offset(rendererData.x, rendererData.y),
             alpha = alpha,
+            brush = brush,
+            style = style,
             colorFilter = colorFilter,
             blendMode = blendMode,
-            strokeWidth = strokeWidth,
-            cap = cap,
-            pathEffect = pathEffect
-        )
-        drawLine(
-            start = Offset(center.x + rendererData.errorX, center.y),
-            end = Offset(center.x - rendererData.errorX, center.y),
-            brush = brush,
-            alpha = alpha,
-            colorFilter = colorFilter,
-            blendMode = blendMode,
-            strokeWidth = strokeWidth,
-            cap = cap,
-            pathEffect = pathEffect
         )
     }
-    with(circleDrawer) { draw(chartData, rendererData, size) }
 }
 
 private fun getDrawingBounds(chartContext: ChartContext, size: Size): Viewport {

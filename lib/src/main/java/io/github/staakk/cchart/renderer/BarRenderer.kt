@@ -128,11 +128,11 @@ fun barDrawer(
     brushProvider: (index: Int, Data<*>) -> Brush = { _, _ -> SolidColor(Color.Black) }
 ) = BarDrawer { index, point, baseLeft, size ->
     drawRect(
-        brush = brushProvider(index, point),
         topLeft = baseLeft.copy(y = baseLeft.y - size.height),
         size = size,
-        style = style,
         alpha = alpha,
+        brush = brushProvider(index, point),
+        style = style,
         colorFilter = colorFilter,
         blendMode = blendMode
     )

@@ -72,7 +72,7 @@ class AxisLabelsTest {
                         pointOf(8f, 4.5f),
                         pointOf(9f, 4.7f),
                     ),
-                    renderer = lineRenderer(lineDrawer = lineDrawer(brush = SolidColor(Color.Blue)))
+                    renderer = lineRenderer(lineDrawer { brush = SolidColor(Color.Blue) })
                 )
 
                 verticalAxis(verticalAxisRenderer())
@@ -157,7 +157,7 @@ class AxisLabelsTest {
                         pointOf(8f, 4.5f),
                         pointOf(9f, 4.7f),
                     ),
-                    renderer = lineRenderer(lineDrawer = lineDrawer(brush = SolidColor(Color.Blue)))
+                    renderer = lineRenderer(lineDrawer { brush = SolidColor(Color.Blue) })
                 )
 
                 verticalAxis(verticalAxisRenderer())

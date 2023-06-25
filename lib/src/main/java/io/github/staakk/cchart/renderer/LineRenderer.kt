@@ -1,11 +1,11 @@
 package io.github.staakk.cchart.renderer
 
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.DrawStyle
-import androidx.compose.ui.graphics.drawscope.Stroke
 import io.github.staakk.cchart.data.Data
+import io.github.staakk.cchart.dsl.PrimitiveStyle
+import io.github.staakk.cchart.moveTo
+import io.github.staakk.cchart.lineTo
+import io.github.staakk.cchart.dsl.primitiveStyle
 
 fun interface LineDrawer {
 
@@ -40,7 +40,7 @@ data class LinePoint(
  * @param boundingShapeProvider Provider of the [BoundingShape]s for the rendered line.
  */
 fun lineRenderer(
-    lineDrawer: LineDrawer = lineDrawer(),
+    lineDrawer: LineDrawer = lineDrawer(PrimitiveStyle()),
     boundingShapeProvider: LineBoundingShapeProvider = lineBoundingShapeProvider()
 ) = SeriesRenderer { series ->
     val rendererScope = RendererScope(this, chartContext)
@@ -55,27 +55,26 @@ fun lineRenderer(
         }
 }
 
-fun lineDrawer(
-    brush: Brush = SolidColor(Color.Black),
-    style: DrawStyle = Stroke(width = 5f, cap = StrokeCap.Round),
-    colorFilter: ColorFilter? = null,
-    alpha: Float = 1.0f,
-    blendMode: BlendMode = DrawScope.DefaultBlendMode,
-) = LineDrawer { pointsToRender ->
-    drawPath(
-        path = Path().apply {
-            pointsToRender.windowed(2) {
-                moveTo(it[0].rendererPoint.toOffset())
-                lineTo(it[1].rendererPoint.toOffset())
-            }
-            close()
-        },
-        alpha = alpha,
-        brush = brush,
-        style = style,
-        colorFilter = colorFilter,
-        blendMode = blendMode
-    )
+fun lineDrawer(primitiveStyleBuilder: PrimitiveStyle.() -> Unit) =
+    lineDrawer(primitiveStyle(primitiveStyleBuilder))
+
+fun lineDrawer(primitiveStyle: PrimitiveStyle) = LineDrawer { pointsToRender ->
+    with(primitiveStyle) {
+        drawPath(
+            path = Path().apply {
+                pointsToRender.windowed(2) {
+                    moveTo(it[0].rendererPoint.toOffset())
+                    lineTo(it[1].rendererPoint.toOffset())
+                }
+                close()
+            },
+            alpha = alpha,
+            brush = brush,
+            style = style,
+            colorFilter = colorFilter,
+            blendMode = blendMode
+        )
+    }
 }
 
 fun lineBoundingShapeProvider(radius: Float = 20f) = LineBoundingShapeProvider { points ->
@@ -89,6 +88,3 @@ fun lineBoundingShapeProvider(radius: Float = 20f) = LineBoundingShapeProvider {
         )
     }
 }
-
-private fun Path.moveTo(offset: Offset) = moveTo(offset.x, offset.y)
-private fun Path.lineTo(offset: Offset) = lineTo(offset.x, offset.y)

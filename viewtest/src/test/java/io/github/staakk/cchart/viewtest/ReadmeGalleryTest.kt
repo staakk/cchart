@@ -85,7 +85,7 @@ class ReadmeGalleryTest {
                         pointOf(9f, 8.3f),
                         pointOf(10f, 9.1f),
                     ),
-                    renderer = lineRenderer(lineDrawer = lineDrawer(brush = SolidColor(Blue)))
+                    renderer = lineRenderer(lineDrawer { brush = SolidColor(Blue) })
                 )
 
                 verticalAxis(
@@ -248,7 +248,7 @@ class ReadmeGalleryTest {
                         pointOf(10f, 9.1f),
                     ),
                     renderer = combine(
-                        lineRenderer(lineDrawer = lineDrawer(brush = SolidColor(Blue))),
+                        lineRenderer(lineDrawer { brush = SolidColor(Blue) }),
                         pointRenderer(
                             size = with(density) { 8.dp.toPx() }.let { Size(it, it) },
                             pointDrawer = circleDrawer(brush = SolidColor(LightBlue))
@@ -271,7 +271,7 @@ class ReadmeGalleryTest {
                         pointOf(10f, 1.3f),
                     ),
                     renderer = combine(
-                        lineRenderer(lineDrawer = lineDrawer(brush = SolidColor(Green))),
+                        lineRenderer(lineDrawer { brush = SolidColor(Green) }),
                         pointRenderer(
                             size = with(density) { 8.dp.toPx() }.let { Size(it, it) },
                             pointDrawer = circleDrawer(brush = SolidColor(LightGreen))
