@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package io.github.staakk.cchart.util
 
 import android.graphics.Paint

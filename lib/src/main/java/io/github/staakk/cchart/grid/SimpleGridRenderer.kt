@@ -1,11 +1,9 @@
 package io.github.staakk.cchart.grid
 
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import io.github.staakk.cchart.data.Viewport
-import io.github.staakk.cchart.dsl.LineStyle
+import io.github.staakk.cchart.style.LineStyle
 import io.github.staakk.cchart.renderer.ChartContext
 
 private class SimpleGridRenderer(

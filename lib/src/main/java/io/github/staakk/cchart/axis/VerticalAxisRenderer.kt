@@ -1,7 +1,7 @@
 package io.github.staakk.cchart.axis
 
 import androidx.compose.ui.geometry.Offset
-import io.github.staakk.cchart.dsl.LineStyle
+import io.github.staakk.cchart.style.LineStyle
 
 /**
  * Creates renderer for vertical axis.

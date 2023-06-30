@@ -1,4 +1,4 @@
-package io.github.staakk.cchart.dsl
+package io.github.staakk.cchart.style
 
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush

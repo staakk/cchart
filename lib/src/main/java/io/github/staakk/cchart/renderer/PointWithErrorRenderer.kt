@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import io.github.staakk.cchart.data.Data
-import io.github.staakk.cchart.dsl.PrimitiveStyle
+import io.github.staakk.cchart.style.PrimitiveStyle
 
 fun circleWithError(
     brush: Brush = SolidColor(Color.Black),

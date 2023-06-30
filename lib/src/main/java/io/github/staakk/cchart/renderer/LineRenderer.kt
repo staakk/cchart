@@ -2,10 +2,10 @@ package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.graphics.*
 import io.github.staakk.cchart.data.Data
-import io.github.staakk.cchart.dsl.PrimitiveStyle
+import io.github.staakk.cchart.style.PrimitiveStyle
 import io.github.staakk.cchart.moveTo
 import io.github.staakk.cchart.lineTo
-import io.github.staakk.cchart.dsl.primitiveStyle
+import io.github.staakk.cchart.style.primitiveStyle
 
 fun interface LineDrawer {
 

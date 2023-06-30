@@ -27,7 +27,7 @@ import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.groupedSeriesOf
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
-import io.github.staakk.cchart.dsl.lineStyle
+import io.github.staakk.cchart.style.lineStyle
 import io.github.staakk.cchart.grid.GridOrientation
 import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.label.LabelsProvider

@@ -29,8 +29,7 @@ internal fun DataLabels(
         modifier = modifier,
         canvasSize = canvasSize,
         anchors = renderedShapes
-            .map { it.data to Offset(it.labelAnchorX, it.labelAnchorY) to labelContent }
-            .toMap()
+            .associate { it.data to Offset(it.labelAnchorX, it.labelAnchorY) to labelContent }
     )
 }
 

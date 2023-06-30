@@ -49,7 +49,7 @@ fun Chart(
     val viewportState = remember {
         mutableStateOf(
             viewport
-                ?: scope.series.keys.getViewport() + scope.groupedSeries.keys.getViewportFromGroupedSeries()
+                ?: (scope.series.keys.getViewport() + scope.groupedSeries.keys.getViewportFromGroupedSeries())
         )
     }
     Chart(

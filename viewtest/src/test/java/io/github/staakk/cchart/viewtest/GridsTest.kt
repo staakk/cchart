@@ -8,7 +8,7 @@ import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
-import io.github.staakk.cchart.dsl.lineStyle
+import io.github.staakk.cchart.style.lineStyle
 import io.github.staakk.cchart.grid.GridLinesProviders
 import io.github.staakk.cchart.grid.GridOrientation
 import io.github.staakk.cchart.grid.GridRenderer

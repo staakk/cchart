@@ -2,14 +2,9 @@ package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.DrawStyle
-import androidx.compose.ui.graphics.drawscope.Fill
-import androidx.compose.ui.graphics.drawscope.Stroke
 import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.data.Viewport
-import io.github.staakk.cchart.dsl.PrimitiveStyle
+import io.github.staakk.cchart.style.PrimitiveStyle
 
 fun interface PointDrawer {
 
