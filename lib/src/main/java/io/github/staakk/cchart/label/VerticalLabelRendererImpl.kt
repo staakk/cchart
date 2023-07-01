@@ -1,74 +1,65 @@
 package io.github.staakk.cchart.label
 
-import android.graphics.Paint
-import android.graphics.Typeface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.sp
 import io.github.staakk.cchart.util.*
 
 @Composable
+@OptIn(ExperimentalTextApi::class)
 fun verticalLabelRenderer(
-    labelsTextSize: TextUnit = 12.sp,
-    labelsTypeface: Typeface = Typeface.DEFAULT,
+    brush: Brush = SolidColor(Color.Black),
+    textStyle: TextStyle = TextStyle.Default.copy(fontSize = 12.sp),
     location: Float = 0f,
-    alignment: Alignment = Alignment.CenterLeft,
-    textAlignment: TextAlignment = TextAlignment.Left,
+    alignment: Alignment = Alignment.CenterEnd,
     labelOffset: Offset = Offset(-12f, 0f),
     labelsProvider: LabelsProvider = IntLabelsProvider,
 ): VerticalLabelRenderer {
-    val density = LocalDensity.current
-    val paint = Paint().apply {
-        typeface = labelsTypeface
-        textSize = with(density) { labelsTextSize.toPx() }
-        isAntiAlias = true
-    }
+    val textMeasurer = rememberTextMeasurer()
     return verticalLabelRenderer(
-        paint,
-        location,
-        alignment,
-        textAlignment,
-        labelOffset,
-        labelsProvider
+        textMeasurer = textMeasurer,
+        brush = brush,
+        style = textStyle,
+        alignment = alignment,
+        location = location,
+        labelOffset = labelOffset,
+        labelsProvider = labelsProvider,
     )
 }
 
-/**
- * Creates a [VerticalLabelRenderer].
- *
- * @param paint Paint to draw the labels text with.
- * @param location Location of the label in percents.
- * @param alignment The alignment of the label relative to the position at which it should be
- * rendered.
- * @param textAlignment The alignment of the label text.
- * @param labelOffset Offset of the label position relative to the position at which it should be
- * rendered.
- * @param labelsProvider Provides the labels text and position for the given range.
- */
+@OptIn(ExperimentalTextApi::class)
 fun verticalLabelRenderer(
-    paint: Paint,
-    location: Float = 0f,
-    alignment: Alignment = Alignment.CenterLeft,
-    textAlignment: TextAlignment = TextAlignment.Left,
-    labelOffset: Offset = Offset(-12f, 0f),
+    brush: Brush,
+    textMeasurer: TextMeasurer,
+    style: TextStyle,
+    alignment: Alignment,
+    location: Float = 1f,
+    labelOffset: Offset = Offset(0f, 12f),
     labelsProvider: LabelsProvider = IntLabelsProvider
-) = VerticalLabelRenderer { context ->
+): VerticalLabelRenderer = VerticalLabelRenderer { context ->
     labelsProvider.provide(context.viewport.minY, context.viewport.maxY)
         .forEach { (text, offset) ->
-            val textHeight = paint.fontMetrics.lineHeight * (text.countLines() - 1)
+            val textHeight = textMeasurer.measure(text, style).size.height
             val y = context.toRendererY(offset) - textHeight / 2
             if (y + textHeight / 2 < size.height && y - textHeight / 2 > 0f) {
                 drawText(
+                    textMeasurer = textMeasurer,
                     text = text,
-                    alignment = alignment,
+                    style = style,
                     position = Offset(
                         x = location * size.width,
                         y = y
                     ) + labelOffset,
-                    textAlignment = textAlignment,
-                    paint = paint
+                    alignment = alignment,
+                    brush = brush,
                 )
             }
         }

@@ -1,17 +1,17 @@
 package io.github.staakk.cchart.viewtest
 
-import android.graphics.Paint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Surface
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
-import io.github.staakk.cchart.util.Alignment
-import io.github.staakk.cchart.util.TextAlignment
 import io.github.staakk.cchart.util.drawText
 import org.junit.Rule
 import org.junit.Test
@@ -24,46 +24,33 @@ class DrawTextTest {
     companion object {
         @Parameterized.Parameters
         @JvmStatic
-        fun parameters(): List<Array<Any>> {
-            val alignments = listOf(
-                Alignment.BottomLeft to "BottomLeft",
-                Alignment.BottomCenter to "BottomCenter",
-                Alignment.BottomRight to "BottomRight",
-                Alignment.CenterLeft to "CenterLeft",
-                Alignment.Center to "Center",
-                Alignment.CenterRight to "CenterRight",
-                Alignment.TopLeft to "TopLeft",
-                Alignment.TopCenter to "TopCenter",
-                Alignment.TopRight to "TopRight"
-            )
-            val textAlignment = listOf(
-                TextAlignment.Left to "Left",
-                TextAlignment.Center to "Center",
-                TextAlignment.Right to "Right"
-            )
-            return alignments.flatMap { alignment ->
-                textAlignment.map { textAlignment ->
-                    arrayOf(alignment, textAlignment)
-                }
-            }
-        }
+        fun parameters(): List<Pair<Alignment, String>> = listOf(
+            Alignment.BottomStart to "BottomStart",
+            Alignment.BottomCenter to "BottomCenter",
+            Alignment.BottomEnd to "BottomEnd",
+            Alignment.CenterStart to "CenterStart",
+            Alignment.Center to "Center",
+            Alignment.CenterEnd to "CenterEnd",
+            Alignment.TopStart to "TopStart",
+            Alignment.TopCenter to "TopCenter",
+            Alignment.TopEnd to "TopEnd"
+        )
     }
 
     @Parameterized.Parameter
-    lateinit var alignment: Pair<Alignment, String>
-
-    @Parameterized.Parameter(value = 1)
-    lateinit var textAlignment: Pair<TextAlignment, String>
+    lateinit var legacyAlignment: Pair<Alignment, String>
 
     @get:Rule
     val paparazzi = createPaparazziRule()
 
     @Test
+    @OptIn(ExperimentalTextApi::class)
     fun drawText() {
         paparazzi.snapshot {
             val density = LocalDensity.current
             val midPx = with(density) { 50.dp.toPx() }
             Surface(modifier = Modifier.size(100.dp, 100.dp)) {
+                val textMeasurer = rememberTextMeasurer()
                 Canvas(modifier = Modifier.fillMaxSize()) {
                     drawLine(
                         color = Color.Blue,
@@ -76,11 +63,10 @@ class DrawTextTest {
                         end = Offset(midPx, midPx * 2)
                     )
                     drawText(
+                        textMeasurer = textMeasurer,
                         text = "qde\nasdayf\nwer\npoi",
                         position = with(density) { Offset(50.dp.toPx(), 50.dp.toPx()) },
-                        alignment = alignment.first,
-                        textAlignment = textAlignment.first,
-                        paint = Paint()
+                        alignment = legacyAlignment.first,
                     )
                 }
             }

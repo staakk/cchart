@@ -47,7 +47,7 @@ class AnchoredContentTest {
                         pointOf(8f, 8f),
                         pointOf(9f, 9f),
                     ),
-                    renderer = pointRenderer(pointDrawer = circleDrawer(brush = SolidColor(Color.Blue)))
+                    renderer = pointRenderer(pointDrawer = circleDrawer { brush = SolidColor(Color.Blue) })
                 )
 
                 anchor(pointOf(5f, 5f)) {

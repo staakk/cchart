@@ -45,7 +45,7 @@ Where `version` can be either a tag or a commit hash.
 
 Here are few examples together with the code, for more examples check out [the samples](samples/src/main/java/io/github/staakk/cchart/samples).
 
-![Image of the chart](viewtest/screenshots/debug/io.github.staakk.cchart.viewtest.ReadmeGalleryTest_lineChart.png)
+![Image of the chart](viewtest/src/test/snapshots/images/io.github.staakk.cchart.viewtest_ReadmeGalleryTest_lineChart.png)
 <details>
 <summary>
 <b>Click to view the code.</b>
@@ -105,7 +105,7 @@ Chart(
 ```
 </details>
 
-![Image of the chart](viewtest/screenshots/debug/io.github.staakk.cchart.viewtest.ReadmeGalleryTest_barChart.png)
+![Image of the chart](viewtest/src/test/snapshots/images/io.github.staakk.cchart.viewtest_ReadmeGalleryTest_barChart.png)
 <details>
 <summary>
 <b>Click to view the code.</b>
@@ -213,7 +213,7 @@ Chart(
 ```
 </details>
 
-![Image of the chart](viewtest/screenshots/debug/io.github.staakk.cchart.viewtest.ReadmeGalleryTest_twoAxisChart.png)
+![Image of the chart](viewtest/src/test/snapshots/images/io.github.staakk.cchart.viewtest_ReadmeGalleryTest_twoAxisChart.png)
 <details>
 <summary>
 <b>Click to view the code.</b>

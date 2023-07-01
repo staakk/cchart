@@ -1,188 +1,62 @@
 package io.github.staakk.cchart.util
 
-import android.graphics.Paint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import io.github.staakk.cchart.util.Alignment.Companion.CenterLeft
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toOffset
 
 
+@OptIn(ExperimentalTextApi::class)
 fun DrawScope.drawText(
+    textMeasurer: TextMeasurer,
     text: String,
-    position: Offset,
-    alignment: Alignment,
-    textAlignment: TextAlignment,
-    paint: Paint
+    style: TextStyle = TextStyle.Default,
+    position: Offset = Offset.Zero,
+    alignment: Alignment = Alignment.Center,
+    brush: Brush = SolidColor(Color.Black),
 ) {
-    var maxLength = 0f
-    val lines = text.lines()
-        .map {
-            val length = paint.measureText(it)
-            if (length > maxLength) maxLength = length
-            it to length
-        }
-    drawIntoCanvas { canvas ->
-        lines.forEachIndexed { index, line ->
-            val pos = alignment.getDrawingPosition(
-                position,
-                line,
-                index,
-                lines.size,
-                maxLength,
-                textAlignment,
-                paint
-            )
-            canvas.nativeCanvas.drawText(line.first, pos.x, pos.y, paint)
-        }
-    }
-}
-
-fun interface TextAlignment {
-
-    fun getHorizontalOffset(lineLength: Float, maxLineLength: Float): Float
-
-    companion object {
-
-        val Left = TextAlignment { _, _ -> 0f }
-
-        val Center = TextAlignment { lineLength, maxLineLength ->
-            (maxLineLength - lineLength) / 2f
-        }
-
-        val Right = TextAlignment { lineLength, maxLineLength ->
-            maxLineLength - lineLength
-        }
-    }
-}
-
-fun interface Alignment {
-
-    fun getDrawingPosition(
-        position: Offset,
-        line: Pair<String, Float>,
-        lineNo: Int,
-        maxLines: Int,
-        maxLength: Float,
-        textAlignment: TextAlignment,
-        paint: Paint
-    ): Offset
-
-    companion object {
-
-        val BottomRight =
-            Alignment { position, (_, length), lineNo, _, maxLength, textAlignment, paint ->
-                Offset(
-                    x = position.x + textAlignment.getHorizontalOffset(length, maxLength),
-                    y = position.y + paint.fontMetrics.lineHeight * lineNo - paint.fontMetrics.top
-                )
-            }
-
-        val BottomCenter =
-            Alignment { position, (_, length), lineNo, _, maxLength, textAlignment, paint ->
-                Offset(
-                    x = position.x - maxLength / 2 + +textAlignment.getHorizontalOffset(
-                        length,
-                        maxLength
-                    ),
-                    y = position.y + paint.fontMetrics.lineHeight * lineNo - paint.fontMetrics.top
-                )
-            }
-
-        val BottomLeft =
-            Alignment { position, (_, length), lineNo, _, maxLength, textAlignment, paint ->
-                Offset(
-                    x = position.x - maxLength + textAlignment.getHorizontalOffset(
-                        length,
-                        maxLength
-                    ),
-                    y = position.y + paint.fontMetrics.lineHeight * lineNo - paint.fontMetrics.top
-                )
-            }
-
-        val CenterLeft =
-            Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
-                val lineHeight = paint.fontMetrics.lineHeight
-                Offset(
-                    x = position.x - maxLength + textAlignment.getHorizontalOffset(
-                        length,
-                        maxLength
-                    ),
-                    y = position.y + lineHeight * (lineNo - maxLines / 2f) - paint.fontMetrics.top
-                )
-            }
-
-        val Center =
-            Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
-                val lineHeight = paint.fontMetrics.lineHeight
-                Offset(
-                    x = position.x - maxLength / 2 + textAlignment.getHorizontalOffset(
-                        length,
-                        maxLength
-                    ),
-                    y = position.y + lineHeight * (lineNo - maxLines / 2f) - paint.fontMetrics.top
-                )
-            }
-
-        val CenterRight =
-            Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
-                val lineHeight = paint.fontMetrics.lineHeight
-                Offset(
-                    x = position.x + textAlignment.getHorizontalOffset(length, maxLength),
-                    y = position.y + lineHeight * (lineNo - maxLines / 2f) - paint.fontMetrics.top
-                )
-            }
-
-        val TopLeft =
-            Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
-                val lineHeight = paint.fontMetrics.lineHeight
-                Offset(
-                    x = position.x - maxLength + textAlignment.getHorizontalOffset(
-                        length,
-                        maxLength
-                    ),
-                    y = position.y + lineHeight * (lineNo - maxLines) - paint.fontMetrics.top
-                )
-            }
-
-        val TopCenter =
-            Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
-                val lineHeight = paint.fontMetrics.lineHeight
-                Offset(
-                    x = position.x - maxLength / 2 + textAlignment.getHorizontalOffset(
-                        length,
-                        maxLength
-                    ),
-                    y = position.y + lineHeight * (lineNo - maxLines) - paint.fontMetrics.top
-                )
-            }
-
-        val TopRight =
-            Alignment { position, (_, length), lineNo, maxLines, maxLength, textAlignment, paint ->
-                val lineHeight = paint.fontMetrics.lineHeight
-                Offset(
-                    x = position.x + textAlignment.getHorizontalOffset(length, maxLength),
-                    y = position.y + lineHeight * (lineNo - maxLines) - paint.fontMetrics.top
-                )
-            }
-    }
+    val result = textMeasurer.measure(
+        text = text,
+        style = style,
+    )
+    val topLeft = position + alignment
+        .align(result.size, IntSize.Zero, LayoutDirection.Ltr)
+        .toOffset()
+    drawText(
+        textLayoutResult = result,
+        topLeft = topLeft,
+        brush = brush,
+    )
 }
 
 @Preview
 @Composable
-fun Preview() {
+@OptIn(ExperimentalTextApi::class)
+fun PreviewDrawText() {
     val density = LocalDensity.current
     val midPx = with(density) { 50.dp.toPx() }
+    val textMeasurer = rememberTextMeasurer()
     Surface(modifier = Modifier.size(100.dp, 100.dp)) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             drawLine(
@@ -196,11 +70,11 @@ fun Preview() {
                 end = Offset(midPx, midPx * 2)
             )
             drawText(
+                textMeasurer = textMeasurer,
                 text = "qde\nasdayf\nwer\npoi",
+                style = TextStyle.Default.copy(textAlign = TextAlign.End, fontSize = 8.sp),
                 position = with(density) { Offset(50.dp.toPx(), 50.dp.toPx()) },
-                alignment = CenterLeft,
-                textAlignment = TextAlignment.Center,
-                paint = Paint()
+                alignment = Alignment.TopEnd,
             )
         }
     }

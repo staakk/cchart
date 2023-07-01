@@ -2,17 +2,15 @@
 
 package io.github.staakk.cchart.viewtest
 
-import android.graphics.Paint
-import android.graphics.Typeface
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -35,7 +33,6 @@ import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.*
 import io.github.staakk.cchart.renderer.CompositeSeriesRenderer.Companion.combine
-import io.github.staakk.cchart.util.Alignment
 import org.junit.Rule
 import org.junit.Test
 import java.time.LocalDate
@@ -228,6 +225,21 @@ class ReadmeGalleryTest {
             //tag=two_axis_chart
             val horizontalLabelRenderer = horizontalLabelRenderer()
             val density = LocalDensity.current
+            val verticalLabelRenderer1 = verticalLabelRenderer(
+                brush = SolidColor(Blue),
+                textStyle = TextStyle(fontSize = 12.sp),
+                location = 0f,
+                alignment = Alignment.CenterEnd
+            )
+            val verticalLabelRenderer2 = verticalLabelRenderer(
+                brush = SolidColor(Green),
+                location = 1f,
+                alignment = Alignment.CenterStart,
+                labelOffset = Offset(12f, 0f)
+            ) { min, max ->
+                (min.toInt()..(max.toInt() + 1))
+                    .map { "${it * 2}" to it.toFloat() }
+            }
             Chart(
                 modifier = Modifier
                     .padding(start = 32.dp, bottom = 32.dp, end = 32.dp)
@@ -301,30 +313,9 @@ class ReadmeGalleryTest {
                     )
                 )
 
-                verticalAxisLabels(
-                    verticalLabelRenderer(
-                        paint = Paint().apply {
-                            color = Blue.toArgb()
-                            typeface = Typeface.DEFAULT
-                            textSize = with(density) { 12.sp.toPx() }
-                            isAntiAlias = true
-                        },
-                        location = 0f,
-                        alignment = Alignment.CenterLeft
-                    )
-                )
+                verticalAxisLabels(verticalLabelRenderer1)
 
-                verticalAxisLabels(verticalLabelRenderer(
-                    paint = Paint().apply {
-                        color = Green.toArgb()
-                        typeface = Typeface.DEFAULT
-                        textSize = with(density) { 12.sp.toPx() }
-                        isAntiAlias = true
-                    },
-                    location = 1f,
-                    alignment = Alignment.CenterRight,
-                    labelOffset = Offset(12f, 0f)
-                ) { min, max -> (min.toInt()..(max.toInt() + 1)).map { "${it * 2}" to it.toFloat() } })
+                verticalAxisLabels(verticalLabelRenderer2)
 
                 horizontalAxisLabels(horizontalLabelRenderer)
 

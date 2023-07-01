@@ -44,7 +44,7 @@ class PointWithErrorChartTest {
                     ),
                     renderer = pointRenderer(
                         pointDrawer = circleWithError(
-                            circleDrawer = circleDrawer(brush = SolidColor(Color.Blue))
+                            circleDrawer = circleDrawer { brush = SolidColor(Color.Blue) }
                         )
                     )
                 )

@@ -46,7 +46,7 @@ class PointChartTest {
                         pointOf(8f, 4.5f),
                         pointOf(9f, 4.7f),
                     ),
-                    renderer = pointRenderer(pointDrawer = circleDrawer(brush = SolidColor(Color.Blue)))
+                    renderer = pointRenderer(pointDrawer = circleDrawer { brush = SolidColor(Color.Blue) })
                 )
 
                 verticalAxis(verticalAxisRenderer())
