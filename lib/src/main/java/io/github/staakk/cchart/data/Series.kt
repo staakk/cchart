@@ -1,6 +1,5 @@
 package io.github.staakk.cchart.data
 
-import io.github.staakk.cchart.renderer.ChartContext
 import io.github.staakk.cchart.util.indexOfFirstFrom
 
 /**

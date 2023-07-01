@@ -3,6 +3,7 @@ package io.github.staakk.cchart
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -99,12 +100,11 @@ private fun Chart(
     onClick: (Offset, Data<*>) -> Unit,
     scope: ChartScopeImpl
 ) {
-    val density = LocalDensity.current
-
     BoxWithConstraints(modifier = modifier) {
+        val density = LocalDensity.current
         val renderedPoints = remember { mutableStateOf(listOf<BoundingShape>()) }
         val canvasSize = with(density) { Size(width = maxWidth.toPx(), height = maxHeight.toPx()) }
-        val rendererContext = chartContext(viewport.value, canvasSize)
+        val rendererContext = chartContext(viewport.value, canvasSize) // TODO can be remembered?
 
         Canvas(
             modifier = Modifier
@@ -157,10 +157,7 @@ private fun Chart(
                 renderedPoints.value = points
             }
 
-            scope.horizontalAxisRenderers.forEach {
-                with(it) { this@drawScope.render(rendererContext) }
-            }
-            scope.verticalAxisRenderer.forEach {
+            scope.axisRenderers.forEach {
                 with(it) { this@drawScope.render(rendererContext) }
             }
 

@@ -7,13 +7,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.axis.horizontalAxisRenderer
-import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
+import io.github.staakk.cchart.horizontalAxis
 import io.github.staakk.cchart.renderer.lineDrawer
 import io.github.staakk.cchart.renderer.lineRenderer
+import io.github.staakk.cchart.verticalAxis
 import org.junit.Rule
 import org.junit.Test
 
@@ -45,13 +45,13 @@ class AxisTest {
                     renderer = lineRenderer(lineDrawer { brush = SolidColor(Color.Blue) })
                 )
 
-                verticalAxis(verticalAxisRenderer())
+                verticalAxis()
 
-                verticalAxis(verticalAxisRenderer(location = 1f))
+                verticalAxis(positionPercent = 1f)
 
-                horizontalAxis(horizontalAxisRenderer())
+                horizontalAxis()
 
-                horizontalAxis(horizontalAxisRenderer(location = 0f))
+                horizontalAxis(positionPercent = 1f)
             }
         }
     }

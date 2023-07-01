@@ -1,10 +1,10 @@
 package io.github.staakk.cchart
 
 import androidx.compose.runtime.Composable
-import io.github.staakk.cchart.axis.HorizontalAxisRenderer
-import io.github.staakk.cchart.axis.VerticalAxisRenderer
-import io.github.staakk.cchart.axis.horizontalAxisRenderer
-import io.github.staakk.cchart.axis.verticalAxisRenderer
+import io.github.staakk.cchart.axis.AxisRenderer
+import io.github.staakk.cchart.axis.Orientation
+import io.github.staakk.cchart.axis.axisDrawer
+import io.github.staakk.cchart.axis.axisRenderer
 import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.data.GroupedSeries
 import io.github.staakk.cchart.data.Series
@@ -13,6 +13,7 @@ import io.github.staakk.cchart.label.HorizontalLabelRenderer
 import io.github.staakk.cchart.label.VerticalLabelRenderer
 import io.github.staakk.cchart.renderer.GroupedSeriesRenderer
 import io.github.staakk.cchart.renderer.SeriesRenderer
+import io.github.staakk.cchart.style.LineStyle
 
 /**
  * Receiver scope which is used by the [Chart].
@@ -29,17 +30,7 @@ interface ChartScope {
      */
     fun grid(gridRenderer: GridRenderer)
 
-    /**
-     * Adds [axisRenderer] for this chart. Calling this function multiple times results in
-     * multiple renderers being added.
-     */
-    fun horizontalAxis(axisRenderer: HorizontalAxisRenderer = horizontalAxisRenderer())
-
-    /**
-     * Adds [axisRenderer] for this chart. Calling this function multiple times results in
-     * multiple renderers being added.
-     */
-    fun verticalAxis(axisRenderer: VerticalAxisRenderer = verticalAxisRenderer())
+    fun axis(axisRenderer: AxisRenderer)
 
     /**
      * Adds [labelRenderer] for this chart. Calling this function multiple times results in
@@ -74,12 +65,38 @@ interface ChartScope {
     fun dataLabels(content: @Composable AnchorScope.() -> Unit)
 }
 
+/**
+ * Adds [axisRenderer] for this chart. Calling this function multiple times results in
+ * multiple renderers being added.
+ */
+fun ChartScope.horizontalAxis(positionPercent: Float = 0f, lineStyle: LineStyle = LineStyle()) {
+    axis(
+        axisRenderer(
+            orientation = Orientation.Horizontal,
+            positionPercent = positionPercent,
+            axisDrawer = axisDrawer(lineStyle),
+        )
+    )
+}
+
+/**
+ * Adds [axisRenderer] for this chart. Calling this function multiple times results in
+ * multiple renderers being added.
+ */
+fun ChartScope.verticalAxis(positionPercent: Float = 0f, lineStyle: LineStyle = LineStyle()) {
+    axis(
+        axisRenderer(
+            orientation = Orientation.Vertical,
+            positionPercent = positionPercent,
+            axisDrawer = axisDrawer(lineStyle),
+        )
+    )
+}
+
 
 internal class ChartScopeImpl : ChartScope {
 
-    val horizontalAxisRenderers = mutableListOf<HorizontalAxisRenderer>()
-
-    val verticalAxisRenderer = mutableListOf<VerticalAxisRenderer>()
+    val axisRenderers = mutableListOf<AxisRenderer>()
 
     val horizontalLabelRenderers = mutableListOf<HorizontalLabelRenderer>()
 
@@ -99,12 +116,8 @@ internal class ChartScopeImpl : ChartScope {
         gridRenderers.add(gridRenderer)
     }
 
-    override fun horizontalAxis(axisRenderer: HorizontalAxisRenderer) {
-        horizontalAxisRenderers.add(axisRenderer)
-    }
-
-    override fun verticalAxis(axisRenderer: VerticalAxisRenderer) {
-        verticalAxisRenderer.add(axisRenderer)
+    override fun axis(axisRenderer: AxisRenderer) {
+        axisRenderers += axisRenderer
     }
 
     override fun horizontalAxisLabels(labelRenderer: HorizontalLabelRenderer) {

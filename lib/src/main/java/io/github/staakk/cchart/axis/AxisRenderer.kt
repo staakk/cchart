@@ -18,38 +18,27 @@ fun interface AxisRenderer {
     fun DrawScope.render(context: ChartContext)
 }
 
-fun interface HorizontalAxisRenderer : AxisRenderer {
-    companion object {
-        const val Top = 0.0f
-        const val Bottom = 1.0f
-    }
-}
-
-fun interface VerticalAxisRenderer : AxisRenderer {
-    companion object {
-        const val Right = 1f
-        const val Left = 0f
-    }
-}
-
-fun interface AxisDrawer {
-    fun DrawScope.draw(start: Offset, end: Offset)
-}
-
-fun axisDrawer(builder: LineStyle.() -> Unit) = axisDrawer(LineStyle().apply(builder))
-
-fun axisDrawer(lineStyle: LineStyle) = AxisDrawer { start, end ->
-    with(lineStyle) {
-        drawLine(
-            start = start,
-            end = end,
-            strokeWidth = strokeWidth,
-            alpha = alpha,
-            brush = brush,
-            pathEffect = pathEffect,
-            cap = cap,
-            colorFilter = colorFilter,
-            blendMode = blendMode
+fun axisRenderer(
+    orientation: Orientation,
+    positionPercent: Float,
+    axisDrawer: AxisDrawer = axisDrawer(LineStyle())
+) = AxisRenderer {
+    val xPos = positionPercent * size.width
+    val yPos = (1f - positionPercent) * size.height
+    with(axisDrawer) {
+        draw(
+            start = Offset(xPos * orientation.y, yPos * orientation.x),
+            end = Offset(
+                size.width * orientation.x + xPos * orientation.y,
+                size.height * orientation.y + yPos * orientation.x,
+            )
         )
+    }
+}
+
+data class Orientation(val x: Float, val y: Float) {
+    companion object {
+        val Horizontal = Orientation(1f, 0f)
+        val Vertical = Orientation(0f, 1f)
     }
 }

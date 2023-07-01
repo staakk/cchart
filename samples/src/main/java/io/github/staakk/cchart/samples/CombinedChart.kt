@@ -10,11 +10,10 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.axis.horizontalAxisRenderer
-import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
+import io.github.staakk.cchart.horizontalAxis
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.CompositeSeriesRenderer.Companion.combine
@@ -22,6 +21,7 @@ import io.github.staakk.cchart.renderer.circleDrawer
 import io.github.staakk.cchart.renderer.lineDrawer
 import io.github.staakk.cchart.renderer.lineRenderer
 import io.github.staakk.cchart.renderer.pointRenderer
+import io.github.staakk.cchart.verticalAxis
 
 @Composable
 fun CombinedChartScreen() {
@@ -60,12 +60,10 @@ fun CombinedChartScreen() {
             )
         )
 
-        horizontalAxis(horizontalAxisRenderer())
+        horizontalAxis()
+        verticalAxis()
 
         horizontalAxisLabels(horizontalLabelRenderer)
-
-        verticalAxis(verticalAxisRenderer())
-
         verticalAxisLabels(verticalLabelRenderer)
     }
 }

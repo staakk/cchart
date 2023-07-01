@@ -15,15 +15,15 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.axis.horizontalAxisRenderer
-import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.groupedSeriesOf
 import io.github.staakk.cchart.data.pointOf
+import io.github.staakk.cchart.horizontalAxis
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.barDrawer
 import io.github.staakk.cchart.renderer.barGroupRenderer
+import io.github.staakk.cchart.verticalAxis
 
 @Composable
 fun AnimatedBarColorChartScreen() {
@@ -89,12 +89,10 @@ fun AnimatedBarColorChartScreen() {
             )
         )
 
-        horizontalAxis(horizontalAxisRenderer())
+        horizontalAxis()
+        verticalAxis()
 
         horizontalAxisLabels(horizontalLabelRenderer)
-
-        verticalAxis(verticalAxisRenderer())
-
         verticalAxisLabels(verticalLabelRenderer)
     }
 }

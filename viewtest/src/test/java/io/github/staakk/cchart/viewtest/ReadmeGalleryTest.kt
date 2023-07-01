@@ -18,9 +18,6 @@ import androidx.compose.ui.unit.sp
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.HorizontalAlignment
 import io.github.staakk.cchart.VerticalAlignment
-import io.github.staakk.cchart.axis.axisDrawer
-import io.github.staakk.cchart.axis.horizontalAxisRenderer
-import io.github.staakk.cchart.axis.verticalAxisRenderer
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.groupedSeriesOf
 import io.github.staakk.cchart.data.pointOf
@@ -28,11 +25,13 @@ import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.style.lineStyle
 import io.github.staakk.cchart.grid.GridOrientation
 import io.github.staakk.cchart.grid.gridRenderer
+import io.github.staakk.cchart.horizontalAxis
 import io.github.staakk.cchart.label.LabelsProvider
 import io.github.staakk.cchart.label.horizontalLabelRenderer
 import io.github.staakk.cchart.label.verticalLabelRenderer
 import io.github.staakk.cchart.renderer.*
 import io.github.staakk.cchart.renderer.CompositeSeriesRenderer.Companion.combine
+import io.github.staakk.cchart.verticalAxis
 import org.junit.Rule
 import org.junit.Test
 import java.time.LocalDate
@@ -87,17 +86,9 @@ class ReadmeGalleryTest {
                     renderer = lineRenderer(lineDrawer { brush = SolidColor(Blue) })
                 )
 
-                verticalAxis(
-                    verticalAxisRenderer(
-                        axisDrawer = axisDrawer { brush = SolidColor(DarkGrey) }
-                    )
-                )
-
-                horizontalAxis(
-                    horizontalAxisRenderer(
-                        axisDrawer = axisDrawer { brush = SolidColor(DarkGrey) }
-                    )
-                )
+                val lineStyle = lineStyle { brush = SolidColor(DarkGrey) }
+                verticalAxis(lineStyle = lineStyle)
+                horizontalAxis(lineStyle = lineStyle)
 
                 verticalAxisLabels(verticalLabelRenderer)
 
@@ -188,17 +179,9 @@ class ReadmeGalleryTest {
                     )
                 )
 
-                verticalAxis(
-                    verticalAxisRenderer(
-                        axisDrawer = axisDrawer { brush = SolidColor(DarkGrey) }
-                    )
-                )
-
-                horizontalAxis(
-                    horizontalAxisRenderer(
-                        axisDrawer = axisDrawer { brush = SolidColor(DarkGrey) }
-                    )
-                )
+                val lineStyle = lineStyle { brush = SolidColor(DarkGrey) }
+                verticalAxis(lineStyle = lineStyle)
+                horizontalAxis(lineStyle = lineStyle)
 
                 dataLabels {
                     Text(
@@ -293,25 +276,11 @@ class ReadmeGalleryTest {
                     )
                 )
 
-                verticalAxis(
-                    verticalAxisRenderer(
-                        axisDrawer = axisDrawer { brush = SolidColor(Blue) },
-                        location = 0f
-                    )
-                )
+                verticalAxis(positionPercent = 0f, lineStyle { brush = SolidColor(Blue) })
 
-                verticalAxis(
-                    verticalAxisRenderer(
-                        axisDrawer = axisDrawer { brush = SolidColor(Green) },
-                        location = 1f
-                    )
-                )
+                verticalAxis(positionPercent = 1f, lineStyle { brush = SolidColor(Green) })
 
-                horizontalAxis(
-                    horizontalAxisRenderer(
-                        axisDrawer = axisDrawer { brush = SolidColor(DarkGrey) }
-                    )
-                )
+                horizontalAxis(lineStyle = lineStyle { brush = SolidColor(DarkGrey) })
 
                 verticalAxisLabels(verticalLabelRenderer1)
 
