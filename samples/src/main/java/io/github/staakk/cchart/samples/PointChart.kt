@@ -50,7 +50,7 @@ fun PointChartScreen() {
                 size = Size(20f, 20f),
                 pointDrawer = circleWithError(
                     brush = SolidColor(Colors.Red),
-                    circleDrawer = circleDrawer(brush = SolidColor(Colors.Red))
+                    circleDrawer = circleDrawer { brush = SolidColor(Colors.Red) }
                 )
             )
         )

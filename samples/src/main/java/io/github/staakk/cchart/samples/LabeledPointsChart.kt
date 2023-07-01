@@ -44,7 +44,7 @@ fun LabeledPointsScreen() {
             ),
             renderer = pointRenderer(
                 size = Size(20f, 20f),
-                pointDrawer = circleDrawer(brush = SolidColor(Colors.Red))
+                pointDrawer = circleDrawer { brush = SolidColor(Colors.Red) }
             )
         )
 

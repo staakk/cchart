@@ -1,11 +1,11 @@
 package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.Stroke
 import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.style.PrimitiveStyle
 import io.github.staakk.cchart.moveTo
 import io.github.staakk.cchart.lineTo
-import io.github.staakk.cchart.style.primitiveStyle
 
 fun interface LineDrawer {
 
@@ -33,6 +33,8 @@ data class LinePoint(
     val rendererPoint: Data<*>
 )
 
+fun defaultLineStyle() = PrimitiveStyle(style = Stroke(width = 5f, cap = StrokeCap.Square))
+
 /**
  * Creates [SeriesRenderer] that renders a line.
  *
@@ -40,7 +42,7 @@ data class LinePoint(
  * @param boundingShapeProvider Provider of the [BoundingShape]s for the rendered line.
  */
 fun lineRenderer(
-    lineDrawer: LineDrawer = lineDrawer(PrimitiveStyle()),
+    lineDrawer: LineDrawer = lineDrawer(defaultLineStyle()),
     boundingShapeProvider: LineBoundingShapeProvider = lineBoundingShapeProvider()
 ) = SeriesRenderer { series ->
     val rendererScope = RendererScope(this, chartContext)
@@ -56,7 +58,7 @@ fun lineRenderer(
 }
 
 fun lineDrawer(primitiveStyleBuilder: PrimitiveStyle.() -> Unit) =
-    lineDrawer(primitiveStyle(primitiveStyleBuilder))
+    lineDrawer(defaultLineStyle().apply(primitiveStyleBuilder))
 
 fun lineDrawer(primitiveStyle: PrimitiveStyle) = LineDrawer { pointsToRender ->
     with(primitiveStyle) {
