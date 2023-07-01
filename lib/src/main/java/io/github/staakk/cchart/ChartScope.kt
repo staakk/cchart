@@ -2,7 +2,7 @@ package io.github.staakk.cchart
 
 import androidx.compose.runtime.Composable
 import io.github.staakk.cchart.axis.AxisRenderer
-import io.github.staakk.cchart.axis.Orientation
+import io.github.staakk.cchart.axis.AxisOrientation
 import io.github.staakk.cchart.axis.axisDrawer
 import io.github.staakk.cchart.axis.axisRenderer
 import io.github.staakk.cchart.data.Data
@@ -72,7 +72,7 @@ interface ChartScope {
 fun ChartScope.horizontalAxis(positionPercent: Float = 0f, lineStyle: LineStyle = LineStyle()) {
     axis(
         axisRenderer(
-            orientation = Orientation.Horizontal,
+            axisOrientation = AxisOrientation.Horizontal,
             positionPercent = positionPercent,
             axisDrawer = axisDrawer(lineStyle),
         )
@@ -86,7 +86,7 @@ fun ChartScope.horizontalAxis(positionPercent: Float = 0f, lineStyle: LineStyle 
 fun ChartScope.verticalAxis(positionPercent: Float = 0f, lineStyle: LineStyle = LineStyle()) {
     axis(
         axisRenderer(
-            orientation = Orientation.Vertical,
+            axisOrientation = AxisOrientation.Vertical,
             positionPercent = positionPercent,
             axisDrawer = axisDrawer(lineStyle),
         )
@@ -96,13 +96,13 @@ fun ChartScope.verticalAxis(positionPercent: Float = 0f, lineStyle: LineStyle = 
 
 internal class ChartScopeImpl : ChartScope {
 
+    val gridRenderers = mutableListOf<GridRenderer>()
+
     val axisRenderers = mutableListOf<AxisRenderer>()
 
     val horizontalLabelRenderers = mutableListOf<HorizontalLabelRenderer>()
 
     val verticalLabelRenderers = mutableListOf<VerticalLabelRenderer>()
-
-    val gridRenderers = mutableListOf<GridRenderer>()
 
     val series = mutableMapOf<Series, SeriesRenderer>()
 

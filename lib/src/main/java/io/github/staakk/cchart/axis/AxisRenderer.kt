@@ -19,7 +19,7 @@ fun interface AxisRenderer {
 }
 
 fun axisRenderer(
-    orientation: Orientation,
+    axisOrientation: AxisOrientation,
     positionPercent: Float,
     axisDrawer: AxisDrawer = axisDrawer(LineStyle())
 ) = AxisRenderer {
@@ -27,18 +27,18 @@ fun axisRenderer(
     val yPos = (1f - positionPercent) * size.height
     with(axisDrawer) {
         draw(
-            start = Offset(xPos * orientation.y, yPos * orientation.x),
+            start = Offset(xPos * axisOrientation.y, yPos * axisOrientation.x),
             end = Offset(
-                size.width * orientation.x + xPos * orientation.y,
-                size.height * orientation.y + yPos * orientation.x,
+                size.width * axisOrientation.x + xPos * axisOrientation.y,
+                size.height * axisOrientation.y + yPos * axisOrientation.x,
             )
         )
     }
 }
 
-data class Orientation(val x: Float, val y: Float) {
+data class AxisOrientation(val x: Float, val y: Float) {
     companion object {
-        val Horizontal = Orientation(1f, 0f)
-        val Vertical = Orientation(0f, 1f)
+        val Horizontal = AxisOrientation(1f, 0f)
+        val Vertical = AxisOrientation(0f, 1f)
     }
 }
