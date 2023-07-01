@@ -32,7 +32,6 @@ private val screens: List<Pair<@Composable () -> Unit, String>> = listOf(
     @Composable { ViewportUpdatesScreen() } to "Observing viewport",
     @Composable { PanAndZoomScreen() } to "Panning and zooming",
     @Composable { CombinedChartScreen() } to "Point & line chart",
-    @Composable { CombinedChartScreen() } to "Point & line chart",
     @Composable { PointChartScreen() } to "Point chart"
 )
 
