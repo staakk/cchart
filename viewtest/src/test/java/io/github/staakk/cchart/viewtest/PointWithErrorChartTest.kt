@@ -50,11 +50,9 @@ class PointWithErrorChartTest {
                 )
 
                 verticalAxis()
-
                 horizontalAxis()
 
                 verticalAxisLabels(verticalLabelRenderer)
-
                 horizontalAxisLabels(horizontalLabelRenderer)
             }
         }
