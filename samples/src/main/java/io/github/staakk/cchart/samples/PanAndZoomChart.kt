@@ -54,8 +54,6 @@ fun PanAndZoomScreen() {
             )
         )
 
-        // TODO this should be defined in a way that provides defaults without the need to declare
-        // TODO e.g. this can be done via some data class and a builder
         horizontalAxis()
         verticalAxis()
 

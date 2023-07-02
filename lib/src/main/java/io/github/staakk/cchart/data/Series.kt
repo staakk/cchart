@@ -36,3 +36,10 @@ class Series(
 }
 
 fun seriesOf(vararg data: Data<*>) = Series(data.toList())
+
+fun seriesOf(vararg data: Pair<Number, Number>) =
+    Series(
+        data
+            .toList()
+            .map { (x, y) -> Data.Point(x.toFloat(), y.toFloat()) }
+    )
