@@ -3,13 +3,12 @@ package io.github.staakk.cchart.viewtest
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.HorizontalAlignment
-import io.github.staakk.cchart.VerticalAlignment
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
@@ -30,13 +29,21 @@ class DataLabelsTest {
     companion object {
         @Parameterized.Parameters
         @JvmStatic
-        fun parameters() = HorizontalAlignment.values().flatMap { horizontalAlignment ->
-            VerticalAlignment.values().map { verticalAlignment -> horizontalAlignment to verticalAlignment }
-        }
+        fun parameters() = listOf(
+            Alignment.TopStart,
+            Alignment.TopCenter,
+            Alignment.TopEnd,
+            Alignment.CenterStart,
+            Alignment.Center,
+            Alignment.CenterEnd,
+            Alignment.BottomStart,
+            Alignment.BottomCenter,
+            Alignment.BottomEnd,
+        )
     }
 
     @Parameterized.Parameter
-    lateinit var alignments: Pair<HorizontalAlignment, VerticalAlignment>
+    lateinit var alignment: Alignment
 
     @get:Rule
     val paparazzi = createPaparazziRule()
@@ -72,7 +79,7 @@ class DataLabelsTest {
 
                 dataLabels {
                     Text(
-                        modifier = Modifier.align(alignments.first, alignments.second),
+                        modifier = Modifier.align(alignment),
                         text = "(${data.x}, ${data.y})"
                     )
                 }

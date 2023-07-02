@@ -16,8 +16,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.HorizontalAlignment
-import io.github.staakk.cchart.VerticalAlignment
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.groupedSeriesOf
 import io.github.staakk.cchart.data.pointOf
@@ -185,10 +183,7 @@ class ReadmeGalleryTest {
 
                 dataLabels {
                     Text(
-                        modifier = Modifier.align(
-                            HorizontalAlignment.CENTER,
-                            VerticalAlignment.TOP
-                        ),
+                        modifier = Modifier.align(Alignment.BottomCenter),
                         text = "${data.y.toInt()}%",
                         style = TextStyle(fontSize = 12.sp)
                     )

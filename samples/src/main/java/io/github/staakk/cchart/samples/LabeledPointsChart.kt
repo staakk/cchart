@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.SolidColor
@@ -12,8 +13,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.HorizontalAlignment
-import io.github.staakk.cchart.VerticalAlignment
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.horizontalAxis
@@ -37,7 +36,14 @@ fun LabeledPointsScreen() {
         viewport = Viewport(0f, 5.5f, 0f, 5.5f)
     ) {
         series(
-            Series(SampleData.series.take(25).toList()),
+            Series(
+                SampleData
+                    .series
+                    .drop(5)
+                    .filterIndexed { index, _ -> index % 5 == 0 }
+                    .take(4)
+                    .toList(),
+            ),
             renderer = pointRenderer(
                 size = pointSize,
                 pointDrawer = circleDrawer { brush = SolidColor(Colors.Red) }
@@ -52,9 +58,10 @@ fun LabeledPointsScreen() {
 
         dataLabels {
             Text(
-                modifier = Modifier.padding(bottom = 4.dp)
-                    .align(HorizontalAlignment.CENTER, VerticalAlignment.CENTER),
-                text = "(${data.x}, ${data.y})"
+                modifier = Modifier
+                    .padding(bottom = 4.dp)
+                    .align(Alignment.Center),
+                text = "(${String.format("%.2f", data.x)}, ${String.format("%.2f", data.y)})"
             )
         }
     }

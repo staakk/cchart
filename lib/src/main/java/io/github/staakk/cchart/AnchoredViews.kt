@@ -3,6 +3,7 @@ package io.github.staakk.cchart
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
@@ -15,6 +16,8 @@ import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.LayoutDirection
 import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.renderer.BoundingShape
 
@@ -58,57 +61,17 @@ data class AnchorScope(
     val density: Density
 ) {
 
-    fun Modifier.align(
-        horizontalAlignment: HorizontalAlignment,
-        verticalAlignment: VerticalAlignment
-    ): Modifier = absoluteOffsetToCenter(
+    fun Modifier.align(alignment: Alignment): Modifier = absoluteOffsetToCenter(
         with(density) { offset.x.toDp() },
         with(density) { offset.y.toDp() },
-        horizontalAlignment,
-        verticalAlignment
+        alignment = alignment,
     )
-}
-
-enum class HorizontalAlignment {
-    LEFT {
-        override fun calculatePosition(position: Int, placeable: Placeable): Int =
-            position - placeable.width
-    },
-    CENTER {
-        override fun calculatePosition(position: Int, placeable: Placeable): Int =
-            position - placeable.width / 2
-
-    },
-    RIGHT {
-        override fun calculatePosition(position: Int, placeable: Placeable): Int =
-            position
-    };
-
-    internal abstract fun calculatePosition(position: Int, placeable: Placeable): Int
-}
-
-enum class VerticalAlignment {
-    TOP {
-        override fun calculatePosition(position: Int, placeable: Placeable): Int =
-            position - placeable.height
-    },
-    CENTER {
-        override fun calculatePosition(position: Int, placeable: Placeable): Int =
-            position - placeable.height / 2
-    },
-    BOTTOM {
-        override fun calculatePosition(position: Int, placeable: Placeable): Int =
-            position
-    };
-
-    internal abstract fun calculatePosition(position: Int, placeable: Placeable): Int
 }
 
 private class OffsetToCenterModifier(
     val x: Dp,
     val y: Dp,
-    val horizontalAlignment: HorizontalAlignment,
-    val verticalAlignment: VerticalAlignment,
+    val alignment: Alignment,
     inspectorInfo: InspectorInfo.() -> Unit
 ) : LayoutModifier, InspectorValueInfo(inspectorInfo) {
     override fun MeasureScope.measure(
@@ -117,9 +80,14 @@ private class OffsetToCenterModifier(
     ): MeasureResult {
         val placeable = measurable.measure(constraints)
         return layout(placeable.width, placeable.height) {
+            val result = alignment.align(
+                IntSize(placeable.width, placeable.height),
+                IntSize.Zero,
+                LayoutDirection.Ltr
+            )
             placeable.place(
-                horizontalAlignment.calculatePosition(x.roundToPx(), placeable),
-                verticalAlignment.calculatePosition(y.roundToPx(), placeable)
+                x = x.roundToPx() + result.x,
+                y = y.roundToPx() + result.y,
             )
         }
     }
@@ -144,14 +112,12 @@ private class OffsetToCenterModifier(
 internal fun Modifier.absoluteOffsetToCenter(
     x: Dp,
     y: Dp,
-    horizontalAlignment: HorizontalAlignment,
-    verticalAlignment: VerticalAlignment
+    alignment: Alignment,
 ) = this.then(
     OffsetToCenterModifier(
         x = x,
         y = y,
-        horizontalAlignment = horizontalAlignment,
-        verticalAlignment = verticalAlignment,
+        alignment = alignment,
         inspectorInfo = debugInspectorInfo {
             name = "absoluteOffset"
             properties["x"] = x

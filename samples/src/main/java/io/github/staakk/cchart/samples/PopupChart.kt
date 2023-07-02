@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -18,8 +19,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.HorizontalAlignment
-import io.github.staakk.cchart.VerticalAlignment
 import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
@@ -63,7 +62,7 @@ fun PopupChartScreen() {
             anchor(point) {
                 Text(
                     modifier = Modifier
-                        .align(HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
+                        .align(Alignment.Center)
                         .background(
                             brush = SolidColor(Colors.LightGreen),
                             shape = RoundedCornerShape(4.dp),
