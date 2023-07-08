@@ -18,16 +18,18 @@ import io.github.staakk.cchart.ChartState
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.horizontalAxis
-import io.github.staakk.cchart.label.horizontalLabelRenderer
-import io.github.staakk.cchart.label.verticalLabelRenderer
+import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
+import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
 import io.github.staakk.cchart.renderer.circleDrawer
 import io.github.staakk.cchart.renderer.pointRenderer
 import io.github.staakk.cchart.verticalAxis
 
 @Composable
 fun ViewportUpdatesScreen() {
-    val horizontalLabelRenderer = horizontalLabelRenderer()
-    val verticalLabelRenderer = verticalLabelRenderer()
+    val labels = listOf(
+        defaultHorizontalLabelRenderer(),
+        defaultVerticalLabelRenderer(),
+    )
     val pointSize = with(LocalDensity.current) { Size(8.dp.toPx(), 8.dp.toPx()) }
     Column {
         val viewport = Viewport(0f, 5.5f, 0f, 5.5f)
@@ -53,8 +55,7 @@ fun ViewportUpdatesScreen() {
             horizontalAxis()
             verticalAxis()
 
-            horizontalAxisLabels(horizontalLabelRenderer)
-            verticalAxisLabels(verticalLabelRenderer)
+            labels.forEach { label(it) }
         }
         Column(modifier = Modifier.padding(16.dp)) {
             Text(

@@ -18,16 +18,18 @@ import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.groupedSeriesOf
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.horizontalAxis
-import io.github.staakk.cchart.label.horizontalLabelRenderer
-import io.github.staakk.cchart.label.verticalLabelRenderer
+import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
+import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
 import io.github.staakk.cchart.renderer.barDrawer
 import io.github.staakk.cchart.renderer.barGroupRenderer
 import io.github.staakk.cchart.verticalAxis
 
 @Composable
 fun AnimatedBarSizeChartScreen() {
-    val horizontalLabelRenderer = horizontalLabelRenderer()
-    val verticalLabelRenderer = verticalLabelRenderer()
+    val labels = listOf(
+        defaultHorizontalLabelRenderer(),
+        defaultVerticalLabelRenderer(),
+    )
 
     val trigger = remember { mutableStateOf(false) }
     val heightScale = animateFloatAsState(
@@ -94,9 +96,7 @@ fun AnimatedBarSizeChartScreen() {
 
         horizontalAxis()
         verticalAxis()
-
-        horizontalAxisLabels(horizontalLabelRenderer)
-        verticalAxisLabels(verticalLabelRenderer)
+        labels.forEach { label(it) }
     }
 }
 

@@ -161,10 +161,7 @@ private fun Chart(
                 with(it) { this@drawScope.render(rendererContext) }
             }
 
-            scope.horizontalLabelRenderers.forEach {
-                with(it) { this@drawScope.render(rendererContext) }
-            }
-            scope.verticalLabelRenderers.forEach {
+            scope.labelsRenderers.forEach {
                 with(it) { this@drawScope.render(rendererContext) }
             }
         }

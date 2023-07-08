@@ -11,8 +11,8 @@ import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.horizontalAxis
-import io.github.staakk.cchart.label.horizontalLabelRenderer
-import io.github.staakk.cchart.label.verticalLabelRenderer
+import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
+import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
 import io.github.staakk.cchart.renderer.circleDrawer
 import io.github.staakk.cchart.renderer.pointRenderer
 import io.github.staakk.cchart.verticalAxis
@@ -26,8 +26,10 @@ class PointChartTest {
     @Test
     fun pointChart() {
         paparazzi.snapshot {
-            val horizontalLabelRenderer = horizontalLabelRenderer()
-            val verticalLabelRenderer = verticalLabelRenderer()
+            val labels = listOf(
+                defaultHorizontalLabelRenderer(),
+                defaultVerticalLabelRenderer(),
+            )
             Chart(
                 modifier = Modifier
                     .padding(start = 32.dp, bottom = 32.dp)
@@ -50,12 +52,9 @@ class PointChartTest {
                 )
 
                 verticalAxis()
-
                 horizontalAxis()
 
-                verticalAxisLabels(verticalLabelRenderer)
-
-                horizontalAxisLabels(horizontalLabelRenderer)
+                labels.forEach { label(it) }
             }
         }
     }

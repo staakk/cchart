@@ -19,16 +19,18 @@ import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.groupedSeriesOf
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.horizontalAxis
-import io.github.staakk.cchart.label.horizontalLabelRenderer
-import io.github.staakk.cchart.label.verticalLabelRenderer
+import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
+import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
 import io.github.staakk.cchart.renderer.barDrawer
 import io.github.staakk.cchart.renderer.barGroupRenderer
 import io.github.staakk.cchart.verticalAxis
 
 @Composable
 fun AnimatedBarColorChartScreen() {
-    val horizontalLabelRenderer = horizontalLabelRenderer()
-    val verticalLabelRenderer = verticalLabelRenderer()
+    val labelRenderers = listOf(
+        defaultHorizontalLabelRenderer(),
+        defaultVerticalLabelRenderer()
+    )
 
     val color0 = remember { Animatable(Color.DarkGray) }
     LaunchedEffect(color0) {
@@ -91,9 +93,7 @@ fun AnimatedBarColorChartScreen() {
 
         horizontalAxis()
         verticalAxis()
-
-        horizontalAxisLabels(horizontalLabelRenderer)
-        verticalAxisLabels(verticalLabelRenderer)
+        labelRenderers.forEach { label(it) }
     }
 }
 

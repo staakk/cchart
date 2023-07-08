@@ -14,9 +14,11 @@ import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.horizontalAxis
+import io.github.staakk.cchart.label.LabelOrientation
 import io.github.staakk.cchart.label.LabelsProvider
-import io.github.staakk.cchart.label.horizontalLabelRenderer
-import io.github.staakk.cchart.label.verticalLabelRenderer
+import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
+import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
+import io.github.staakk.cchart.label.labelRenderer
 import io.github.staakk.cchart.renderer.lineDrawer
 import io.github.staakk.cchart.renderer.lineRenderer
 import io.github.staakk.cchart.verticalAxis
@@ -30,27 +32,35 @@ class AxisLabelsTest {
     @Test
     fun labels() {
         paparazzi.snapshot {
-            val verticalLabels = verticalLabelRenderer()
-            val rightSideVerticalLabels = verticalLabelRenderer(
+            val verticalLabels = defaultVerticalLabelRenderer()
+            val rightSideVerticalLabels = labelRenderer(
+                orientation = LabelOrientation.Vertical,
                 alignment = Alignment.CenterStart,
                 labelOffset = Offset(12f, 0f)
             )
-            val rightLocationVerticalLabels =
-                verticalLabelRenderer(location = 1f)
-            val rightSideRightLocationVerticalLabels = verticalLabelRenderer(
-                location = 1f,
+            val rightLocationVerticalLabels = labelRenderer(
+                orientation = LabelOrientation.Vertical,
+                locationPercent = 1f
+            )
+            val rightSideRightLocationVerticalLabels = labelRenderer(
+                orientation = LabelOrientation.Vertical,
+                locationPercent = 1f,
                 alignment = Alignment.CenterStart,
                 labelOffset = Offset(12f, 0f)
             )
-            val horizontalLabels = horizontalLabelRenderer()
-            val aboveHorizontalLabels = horizontalLabelRenderer(
+            val horizontalLabels = defaultHorizontalLabelRenderer()
+            val aboveHorizontalLabels = labelRenderer(
+                orientation = LabelOrientation.Horizontal,
                 alignment = Alignment.BottomCenter,
                 labelOffset = Offset(0f, -12f)
             )
-            val topHorizontalLabels =
-                horizontalLabelRenderer(location = 0f)
-            val topAboveHorizontalLabels = horizontalLabelRenderer(
-                location = 0f,
+            val topHorizontalLabels = labelRenderer(
+                orientation = LabelOrientation.Horizontal,
+                locationPercent = 1f
+            )
+            val topAboveHorizontalLabels = labelRenderer(
+                orientation = LabelOrientation.Horizontal,
+                locationPercent = 1f,
                 alignment = Alignment.BottomCenter,
                 labelOffset = Offset(0f, -12f)
             )
@@ -76,28 +86,19 @@ class AxisLabelsTest {
                 )
 
                 verticalAxis()
-
                 verticalAxis(positionPercent = 1f)
 
                 horizontalAxis()
-
                 horizontalAxis(positionPercent = 1f)
 
-                verticalAxisLabels(verticalLabels)
-
-                verticalAxisLabels(rightSideVerticalLabels)
-
-                verticalAxisLabels(rightLocationVerticalLabels)
-
-                verticalAxisLabels(rightSideRightLocationVerticalLabels)
-
-                horizontalAxisLabels(horizontalLabels)
-
-                horizontalAxisLabels(aboveHorizontalLabels)
-
-                horizontalAxisLabels(topHorizontalLabels)
-
-                horizontalAxisLabels(topAboveHorizontalLabels)
+                label(verticalLabels)
+                label(rightSideVerticalLabels)
+                label(rightLocationVerticalLabels)
+                label(rightSideRightLocationVerticalLabels)
+                label(horizontalLabels)
+                label(aboveHorizontalLabels)
+                label(topHorizontalLabels)
+                label(topAboveHorizontalLabels)
             }
         }
     }
@@ -105,36 +106,46 @@ class AxisLabelsTest {
     @Test
     fun multiLineLabels() {
         paparazzi.snapshot {
-            val verticalLabels = verticalLabelRenderer(labelsProvider = MultiLineLabelsProvider)
-            val rightSideVerticalLabels = verticalLabelRenderer(
+            val verticalLabels = labelRenderer(
+                orientation = LabelOrientation.Vertical,
+                labelsProvider = MultiLineLabelsProvider,
+            )
+            val rightSideVerticalLabels = labelRenderer(
+                orientation = LabelOrientation.Vertical,
                 alignment = Alignment.CenterStart,
                 labelOffset = Offset(12f, 0f),
                 labelsProvider = MultiLineLabelsProvider
             )
-            val rightLocationVerticalLabels =
-                verticalLabelRenderer(
-                    location = 1f,
-                    labelsProvider = MultiLineLabelsProvider
-                )
-            val rightSideRightLocationVerticalLabels = verticalLabelRenderer(
-                location = 1f,
+            val rightLocationVerticalLabels = labelRenderer(
+                orientation = LabelOrientation.Vertical,
+                locationPercent = 1f,
+                labelsProvider = MultiLineLabelsProvider
+            )
+            val rightSideRightLocationVerticalLabels = labelRenderer(
+                orientation = LabelOrientation.Vertical,
+                locationPercent = 1f,
                 alignment = Alignment.CenterStart,
                 labelOffset = Offset(12f, 0f),
                 labelsProvider = MultiLineLabelsProvider
             )
-            val horizontalLabels = horizontalLabelRenderer(labelsProvider = MultiLineLabelsProvider)
-            val aboveHorizontalLabels = horizontalLabelRenderer(
+            val horizontalLabels = labelRenderer(
+                orientation = LabelOrientation.Horizontal,
+                labelsProvider = MultiLineLabelsProvider,
+            )
+            val aboveHorizontalLabels = labelRenderer(
+                orientation = LabelOrientation.Horizontal,
                 alignment = Alignment.BottomCenter,
                 labelsProvider = MultiLineLabelsProvider,
                 labelOffset = Offset(0f, -12f)
             )
-            val topHorizontalLabels =
-                horizontalLabelRenderer(
-                    location = 0f,
+            val topHorizontalLabels = labelRenderer(
+                    orientation = LabelOrientation.Horizontal,
+                    locationPercent = 1f,
                     labelsProvider = MultiLineLabelsProvider
                 )
-            val topAboveHorizontalLabels = horizontalLabelRenderer(
-                location = 0f,
+            val topAboveHorizontalLabels = labelRenderer(
+                orientation = LabelOrientation.Horizontal,
+                locationPercent = 0f,
                 alignment = Alignment.BottomCenter,
                 labelOffset = Offset(0f, -12f),
                 labelsProvider = MultiLineLabelsProvider
@@ -166,21 +177,14 @@ class AxisLabelsTest {
                 horizontalAxis()
                 horizontalAxis(positionPercent = 1f)
 
-                verticalAxisLabels(verticalLabels)
-
-                verticalAxisLabels(rightSideVerticalLabels)
-
-                verticalAxisLabels(rightLocationVerticalLabels)
-
-                verticalAxisLabels(rightSideRightLocationVerticalLabels)
-
-                horizontalAxisLabels(horizontalLabels)
-
-                horizontalAxisLabels(aboveHorizontalLabels)
-
-                horizontalAxisLabels(topHorizontalLabels)
-
-                horizontalAxisLabels(topAboveHorizontalLabels)
+                label(verticalLabels)
+                label(rightSideVerticalLabels)
+                label(rightLocationVerticalLabels)
+                label(rightSideRightLocationVerticalLabels)
+                label(horizontalLabels)
+                label(aboveHorizontalLabels)
+                label(topHorizontalLabels)
+                label(topAboveHorizontalLabels)
 
                 grid(gridRenderer())
             }

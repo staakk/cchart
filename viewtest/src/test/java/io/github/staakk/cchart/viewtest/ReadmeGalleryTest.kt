@@ -24,9 +24,11 @@ import io.github.staakk.cchart.style.lineStyle
 import io.github.staakk.cchart.grid.GridOrientation
 import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.horizontalAxis
+import io.github.staakk.cchart.label.LabelOrientation
 import io.github.staakk.cchart.label.LabelsProvider
-import io.github.staakk.cchart.label.horizontalLabelRenderer
-import io.github.staakk.cchart.label.verticalLabelRenderer
+import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
+import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
+import io.github.staakk.cchart.label.labelRenderer
 import io.github.staakk.cchart.renderer.*
 import io.github.staakk.cchart.renderer.CompositeSeriesRenderer.Companion.combine
 import io.github.staakk.cchart.verticalAxis
@@ -58,8 +60,10 @@ class ReadmeGalleryTest {
     fun lineChart() {
         paparazzi.snapshot {
             //tag=line_chart
-            val horizontalLabelRenderer = horizontalLabelRenderer()
-            val verticalLabelRenderer = verticalLabelRenderer()
+            val labels = listOf(
+                defaultHorizontalLabelRenderer(),
+                defaultVerticalLabelRenderer(),
+            )
             Chart(
                 modifier = Modifier
                     .padding(start = 32.dp, bottom = 32.dp)
@@ -88,9 +92,7 @@ class ReadmeGalleryTest {
                 verticalAxis(lineStyle = lineStyle)
                 horizontalAxis(lineStyle = lineStyle)
 
-                verticalAxisLabels(verticalLabelRenderer)
-
-                horizontalAxisLabels(horizontalLabelRenderer)
+                labels.forEach { label(it) }
 
                 grid(
                     gridRenderer(
@@ -107,7 +109,8 @@ class ReadmeGalleryTest {
     fun barChart() {
         paparazzi.snapshot {
             //tag=bar_chart
-            val horizontalLabelRenderer = horizontalLabelRenderer(
+            val horizontalLabelRenderer = labelRenderer(
+                orientation = LabelOrientation.Horizontal,
                 labelsProvider = object : LabelsProvider {
                     private val pattern = "MMMM \nyyyy"
                     private val formatter = DateTimeFormatter.ofPattern(pattern)
@@ -131,11 +134,14 @@ class ReadmeGalleryTest {
                     }
                 }
             )
-            val verticalLabelRenderer = verticalLabelRenderer { min, max ->
-                (min.toInt()..max.toInt())
-                    .filter { it % 25 == 0 }
-                    .map { "$it%" to it.toFloat() }
-            }
+            val verticalLabelRenderer = labelRenderer(
+                orientation = LabelOrientation.Vertical,
+                labelsProvider = { min, max ->
+                    (min.toInt()..max.toInt())
+                        .filter { it % 25 == 0 }
+                        .map { "$it%" to it.toFloat() }
+                }
+            )
             Chart(
                 modifier = Modifier
                     .padding(start = 32.dp, bottom = 32.dp)
@@ -189,9 +195,8 @@ class ReadmeGalleryTest {
                     )
                 }
 
-                verticalAxisLabels(verticalLabelRenderer)
-
-                horizontalAxisLabels(horizontalLabelRenderer)
+                label(verticalLabelRenderer)
+                label(horizontalLabelRenderer)
             }
             //endtag=bar_chart
         }
@@ -201,23 +206,26 @@ class ReadmeGalleryTest {
     fun twoAxisChart() {
         paparazzi.snapshot {
             //tag=two_axis_chart
-            val horizontalLabelRenderer = horizontalLabelRenderer()
+            val horizontalLabelRenderer = defaultHorizontalLabelRenderer()
             val density = LocalDensity.current
-            val verticalLabelRenderer1 = verticalLabelRenderer(
+            val verticalLabelRenderer1 = labelRenderer(
+                orientation = LabelOrientation.Vertical,
                 brush = SolidColor(Blue),
                 textStyle = TextStyle(fontSize = 12.sp),
-                location = 0f,
+                locationPercent = 0f,
                 alignment = Alignment.CenterEnd
             )
-            val verticalLabelRenderer2 = verticalLabelRenderer(
+            val verticalLabelRenderer2 = labelRenderer(
+                orientation = LabelOrientation.Vertical,
                 brush = SolidColor(Green),
-                location = 1f,
+                locationPercent = 1f,
                 alignment = Alignment.CenterStart,
-                labelOffset = Offset(12f, 0f)
-            ) { min, max ->
-                (min.toInt()..(max.toInt() + 1))
-                    .map { "${it * 2}" to it.toFloat() }
-            }
+                labelOffset = Offset(12f, 0f),
+                labelsProvider = { min, max ->
+                    (min.toInt()..(max.toInt() + 1))
+                        .map { "${it * 2}" to it.toFloat() }
+                }
+            )
             Chart(
                 modifier = Modifier
                     .padding(start = 32.dp, bottom = 32.dp, end = 32.dp)
@@ -277,11 +285,11 @@ class ReadmeGalleryTest {
 
                 horizontalAxis(lineStyle = lineStyle { brush = SolidColor(DarkGrey) })
 
-                verticalAxisLabels(verticalLabelRenderer1)
+                label(verticalLabelRenderer1)
 
-                verticalAxisLabels(verticalLabelRenderer2)
+                label(verticalLabelRenderer2)
 
-                horizontalAxisLabels(horizontalLabelRenderer)
+                label(horizontalLabelRenderer)
 
                 grid(
                     gridRenderer(

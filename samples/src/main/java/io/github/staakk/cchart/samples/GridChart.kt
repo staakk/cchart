@@ -15,16 +15,18 @@ import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.grid.GridOrientation
 import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.horizontalAxis
-import io.github.staakk.cchart.label.horizontalLabelRenderer
-import io.github.staakk.cchart.label.verticalLabelRenderer
+import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
+import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
 import io.github.staakk.cchart.renderer.lineDrawer
 import io.github.staakk.cchart.renderer.lineRenderer
 import io.github.staakk.cchart.verticalAxis
 
 @Composable
 fun GridChartScreen() {
-    val horizontalLabelRenderer = horizontalLabelRenderer()
-    val verticalLabelRenderer = verticalLabelRenderer()
+    val labels = listOf(
+        defaultHorizontalLabelRenderer(),
+        defaultVerticalLabelRenderer(),
+    )
     Chart(
         modifier = Modifier
             .padding(start = 32.dp, bottom = 32.dp)
@@ -49,8 +51,7 @@ fun GridChartScreen() {
         horizontalAxis()
         verticalAxis()
 
-        horizontalAxisLabels(horizontalLabelRenderer)
-        verticalAxisLabels(verticalLabelRenderer)
+        labels.forEach { label(it) }
 
         grid(gridRenderer(orientation = GridOrientation.HORIZONTAL))
         grid(gridRenderer(orientation = GridOrientation.VERTICAL))

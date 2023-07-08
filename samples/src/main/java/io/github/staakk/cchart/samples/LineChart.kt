@@ -12,16 +12,18 @@ import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.horizontalAxis
-import io.github.staakk.cchart.label.horizontalLabelRenderer
-import io.github.staakk.cchart.label.verticalLabelRenderer
+import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
+import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
 import io.github.staakk.cchart.renderer.lineDrawer
 import io.github.staakk.cchart.renderer.lineRenderer
 import io.github.staakk.cchart.verticalAxis
 
 @Composable
 fun LineChartScreen() {
-    val horizontalLabelRenderer = horizontalLabelRenderer()
-    val verticalLabelRenderer = verticalLabelRenderer()
+    val labels = listOf(
+        defaultHorizontalLabelRenderer(),
+        defaultVerticalLabelRenderer(),
+    )
 
     Chart(
         modifier = Modifier
@@ -37,8 +39,7 @@ fun LineChartScreen() {
         horizontalAxis()
         verticalAxis()
 
-        horizontalAxisLabels(horizontalLabelRenderer)
-        verticalAxisLabels(verticalLabelRenderer)
+        labels.forEach { label(it) }
     }
 }
 

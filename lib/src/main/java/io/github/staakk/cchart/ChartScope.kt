@@ -10,6 +10,7 @@ import io.github.staakk.cchart.data.GroupedSeries
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.grid.GridRenderer
 import io.github.staakk.cchart.label.HorizontalLabelRenderer
+import io.github.staakk.cchart.label.LabelRenderer
 import io.github.staakk.cchart.label.VerticalLabelRenderer
 import io.github.staakk.cchart.renderer.GroupedSeriesRenderer
 import io.github.staakk.cchart.renderer.SeriesRenderer
@@ -32,17 +33,7 @@ interface ChartScope {
 
     fun axis(axisRenderer: AxisRenderer)
 
-    /**
-     * Adds [labelRenderer] for this chart. Calling this function multiple times results in
-     * multiple renderers being added.
-     */
-    fun horizontalAxisLabels(labelRenderer: HorizontalLabelRenderer)
-
-    /**
-     * Adds [labelRenderer] for this chart. Calling this function multiple times results in
-     * multiple renderers being added.
-     */
-    fun verticalAxisLabels(labelRenderer: VerticalLabelRenderer)
+    fun label(labelRenderer: LabelRenderer)
 
     /**
      * Adds series of data to the chart.
@@ -100,9 +91,7 @@ internal class ChartScopeImpl : ChartScope {
 
     val axisRenderers = mutableListOf<AxisRenderer>()
 
-    val horizontalLabelRenderers = mutableListOf<HorizontalLabelRenderer>()
-
-    val verticalLabelRenderers = mutableListOf<VerticalLabelRenderer>()
+    val labelsRenderers = mutableListOf<LabelRenderer>()
 
     val series = mutableMapOf<Series, SeriesRenderer>()
 
@@ -120,12 +109,8 @@ internal class ChartScopeImpl : ChartScope {
         axisRenderers += axisRenderer
     }
 
-    override fun horizontalAxisLabels(labelRenderer: HorizontalLabelRenderer) {
-        horizontalLabelRenderers.add(labelRenderer)
-    }
-
-    override fun verticalAxisLabels(labelRenderer: VerticalLabelRenderer) {
-        verticalLabelRenderers.add(labelRenderer)
+    override fun label(labelRenderer: LabelRenderer) {
+        labelsRenderers += labelRenderer
     }
 
     override fun series(series: Series, renderer: SeriesRenderer) {
