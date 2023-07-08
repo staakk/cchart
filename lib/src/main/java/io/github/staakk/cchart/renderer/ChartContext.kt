@@ -24,6 +24,17 @@ data class ChartContext(
     fun toChartWidth(width: Float) = width / scaleX
 
     fun toChartHeight(height: Float) = height / scaleY
+
+    fun getDrawingBounds(chartContext: ChartContext, size: Size): Viewport {
+        val scaledWidth = size.width / 2 / chartContext.scaleX
+        val scaledHeight = size.height / 2 / chartContext.scaleY
+        return Viewport(
+            minX = viewport.minX - scaledWidth,
+            maxX = viewport.maxX + scaledWidth,
+            minY = viewport.minY - scaledHeight,
+            maxY = viewport.maxY + scaledHeight
+        )
+    }
 }
 
 fun chartContext(
