@@ -1,9 +1,6 @@
-@file:Suppress("unused")
-
 package io.github.staakk.cchart.axis
 
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import io.github.staakk.cchart.style.LineStyle
 import io.github.staakk.cchart.renderer.ChartContext

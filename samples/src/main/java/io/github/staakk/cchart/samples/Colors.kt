@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package io.github.staakk.cchart.samples
 
 import androidx.compose.ui.graphics.Color

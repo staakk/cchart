@@ -9,9 +9,7 @@ import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.data.GroupedSeries
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.grid.GridRenderer
-import io.github.staakk.cchart.label.HorizontalLabelRenderer
 import io.github.staakk.cchart.label.LabelRenderer
-import io.github.staakk.cchart.label.VerticalLabelRenderer
 import io.github.staakk.cchart.renderer.GroupedSeriesRenderer
 import io.github.staakk.cchart.renderer.SeriesRenderer
 import io.github.staakk.cchart.style.LineStyle
