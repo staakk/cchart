@@ -13,8 +13,8 @@ import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.horizontalAxis
 import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
 import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
-import io.github.staakk.cchart.renderer.lineDrawer
-import io.github.staakk.cchart.renderer.lineRenderer
+import io.github.staakk.cchart.renderer.line.DrawLine
+import io.github.staakk.cchart.style.LineStyle
 import io.github.staakk.cchart.verticalAxis
 import org.junit.Rule
 import org.junit.Test
@@ -48,7 +48,7 @@ class LineChartTest {
                         pointOf(8f, 4.5f),
                         pointOf(9f, 4.7f),
                     ),
-                    renderer = lineRenderer(lineDrawer { brush = SolidColor(Color.Blue) })
+                    DrawLine(LineStyle(brush = SolidColor(Color.Blue)))
                 )
 
                 verticalAxis()

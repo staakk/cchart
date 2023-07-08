@@ -11,11 +11,11 @@ class DrawPoints(
     private val style: PrimitiveStyle = PrimitiveStyle(),
 ) : Drawer {
 
-    override fun RendererScope.draw(point: RendererPoint<*>) {
+    override fun RendererScope.draw(index: Int, rendererPoints: List<RendererPoint<*>>) {
         with(style) {
             drawCircle(
                 radius = pointSize.height / 2,
-                center = point.toOffset(),
+                center = rendererPoints[index].toOffset(),
                 alpha = alpha,
                 brush = brush,
                 style = style,

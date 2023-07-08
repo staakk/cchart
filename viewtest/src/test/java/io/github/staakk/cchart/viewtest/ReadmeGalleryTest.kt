@@ -30,8 +30,9 @@ import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
 import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
 import io.github.staakk.cchart.label.labelRenderer
 import io.github.staakk.cchart.renderer.*
-import io.github.staakk.cchart.renderer.CompositeSeriesRenderer.Companion.combine
+import io.github.staakk.cchart.renderer.line.DrawLine
 import io.github.staakk.cchart.renderer.point.DrawPoints
+import io.github.staakk.cchart.style.LineStyle
 import io.github.staakk.cchart.style.PrimitiveStyle
 import io.github.staakk.cchart.verticalAxis
 import org.junit.Rule
@@ -87,7 +88,7 @@ class ReadmeGalleryTest {
                         pointOf(9f, 8.3f),
                         pointOf(10f, 9.1f),
                     ),
-                    renderer = lineRenderer(lineDrawer { brush = SolidColor(Blue) })
+                    DrawLine(LineStyle(brush = SolidColor(Blue), strokeWidth = 5f))
                 )
 
                 val lineStyle = lineStyle { brush = SolidColor(DarkGrey) }
@@ -250,7 +251,7 @@ class ReadmeGalleryTest {
                 )
                 series(
                     data1,
-                    renderer = lineRenderer(lineDrawer { brush = SolidColor(Blue) }),
+                    DrawLine(LineStyle(brush = SolidColor(Blue))),
                 )
                 series(
                     data1,
@@ -275,10 +276,7 @@ class ReadmeGalleryTest {
                 )
                 series(
                     data2,
-                    renderer = combine(
-                        lineRenderer(lineDrawer { brush = SolidColor(Green) }),
-
-                    )
+                    DrawLine(LineStyle(brush = SolidColor(Green)))
                 )
 
                 series(

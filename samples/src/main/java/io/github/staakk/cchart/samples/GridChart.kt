@@ -9,16 +9,15 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
+import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
-import io.github.staakk.cchart.data.pointOf
-import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.grid.GridOrientation
 import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.horizontalAxis
 import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
 import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
-import io.github.staakk.cchart.renderer.lineDrawer
-import io.github.staakk.cchart.renderer.lineRenderer
+import io.github.staakk.cchart.renderer.line.DrawLine
+import io.github.staakk.cchart.style.LineStyle
 import io.github.staakk.cchart.verticalAxis
 
 @Composable
@@ -31,21 +30,16 @@ fun GridChartScreen() {
         modifier = Modifier
             .padding(start = 32.dp, bottom = 32.dp)
             .aspectRatio(1f, false),
-        viewport = Viewport(0f, 10f, 0f, 5f)
+        viewport = Viewport(0f, 5.5f, 0f, 5.5f)
     ) {
         series(
-            seriesOf(
-                pointOf(0f, 1f),
-                pointOf(2f, 1.5f),
-                pointOf(3f, 4f),
-                pointOf(4f, 3.5f),
-                pointOf(5f, 2f),
-                pointOf(6f, 1.3f),
-                pointOf(7f, 4f),
-                pointOf(8f, 4.5f),
-                pointOf(9f, 4.7f),
-            ),
-            renderer = lineRenderer(lineDrawer = lineDrawer { brush = SolidColor(Colors.Blue) })
+            Series(SampleData.series.take(25).toList()),
+            DrawLine(
+                LineStyle(
+                    brush = SolidColor(Colors.Blue),
+                    strokeWidth = 5f,
+                )
+            )
         )
 
         horizontalAxis()

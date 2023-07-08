@@ -16,9 +16,9 @@ import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.horizontalAxis
 import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
 import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
-import io.github.staakk.cchart.renderer.lineDrawer
-import io.github.staakk.cchart.renderer.lineRenderer
+import io.github.staakk.cchart.renderer.line.DrawLine
 import io.github.staakk.cchart.renderer.point.DrawPoints
+import io.github.staakk.cchart.style.LineStyle
 import io.github.staakk.cchart.style.PrimitiveStyle
 import io.github.staakk.cchart.verticalAxis
 
@@ -36,15 +36,21 @@ fun CombinedChartScreen() {
             .aspectRatio(1f, false),
         viewport = Viewport(0f, 5.5f, 0f, 5.5f)
     ) {
-        val series = Series(SampleData.series.take(25).toList())
+        val data = SampleData.series.take(25).toList()
 
         series(
-            series,
-            renderer = lineRenderer(lineDrawer { brush = SolidColor(Colors.Pink) }),
+            Series(data),
+            DrawLine(
+                LineStyle(
+                    brush = SolidColor(Colors.Pink),
+                    strokeWidth = 5f,
+                )
+            ),
         )
+
         series(
-            series,
-            drawer = DrawPoints(
+            Series(data),
+            DrawPoints(
                 pointSize,
                 PrimitiveStyle(brush = SolidColor(Colors.Indigo))
             )

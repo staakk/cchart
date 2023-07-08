@@ -158,10 +158,12 @@ private fun Chart(
                         .newSeries
                         .onEach { (series, other) ->
                             val (drawer, boundsProvider) = other
-                            series.forEach {
-                                val rendererPoint = with(it) { toRendererPoint(chartContext) }
-                                with(drawer) { draw(rendererPoint) }
-                                points += boundsProvider.provide(rendererPoint)
+                            val rendererPoints = series
+                                .map { with(it) { toRendererPoint(chartContext) } }
+
+                            rendererPoints.forEachIndexed { index, point ->
+                                with(drawer) { draw(index, rendererPoints) }
+                                points += boundsProvider.provide(index, rendererPoints)
                             }
                         }
                 }
