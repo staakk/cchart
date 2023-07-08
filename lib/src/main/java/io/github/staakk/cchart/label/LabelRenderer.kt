@@ -15,6 +15,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.renderer.ChartContext
 import io.github.staakk.cchart.util.applyExtendedClipping
 import io.github.staakk.cchart.util.drawText
@@ -37,6 +38,7 @@ fun labelRenderer(
 ): LabelRenderer {
     val textMeasurer = rememberTextMeasurer()
     return labelRenderer(
+        orientation = orientation,
         textMeasurer = textMeasurer,
         brush = brush,
         style = textStyle,
@@ -56,6 +58,7 @@ fun labelRenderer(
 
 @OptIn(ExperimentalTextApi::class)
 fun labelRenderer(
+    orientation: LabelOrientation,
     textMeasurer: TextMeasurer,
     brush: Brush,
     style: TextStyle,
@@ -69,8 +72,9 @@ fun labelRenderer(
         enabled = clipExtension != Size.Zero,
         extension = clipExtension,
     ) {
+        val range = orientation.getRange(context.viewport)
         labelsProvider
-            .provide(context.viewport.minX, context.viewport.maxX)
+            .provide(range.start, range.endInclusive)
             .forEach { (text, offset) ->
                 drawText(
                     textMeasurer = textMeasurer,
@@ -98,6 +102,8 @@ sealed class LabelOrientation {
         locationPercent: Float,
     ): Offset
 
+    abstract fun getRange(viewport: Viewport): ClosedFloatingPointRange<Float>
+
     object Horizontal : LabelOrientation() {
         override fun getClipExtension(
             textMeasurer: TextMeasurer,
@@ -116,6 +122,8 @@ sealed class LabelOrientation {
             x = context.toRendererX(offset),
             y = (1f - locationPercent) * size.height,
         )
+
+        override fun getRange(viewport: Viewport) = viewport.minX..viewport.maxX
     }
 
     object Vertical : LabelOrientation() {
@@ -136,6 +144,8 @@ sealed class LabelOrientation {
             x = locationPercent * size.width,
             y = context.toRendererY(offset),
         )
+
+        override fun getRange(viewport: Viewport) = viewport.minY..viewport.maxY
     }
 }
 

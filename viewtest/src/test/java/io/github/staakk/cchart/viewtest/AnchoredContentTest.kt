@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.SolidColor
@@ -16,8 +17,8 @@ import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
-import io.github.staakk.cchart.renderer.circleDrawer
-import io.github.staakk.cchart.renderer.pointRenderer
+import io.github.staakk.cchart.renderer.point.DrawPoints
+import io.github.staakk.cchart.style.PrimitiveStyle
 import org.junit.Rule
 import org.junit.Test
 
@@ -46,7 +47,10 @@ class AnchoredContentTest {
                         pointOf(8f, 8f),
                         pointOf(9f, 9f),
                     ),
-                    renderer = pointRenderer(pointDrawer = circleDrawer { brush = SolidColor(Color.Blue) })
+                    DrawPoints(
+                        Size(10f, 10f),
+                        PrimitiveStyle(brush = SolidColor(Color.Blue))
+                    )
                 )
 
                 anchor(pointOf(5f, 5f)) {

@@ -2,6 +2,7 @@ package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.geometry.Offset
 import io.github.staakk.cchart.data.Data
+import io.github.staakk.cchart.data.pointOf
 import kotlin.math.pow
 
 sealed class BoundingShape {
@@ -46,5 +47,12 @@ sealed class BoundingShape {
         override fun contains(offset: Offset): Boolean =
             topLeft.x <= offset.x && offset.x <= bottomRight.x &&
                     bottomRight.y <= offset.y && offset.y <= topLeft.y
+    }
+
+    object None: BoundingShape() {
+        override val data: Data<*> = pointOf(0, 0)
+        override val labelAnchorX: Float = 0f
+        override val labelAnchorY: Float = 0f
+        override fun contains(offset: Offset): Boolean = false
     }
 }

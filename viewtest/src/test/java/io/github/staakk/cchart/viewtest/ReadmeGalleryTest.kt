@@ -31,6 +31,8 @@ import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
 import io.github.staakk.cchart.label.labelRenderer
 import io.github.staakk.cchart.renderer.*
 import io.github.staakk.cchart.renderer.CompositeSeriesRenderer.Companion.combine
+import io.github.staakk.cchart.renderer.point.DrawPoints
+import io.github.staakk.cchart.style.PrimitiveStyle
 import io.github.staakk.cchart.verticalAxis
 import org.junit.Rule
 import org.junit.Test
@@ -233,49 +235,57 @@ class ReadmeGalleryTest {
                     .padding(bottom = 16.dp),
                 viewport = Viewport(0f, 10f, 0f, 10f)
             ) {
+                val data1 = seriesOf(
+                    pointOf(0f, 1.3f),
+                    pointOf(1f, 2.4f),
+                    pointOf(2f, 2.3f),
+                    pointOf(3f, 4.8f),
+                    pointOf(4f, 4.3f),
+                    pointOf(5f, 5.3f),
+                    pointOf(6f, 5.7f),
+                    pointOf(7f, 6.3f),
+                    pointOf(8f, 6.1f),
+                    pointOf(9f, 8.3f),
+                    pointOf(10f, 9.1f),
+                )
                 series(
-                    seriesOf(
-                        pointOf(0f, 1.3f),
-                        pointOf(1f, 2.4f),
-                        pointOf(2f, 2.3f),
-                        pointOf(3f, 4.8f),
-                        pointOf(4f, 4.3f),
-                        pointOf(5f, 5.3f),
-                        pointOf(6f, 5.7f),
-                        pointOf(7f, 6.3f),
-                        pointOf(8f, 6.1f),
-                        pointOf(9f, 8.3f),
-                        pointOf(10f, 9.1f),
-                    ),
+                    data1,
+                    renderer = lineRenderer(lineDrawer { brush = SolidColor(Blue) }),
+                )
+                series(
+                    data1,
+                    DrawPoints(
+                        pointSize = with(density) { 8.dp.toPx() }.let { Size(it, it) },
+                        PrimitiveStyle(brush = SolidColor(LightBlue))
+                    )
+                )
+
+                val data2 = seriesOf(
+                    pointOf(0f, 9.1f),
+                    pointOf(1f, 8.3f),
+                    pointOf(2f, 6.1f),
+                    pointOf(3f, 6.3f),
+                    pointOf(4f, 5.3f),
+                    pointOf(5f, 4.3f),
+                    pointOf(6f, 4.8f),
+                    pointOf(7f, 5.7f),
+                    pointOf(8f, 2.3f),
+                    pointOf(9f, 2.4f),
+                    pointOf(10f, 1.3f),
+                )
+                series(
+                    data2,
                     renderer = combine(
-                        lineRenderer(lineDrawer { brush = SolidColor(Blue) }),
-                        pointRenderer(
-                            size = with(density) { 8.dp.toPx() }.let { Size(it, it) },
-                            pointDrawer = circleDrawer { brush = SolidColor(LightBlue) }
-                        )
+                        lineRenderer(lineDrawer { brush = SolidColor(Green) }),
+
                     )
                 )
 
                 series(
-                    seriesOf(
-                        pointOf(0f, 9.1f),
-                        pointOf(1f, 8.3f),
-                        pointOf(2f, 6.1f),
-                        pointOf(3f, 6.3f),
-                        pointOf(4f, 5.3f),
-                        pointOf(5f, 4.3f),
-                        pointOf(6f, 4.8f),
-                        pointOf(7f, 5.7f),
-                        pointOf(8f, 2.3f),
-                        pointOf(9f, 2.4f),
-                        pointOf(10f, 1.3f),
-                    ),
-                    renderer = combine(
-                        lineRenderer(lineDrawer { brush = SolidColor(Green) }),
-                        pointRenderer(
-                            size = with(density) { 8.dp.toPx() }.let { Size(it, it) },
-                            pointDrawer = circleDrawer { brush = SolidColor(LightGreen) }
-                        )
+                    data2,
+                    DrawPoints(
+                        with(density) { 8.dp.toPx() }.let { Size(it, it) },
+                        PrimitiveStyle(brush = SolidColor(LightGreen))
                     )
                 )
 

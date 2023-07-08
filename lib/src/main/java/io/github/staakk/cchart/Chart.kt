@@ -145,6 +145,7 @@ private fun Chart(
                 }
 
                 val points = mutableListOf<BoundingShape>()
+                // TODO this can be used to simplify other calls e.g. rendering grid
                 with(RendererScope(this, rendererContext)) {
                     points += scope.series.flatMap { (series, renderer) ->
                         with(renderer) { render(series) }
@@ -152,6 +153,17 @@ private fun Chart(
                     points += scope.groupedSeries.flatMap { (series, renderer) ->
                         with(renderer) { render(series) }
                     }
+
+                    scope
+                        .newSeries
+                        .onEach { (series, other) ->
+                            val (drawer, boundsProvider) = other
+                            series.forEach {
+                                val rendererPoint = with(it) { toRendererPoint(chartContext) }
+                                with(drawer) { draw(rendererPoint) }
+                                points += boundsProvider.provide(rendererPoint)
+                            }
+                        }
                 }
                 renderedPoints.value = points
             }

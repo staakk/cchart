@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
@@ -15,8 +16,8 @@ import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.horizontalAxis
 import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
 import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
-import io.github.staakk.cchart.renderer.circleDrawer
-import io.github.staakk.cchart.renderer.pointRenderer
+import io.github.staakk.cchart.renderer.point.DrawPoints
+import io.github.staakk.cchart.style.PrimitiveStyle
 import io.github.staakk.cchart.verticalAxis
 import org.junit.Rule
 import org.junit.Test
@@ -68,7 +69,10 @@ class DataLabelsTest {
                         pointOf(6f, 1.3f),
                         pointOf(8f, 4.5f),
                     ),
-                    renderer = pointRenderer(pointDrawer = circleDrawer { brush = SolidColor(Color.Blue) })
+                    DrawPoints(
+                        Size(10f, 10f),
+                        PrimitiveStyle(brush = SolidColor(Color.Blue)),
+                    ),
                 )
 
                 verticalAxis()

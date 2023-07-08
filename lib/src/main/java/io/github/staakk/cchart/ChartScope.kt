@@ -10,7 +10,10 @@ import io.github.staakk.cchart.data.GroupedSeries
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.grid.GridRenderer
 import io.github.staakk.cchart.label.LabelRenderer
+import io.github.staakk.cchart.renderer.BoundingShapeProvider
+import io.github.staakk.cchart.renderer.Drawer
 import io.github.staakk.cchart.renderer.GroupedSeriesRenderer
+import io.github.staakk.cchart.renderer.NoBoundingShape
 import io.github.staakk.cchart.renderer.SeriesRenderer
 import io.github.staakk.cchart.style.LineStyle
 
@@ -37,6 +40,12 @@ interface ChartScope {
      * Adds series of data to the chart.
      */
     fun series(series: Series, renderer: SeriesRenderer)
+
+    fun series(
+        series: Series,
+        drawer: Drawer,
+        boundingShapeProvider: BoundingShapeProvider = NoBoundingShape,
+    )
 
     /**
      * Adds series of data to the chart.
@@ -85,6 +94,8 @@ fun ChartScope.verticalAxis(positionPercent: Float = 0f, lineStyle: LineStyle = 
 
 internal class ChartScopeImpl : ChartScope {
 
+    val newSeries = mutableMapOf<Series, Pair<Drawer, BoundingShapeProvider>>()
+
     val gridRenderers = mutableListOf<GridRenderer>()
 
     val axisRenderers = mutableListOf<AxisRenderer>()
@@ -117,6 +128,14 @@ internal class ChartScopeImpl : ChartScope {
 
     override fun series(series: GroupedSeries, renderer: GroupedSeriesRenderer) {
         groupedSeries[series] = renderer
+    }
+
+    override fun series(
+        series: Series,
+        drawer: Drawer,
+        boundingShapeProvider: BoundingShapeProvider
+    ) {
+        newSeries[series] = drawer to boundingShapeProvider
     }
 
     override fun anchor(data: Data<*>, content: @Composable AnchorScope.() -> Unit) {

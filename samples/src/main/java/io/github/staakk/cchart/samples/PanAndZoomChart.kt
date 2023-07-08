@@ -18,8 +18,8 @@ import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.horizontalAxis
 import io.github.staakk.cchart.label.LabelOrientation
 import io.github.staakk.cchart.label.labelRenderer
-import io.github.staakk.cchart.renderer.circleDrawer
-import io.github.staakk.cchart.renderer.pointRenderer
+import io.github.staakk.cchart.renderer.point.DrawPoints
+import io.github.staakk.cchart.style.PrimitiveStyle
 import io.github.staakk.cchart.verticalAxis
 
 @Composable
@@ -51,9 +51,9 @@ fun PanAndZoomScreen() {
     ) {
         series(
             data,
-            renderer = pointRenderer(
-                size = pointSize,
-                pointDrawer = circleDrawer { brush = SolidColor(Colors.Red) }
+            DrawPoints(
+                pointSize,
+                PrimitiveStyle(brush = SolidColor(Colors.Red)),
             )
         )
 
