@@ -12,8 +12,8 @@ import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.renderer.Renderer
 import io.github.staakk.cchart.renderer.RendererScope
 import io.github.staakk.cchart.style.LabelStyle
-import io.github.staakk.cchart.util.applyExtendedClipping
-import io.github.staakk.cchart.util.drawText
+import io.github.staakk.cchart.common.applyExtendedClipping
+import io.github.staakk.cchart.common.drawText
 
 @OptIn(ExperimentalTextApi::class)
 class Labels constructor(

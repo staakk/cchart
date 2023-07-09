@@ -1,4 +1,4 @@
-package io.github.staakk.cchart.util
+package io.github.staakk.cchart.common
 
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope

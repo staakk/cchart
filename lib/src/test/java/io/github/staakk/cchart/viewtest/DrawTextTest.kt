@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
-import io.github.staakk.cchart.util.drawText
+import io.github.staakk.cchart.common.drawText
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

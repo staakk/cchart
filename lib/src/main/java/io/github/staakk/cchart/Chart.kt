@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalDensity
 import io.github.staakk.cchart.data.*
 import io.github.staakk.cchart.data.Viewport.Companion.getViewport
 import io.github.staakk.cchart.renderer.*
-import io.github.staakk.cchart.util.detectTransformGestures
+import io.github.staakk.cchart.common.detectTransformGestures
 
 /**
  * Creates chart for visualising data.
@@ -98,7 +98,7 @@ private fun Chart(
         val density = LocalDensity.current
         val renderedPoints = remember { mutableStateOf(listOf<BoundingShape>()) }
         val canvasSize = with(density) { Size(width = maxWidth.toPx(), height = maxHeight.toPx()) }
-        val rendererContext = chartContext(viewport.value, canvasSize) // TODO can be remembered?
+        val rendererContext = chartContext(viewport.value, canvasSize)
 
         Canvas(
             modifier = Modifier

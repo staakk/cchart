@@ -1,4 +1,4 @@
-package io.github.staakk.cchart.util
+package io.github.staakk.cchart.common
 
 import androidx.compose.foundation.gestures.*
 import androidx.compose.ui.geometry.Offset

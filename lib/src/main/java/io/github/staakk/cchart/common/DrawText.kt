@@ -1,4 +1,4 @@
-package io.github.staakk.cchart.util
+package io.github.staakk.cchart.common
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
