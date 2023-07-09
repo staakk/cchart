@@ -7,19 +7,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
+import io.github.staakk.cchart.renderer.axis.Axis
+import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.data.Viewport
+import io.github.staakk.cchart.features
 import io.github.staakk.cchart.grid.gridRenderer
-import io.github.staakk.cchart.horizontalAxis
 import io.github.staakk.cchart.label.LabelOrientation
 import io.github.staakk.cchart.label.LabelsProvider
 import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
 import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
 import io.github.staakk.cchart.label.labelRenderer
-import io.github.staakk.cchart.verticalAxis
 import org.junit.Rule
 import org.junit.Test
 
-class AxisLabelsTest {
+class LabelsTest {
     @get:Rule
     val paparazzi = createPaparazziRule()
 
@@ -64,11 +65,12 @@ class AxisLabelsTest {
                     .aspectRatio(1f, false),
                 viewport = Viewport(0f, 10f, 0f, 5f)
             ) {
-                verticalAxis()
-                verticalAxis(positionPercent = 1f)
-
-                horizontalAxis()
-                horizontalAxis(positionPercent = 1f)
+                features(
+                    Axis(AxisOrientation.Horizontal, 0.0f),
+                    Axis(AxisOrientation.Horizontal, 1.0f),
+                    Axis(AxisOrientation.Vertical, 0.0f),
+                    Axis(AxisOrientation.Vertical, 1.0f),
+                )
 
                 label(verticalLabels)
                 label(rightSideVerticalLabels)
@@ -135,11 +137,12 @@ class AxisLabelsTest {
                     .aspectRatio(1f, false),
                 viewport = Viewport(0f, 10f, 0f, 5f)
             ) {
-                verticalAxis()
-                verticalAxis(positionPercent = 1f)
-
-                horizontalAxis()
-                horizontalAxis(positionPercent = 1f)
+                features(
+                    Axis(AxisOrientation.Horizontal, 0.0f),
+                    Axis(AxisOrientation.Horizontal, 1.0f),
+                    Axis(AxisOrientation.Vertical, 0.0f),
+                    Axis(AxisOrientation.Vertical, 1.0f),
+                )
 
                 label(verticalLabels)
                 label(rightSideVerticalLabels)

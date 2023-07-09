@@ -7,15 +7,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
+import io.github.staakk.cchart.renderer.axis.Axis
+import io.github.staakk.cchart.renderer.axis.AxisOrientation.Companion.Horizontal
+import io.github.staakk.cchart.renderer.axis.AxisOrientation.Companion.Vertical
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
-import io.github.staakk.cchart.horizontalAxis
+import io.github.staakk.cchart.features
 import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
 import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
 import io.github.staakk.cchart.renderer.bar.BarProcessor
 import io.github.staakk.cchart.style.PrimitiveStyle
-import io.github.staakk.cchart.verticalAxis
 import org.junit.Rule
 import org.junit.Test
 
@@ -54,9 +56,10 @@ class BarChartTest {
                     )
                 )
 
-                verticalAxis()
-
-                horizontalAxis()
+                features(
+                    Axis(Horizontal, 0.0f),
+                    Axis(Vertical, 0.0f),
+                )
 
                 labels.forEach { label(it) }
             }
@@ -107,8 +110,10 @@ class BarChartTest {
                     )
                 )
 
-                verticalAxis()
-                horizontalAxis()
+                features(
+                    Axis(Horizontal, 0.0f),
+                    Axis(Vertical, 0.0f)
+                )
 
                 labels.forEach { label(it) }
             }
@@ -160,8 +165,10 @@ class BarChartTest {
                     )
                 )
 
-                verticalAxis()
-                horizontalAxis()
+                features(
+                    Axis(Horizontal, 0.0f),
+                    Axis(Vertical, 0.0f)
+                )
 
                 labels.forEach { label(it) }
             }

@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
+import io.github.staakk.cchart.renderer.axis.Axis
+import io.github.staakk.cchart.renderer.axis.AxisOrientation.Companion.Horizontal
+import io.github.staakk.cchart.renderer.axis.AxisOrientation.Companion.Vertical
 import io.github.staakk.cchart.data.Viewport
-import io.github.staakk.cchart.horizontalAxis
-import io.github.staakk.cchart.verticalAxis
+import io.github.staakk.cchart.features
 import org.junit.Rule
 import org.junit.Test
 
@@ -24,13 +26,12 @@ class AxisTest {
                     .padding(16.dp),
                 viewport = Viewport(0f, 10f, 0f, 5f)
             ) {
-                verticalAxis()
-
-                verticalAxis(positionPercent = 1f)
-
-                horizontalAxis()
-
-                horizontalAxis(positionPercent = 1f)
+                features(
+                    Axis(Horizontal, 0.0f),
+                    Axis(Horizontal, 1.0f),
+                    Axis(Vertical, 0.0f),
+                    Axis(Vertical, 1.0f),
+                )
             }
         }
     }

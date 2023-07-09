@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.drawscope.clipRect
 import io.github.staakk.cchart.renderer.BoundingShape
 import io.github.staakk.cchart.renderer.BoundingShapeProvider
 import io.github.staakk.cchart.renderer.ChartContext
-import io.github.staakk.cchart.renderer.Drawer
+import io.github.staakk.cchart.renderer.PointsRenderer
 import io.github.staakk.cchart.renderer.RendererPoint
 import io.github.staakk.cchart.renderer.RendererScope
 import io.github.staakk.cchart.style.PrimitiveStyle
@@ -18,7 +18,7 @@ class BarProcessor(
     private val minimalSpacing: Float = 10f,
     private val style: StyleProvider = StyleProvider { _, _ -> PrimitiveStyle() },
     private val sizeTransform: (Size) -> Size = { it }
-) : Drawer, BoundingShapeProvider {
+) : PointsRenderer, BoundingShapeProvider {
     private var lastDrawnShapes: List<BoundingShape> = emptyList()
 
     override fun RendererScope.draw(rendererPoints: List<RendererPoint<*>>) = clipRect {

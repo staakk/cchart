@@ -43,7 +43,7 @@ fun Chart(
     scope.content()
 
     val viewportState = remember {
-        mutableStateOf(viewport ?: (scope.newSeries.keys.getViewport()))
+        mutableStateOf(viewport ?: (scope.series.keys.getViewport()))
     }
     Chart(
         modifier = modifier,
@@ -135,9 +135,10 @@ private fun Chart(
                 }
         ) drawScope@{
             val rendererScope = RendererScope(this, rendererContext)
+            scope.renderers.forEach { with(it) { rendererScope.draw() } }
             scope.gridRenderers.forEach { with(it) { rendererScope.render() } }
             renderedPoints.value = scope
-                .newSeries
+                .series
                 .flatMap { (series, other) ->
                     val (drawer, boundsProvider) = other
                     val rendererPoints = series
@@ -147,7 +148,6 @@ private fun Chart(
                     boundsProvider.provide(rendererPoints)
                 }
 
-            scope.axisRenderers.forEach { with(it) { rendererScope.render() } }
             scope.labelsRenderers.forEach { with(it) { rendererScope.render() } }
         }
 

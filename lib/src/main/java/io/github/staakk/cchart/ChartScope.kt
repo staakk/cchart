@@ -1,18 +1,14 @@
 package io.github.staakk.cchart
 
 import androidx.compose.runtime.Composable
-import io.github.staakk.cchart.axis.AxisRenderer
-import io.github.staakk.cchart.axis.AxisOrientation
-import io.github.staakk.cchart.axis.axisDrawer
-import io.github.staakk.cchart.axis.axisRenderer
 import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.grid.GridRenderer
 import io.github.staakk.cchart.label.LabelRenderer
 import io.github.staakk.cchart.renderer.BoundingShapeProvider
-import io.github.staakk.cchart.renderer.Drawer
 import io.github.staakk.cchart.renderer.NoBoundingShape
-import io.github.staakk.cchart.style.LineStyle
+import io.github.staakk.cchart.renderer.PointsRenderer
+import io.github.staakk.cchart.renderer.Renderer
 
 /**
  * Receiver scope which is used by the [Chart].
@@ -29,15 +25,15 @@ interface ChartScope {
      */
     fun grid(gridRenderer: GridRenderer)
 
-    fun axis(axisRenderer: AxisRenderer)
-
     fun label(labelRenderer: LabelRenderer)
 
     fun series(
         series: Series,
-        drawer: Drawer,
+        drawer: PointsRenderer,
         boundingShapeProvider: BoundingShapeProvider = NoBoundingShape,
     )
+
+    fun feature(renderer: Renderer)
 
     /**
      * Adds composable view at the place represented by [data].
@@ -50,44 +46,19 @@ interface ChartScope {
     fun dataLabels(content: @Composable AnchorScope.() -> Unit)
 }
 
-/**
- * Adds [axisRenderer] for this chart. Calling this function multiple times results in
- * multiple renderers being added.
- */
-fun ChartScope.horizontalAxis(positionPercent: Float = 0f, lineStyle: LineStyle = LineStyle()) {
-    axis(
-        axisRenderer(
-            axisOrientation = AxisOrientation.Horizontal,
-            positionPercent = positionPercent,
-            axisDrawer = axisDrawer(lineStyle),
-        )
-    )
+fun ChartScope.features(vararg renderers: Renderer) {
+    renderers.forEach { feature(it) }
 }
-
-/**
- * Adds [axisRenderer] for this chart. Calling this function multiple times results in
- * multiple renderers being added.
- */
-fun ChartScope.verticalAxis(positionPercent: Float = 0f, lineStyle: LineStyle = LineStyle()) {
-    axis(
-        axisRenderer(
-            axisOrientation = AxisOrientation.Vertical,
-            positionPercent = positionPercent,
-            axisDrawer = axisDrawer(lineStyle),
-        )
-    )
-}
-
 
 internal class ChartScopeImpl : ChartScope {
 
-    val newSeries = mutableMapOf<Series, Pair<Drawer, BoundingShapeProvider>>()
+    val series = mutableMapOf<Series, Pair<PointsRenderer, BoundingShapeProvider>>()
 
     val gridRenderers = mutableListOf<GridRenderer>()
 
-    val axisRenderers = mutableListOf<AxisRenderer>()
-
     val labelsRenderers = mutableListOf<LabelRenderer>()
+
+    val renderers = mutableListOf<Renderer>()
 
     val anchors = mutableMapOf<Data<*>, @Composable AnchorScope.() -> Unit>()
 
@@ -97,20 +68,20 @@ internal class ChartScopeImpl : ChartScope {
         gridRenderers.add(gridRenderer)
     }
 
-    override fun axis(axisRenderer: AxisRenderer) {
-        axisRenderers += axisRenderer
-    }
-
     override fun label(labelRenderer: LabelRenderer) {
         labelsRenderers += labelRenderer
     }
 
+    override fun feature(renderer: Renderer) {
+        renderers += renderer
+    }
+
     override fun series(
         series: Series,
-        drawer: Drawer,
+        drawer: PointsRenderer,
         boundingShapeProvider: BoundingShapeProvider
     ) {
-        newSeries[series] = drawer to boundingShapeProvider
+        this.series[series] = drawer to boundingShapeProvider
     }
 
     override fun anchor(data: Data<*>, content: @Composable AnchorScope.() -> Unit) {

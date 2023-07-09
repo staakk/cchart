@@ -1,4 +1,4 @@
-package io.github.staakk.cchart.axis
+package io.github.staakk.cchart.renderer.axis
 
 data class AxisOrientation(val x: Float, val y: Float) {
     companion object {

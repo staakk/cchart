@@ -16,14 +16,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.staakk.cchart.Chart
+import io.github.staakk.cchart.renderer.axis.Axis
+import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
+import io.github.staakk.cchart.features
 import io.github.staakk.cchart.style.lineStyle
 import io.github.staakk.cchart.grid.GridOrientation
 import io.github.staakk.cchart.grid.gridRenderer
-import io.github.staakk.cchart.horizontalAxis
 import io.github.staakk.cchart.label.LabelOrientation
 import io.github.staakk.cchart.label.LabelsProvider
 import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
@@ -35,7 +37,6 @@ import io.github.staakk.cchart.renderer.line.DrawLine
 import io.github.staakk.cchart.renderer.point.DrawPoints
 import io.github.staakk.cchart.style.LineStyle
 import io.github.staakk.cchart.style.PrimitiveStyle
-import io.github.staakk.cchart.verticalAxis
 import org.junit.Rule
 import org.junit.Test
 import java.time.LocalDate
@@ -93,8 +94,10 @@ class ReadmeGalleryTest {
                 )
 
                 val lineStyle = lineStyle { brush = SolidColor(DarkGrey) }
-                verticalAxis(lineStyle = lineStyle)
-                horizontalAxis(lineStyle = lineStyle)
+                features(
+                    Axis(AxisOrientation.Horizontal, 0.0f, lineStyle),
+                    Axis(AxisOrientation.Vertical, 0.0f, lineStyle)
+                )
 
                 labels.forEach { label(it) }
 
@@ -178,8 +181,10 @@ class ReadmeGalleryTest {
                 )
 
                 val lineStyle = lineStyle { brush = SolidColor(DarkGrey) }
-                verticalAxis(lineStyle = lineStyle)
-                horizontalAxis(lineStyle = lineStyle)
+                features(
+                    Axis(AxisOrientation.Horizontal, 0.0f, lineStyle),
+                    Axis(AxisOrientation.Vertical, 0.0f, lineStyle)
+                )
 
                 dataLabels {
                     Text(
@@ -278,11 +283,14 @@ class ReadmeGalleryTest {
                     )
                 )
 
-                verticalAxis(positionPercent = 0f, lineStyle { brush = SolidColor(Blue) })
-
-                verticalAxis(positionPercent = 1f, lineStyle { brush = SolidColor(Green) })
-
-                horizontalAxis(lineStyle = lineStyle { brush = SolidColor(DarkGrey) })
+                features(
+                    Axis(AxisOrientation.Vertical, 0.0f, lineStyle { brush = SolidColor(Blue) }),
+                    Axis(AxisOrientation.Vertical, 1.0f, lineStyle { brush = SolidColor(Green) }),
+                    Axis(
+                        AxisOrientation.Horizontal,
+                        0.0f,
+                        lineStyle { brush = SolidColor(DarkGrey) }),
+                )
 
                 label(verticalLabelRenderer1)
 

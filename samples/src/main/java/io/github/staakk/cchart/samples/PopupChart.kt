@@ -19,15 +19,16 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
+import io.github.staakk.cchart.renderer.axis.Axis
+import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
-import io.github.staakk.cchart.horizontalAxis
+import io.github.staakk.cchart.features
 import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
 import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
 import io.github.staakk.cchart.renderer.point.DrawPoints
 import io.github.staakk.cchart.style.PrimitiveStyle
-import io.github.staakk.cchart.verticalAxis
 
 @Composable
 fun PopupChartScreen() {
@@ -54,8 +55,10 @@ fun PopupChartScreen() {
             )
         )
 
-        horizontalAxis()
-        verticalAxis()
+        features(
+            Axis(AxisOrientation.Horizontal, 0.0f),
+            Axis(AxisOrientation.Vertical, 0.0f)
+        )
 
         labels.forEach { label(it) }
 

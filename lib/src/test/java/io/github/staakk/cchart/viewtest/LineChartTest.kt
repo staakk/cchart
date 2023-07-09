@@ -7,15 +7,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
+import io.github.staakk.cchart.renderer.axis.Axis
+import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
-import io.github.staakk.cchart.horizontalAxis
+import io.github.staakk.cchart.features
 import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
 import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
 import io.github.staakk.cchart.renderer.line.DrawLine
 import io.github.staakk.cchart.style.LineStyle
-import io.github.staakk.cchart.verticalAxis
 import org.junit.Rule
 import org.junit.Test
 
@@ -51,8 +52,10 @@ class LineChartTest {
                     DrawLine(LineStyle(brush = SolidColor(Color.Blue)))
                 )
 
-                verticalAxis()
-                horizontalAxis()
+                features(
+                    Axis(AxisOrientation.Horizontal, 0.0f),
+                    Axis(AxisOrientation.Vertical, 0.0f)
+                )
 
                 labels.forEach { label(it) }
             }
