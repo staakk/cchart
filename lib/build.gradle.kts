@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.versions)
     id("maven-publish")
+    id(libs.plugins.paparazzi.get().pluginId)
 }
 
 android {

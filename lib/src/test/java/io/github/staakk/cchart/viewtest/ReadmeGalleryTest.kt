@@ -16,6 +16,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.staakk.cchart.Chart
+import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
@@ -226,7 +227,7 @@ class ReadmeGalleryTest {
                     .padding(bottom = 16.dp),
                 viewport = Viewport(0f, 10f, 0f, 10f)
             ) {
-                val data1 = seriesOf(
+                val data1 = listOf(
                     pointOf(0f, 1.3f),
                     pointOf(1f, 2.4f),
                     pointOf(2f, 2.3f),
@@ -240,18 +241,18 @@ class ReadmeGalleryTest {
                     pointOf(10f, 9.1f),
                 )
                 series(
-                    data1,
+                    Series(data1),
                     DrawLine(LineStyle(brush = SolidColor(Blue))),
                 )
                 series(
-                    data1,
+                    Series(data1),
                     DrawPoints(
                         pointSize = with(density) { 8.dp.toPx() }.let { Size(it, it) },
                         PrimitiveStyle(brush = SolidColor(LightBlue))
                     )
                 )
 
-                val data2 = seriesOf(
+                val data2 = listOf(
                     pointOf(0f, 9.1f),
                     pointOf(1f, 8.3f),
                     pointOf(2f, 6.1f),
@@ -265,12 +266,12 @@ class ReadmeGalleryTest {
                     pointOf(10f, 1.3f),
                 )
                 series(
-                    data2,
+                    Series(data2),
                     DrawLine(LineStyle(brush = SolidColor(Green)))
                 )
 
                 series(
-                    data2,
+                    Series(data2),
                     DrawPoints(
                         with(density) { 8.dp.toPx() }.let { Size(it, it) },
                         PrimitiveStyle(brush = SolidColor(LightGreen))
