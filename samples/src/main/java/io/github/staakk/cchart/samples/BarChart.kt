@@ -14,7 +14,7 @@ import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.features
-import io.github.staakk.cchart.label.Labels
+import io.github.staakk.cchart.renderer.label.Labels
 import io.github.staakk.cchart.renderer.axis.Axis
 import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.renderer.bar.BarProcessor

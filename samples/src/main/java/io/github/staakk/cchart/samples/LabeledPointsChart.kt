@@ -17,7 +17,7 @@ import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.features
-import io.github.staakk.cchart.label.Labels
+import io.github.staakk.cchart.renderer.label.Labels
 import io.github.staakk.cchart.renderer.axis.Axis
 import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.renderer.point.DrawPoints

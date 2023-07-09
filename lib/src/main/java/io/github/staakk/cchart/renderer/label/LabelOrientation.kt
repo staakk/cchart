@@ -1,4 +1,4 @@
-package io.github.staakk.cchart.label
+package io.github.staakk.cchart.renderer.label
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size

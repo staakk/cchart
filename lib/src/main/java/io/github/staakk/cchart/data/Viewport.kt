@@ -114,25 +114,5 @@ data class Viewport(
 
             return Viewport(maxX = maxX, minX = minX, maxY = maxY, minY = minY)
         }
-
-        fun Iterable<GroupedSeries>.getViewportFromGroupedSeries(): Viewport {
-            var maxX = Float.MIN_VALUE
-            var minX = Float.MAX_VALUE
-            var maxY = Float.MIN_VALUE
-            var minY = Float.MAX_VALUE
-
-            forEach { s ->
-                s.forEach { group ->
-                    group.forEach { point ->
-                        if (point.x > maxX) maxX = point.x
-                        if (point.x < minX) minX = point.x
-                        if (point.y > maxY) maxY = point.y
-                        if (point.y < minY) minY = point.y
-                    }
-                }
-            }
-
-            return Viewport(maxX = maxX, minX = minX, maxY = maxY, minY = minY)
-        }
     }
 }

@@ -3,7 +3,6 @@ package io.github.staakk.cchart.data
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import io.github.staakk.cchart.data.Viewport.Companion.getViewport
-import io.github.staakk.cchart.data.Viewport.Companion.getViewportFromGroupedSeries
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -23,25 +22,6 @@ class ViewportTest {
 
         val expected = Viewport(0f, 1f, 0f, 1f)
         assertEquals(expected, series.getViewport())
-    }
-
-    @Test
-    fun `should create viewport from grouped series`() {
-        val series = listOf(
-            groupedSeriesOf(
-                pointOf(0f, 0f),
-                pointOf(0.5f, 0.5f)
-            ),
-            groupedSeriesOf(
-                listOf(
-                    pointOf(1f, 1f),
-                    pointOf(1f, 2f)
-                )
-            )
-        )
-
-        val expected = Viewport(0f, 1f, 0f, 2f)
-        assertEquals(expected, series.getViewportFromGroupedSeries())
     }
 
     @Test
