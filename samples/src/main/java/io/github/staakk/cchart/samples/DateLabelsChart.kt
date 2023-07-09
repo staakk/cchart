@@ -6,19 +6,19 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.renderer.axis.Axis
-import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.features
-import io.github.staakk.cchart.label.LabelOrientation
+import io.github.staakk.cchart.label.Labels.Companion.horizontalLabels
+import io.github.staakk.cchart.label.Labels.Companion.verticalLabels
 import io.github.staakk.cchart.label.LabelsProvider
-import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
-import io.github.staakk.cchart.label.labelRenderer
+import io.github.staakk.cchart.renderer.axis.Axis
+import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.renderer.bar.BarProcessor
 import io.github.staakk.cchart.style.PrimitiveStyle
 import java.time.LocalDate
@@ -26,12 +26,10 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun DateLabelsChartScreen() {
-    val labels = listOf(
-        labelRenderer(
-            orientation = LabelOrientation.Horizontal,
-            labelsProvider = DateLabelsProvider
-        ),
-        defaultVerticalLabelRenderer(),
+    @OptIn(ExperimentalTextApi::class)
+    val labels = arrayOf(
+        horizontalLabels(labelsProvider = DateLabelsProvider),
+        verticalLabels(),
     )
 
     Chart(
@@ -68,10 +66,9 @@ fun DateLabelsChartScreen() {
 
         features(
             Axis(AxisOrientation.Horizontal, 0.0f),
-            Axis(AxisOrientation.Vertical, 0.0f)
+            Axis(AxisOrientation.Vertical, 0.0f),
+            *labels,
         )
-
-        labels.forEach { label(it) }
     }
 }
 

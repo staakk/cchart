@@ -1,9 +1,10 @@
 package io.github.staakk.cchart.grid
 
+import io.github.staakk.cchart.renderer.grid.GridLinesProviders
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class GridLinesProvidersTest {
+class GridProvidersTest {
 
     @Test
     fun `should provide ints in range`() {

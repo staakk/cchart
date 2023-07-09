@@ -6,11 +6,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Viewport
+import io.github.staakk.cchart.features
+import io.github.staakk.cchart.renderer.grid.Grid
 import io.github.staakk.cchart.style.lineStyle
-import io.github.staakk.cchart.grid.GridLinesProviders
-import io.github.staakk.cchart.grid.GridOrientation
-import io.github.staakk.cchart.grid.GridRenderer
-import io.github.staakk.cchart.grid.gridRenderer
+import io.github.staakk.cchart.renderer.grid.GridLinesProviders
+import io.github.staakk.cchart.renderer.grid.GridOrientation
 import org.junit.Rule
 import org.junit.Test
 
@@ -19,25 +19,25 @@ class GridsTest {
     val paparazzi = createPaparazziRule()
 
     @Test
-    fun verticalGrid() = runTestFor(gridRenderer(orientation = GridOrientation.VERTICAL))
+    fun verticalGrid() = runTestFor(Grid(orientation = GridOrientation.Vertical))
 
     @Test
-    fun horizontalGrid() = runTestFor(gridRenderer(orientation = GridOrientation.HORIZONTAL))
+    fun horizontalGrid() = runTestFor(Grid(orientation = GridOrientation.Horizontal))
 
     @Test
     fun verticalAndHorizontal() = runTestFor(
-        gridRenderer(orientation = GridOrientation.VERTICAL),
-        gridRenderer(orientation = GridOrientation.HORIZONTAL)
+        Grid(orientation = GridOrientation.Vertical),
+        Grid(orientation = GridOrientation.Horizontal)
     )
 
     @Test
     fun multipleVertical() = runTestFor(
-        gridRenderer(
-            orientation = GridOrientation.VERTICAL,
+        Grid(
+            orientation = GridOrientation.Vertical,
             gridLinesProvider = GridLinesProviders.multiple(0.5f)
         ),
-        gridRenderer(
-            orientation = GridOrientation.VERTICAL,
+        Grid(
+            orientation = GridOrientation.Vertical,
             gridLinesProvider = GridLinesProviders.multiple(1f / 3f),
             lineStyle { brush = SolidColor(Color.Red) }
         ),
@@ -45,25 +45,25 @@ class GridsTest {
 
     @Test
     fun multipleHorizontal() = runTestFor(
-        gridRenderer(
-            orientation = GridOrientation.HORIZONTAL,
+        Grid(
+            orientation = GridOrientation.Horizontal,
             gridLinesProvider = GridLinesProviders.multiple(0.5f)
         ),
-        gridRenderer(
-            orientation = GridOrientation.HORIZONTAL,
+        Grid(
+            orientation = GridOrientation.Horizontal,
             gridLinesProvider = GridLinesProviders.multiple(1f / 3f),
             lineStyle { brush = SolidColor(Color.Red) }
         ),
     )
 
-    private fun runTestFor(vararg grids: GridRenderer) {
+    private fun runTestFor(vararg grids: Grid) {
         paparazzi.snapshot {
             Chart(
                 modifier = Modifier
                     .aspectRatio(1f, false),
                 viewport = Viewport(0f, 10f, 0f, 5f)
             ) {
-                grids.forEach(::grid)
+                features(*grids)
             }
         }
     }

@@ -16,25 +16,27 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.renderer.axis.Axis
-import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.features
-import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
-import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
+import io.github.staakk.cchart.label.Labels.Companion.horizontalLabels
+import io.github.staakk.cchart.label.Labels.Companion.verticalLabels
+import io.github.staakk.cchart.renderer.axis.Axis
+import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.renderer.point.DrawPoints
 import io.github.staakk.cchart.style.PrimitiveStyle
 
 @Composable
 fun PopupChartScreen() {
-    val labels = listOf(
-        defaultHorizontalLabelRenderer(),
-        defaultVerticalLabelRenderer(),
+    @OptIn(ExperimentalTextApi::class)
+    val labels = arrayOf(
+        horizontalLabels(),
+        verticalLabels(),
     )
     val pointSize = with(LocalDensity.current) { Size(8.dp.toPx(), 8.dp.toPx()) }
     val popupPosition = remember { mutableStateOf<Pair<Data<*>, Offset>?>(null)}
@@ -57,10 +59,9 @@ fun PopupChartScreen() {
 
         features(
             Axis(AxisOrientation.Horizontal, 0.0f),
-            Axis(AxisOrientation.Vertical, 0.0f)
+            Axis(AxisOrientation.Vertical, 0.0f),
+            *labels,
         )
-
-        labels.forEach { label(it) }
 
         popupPosition.value?.let { (point, _) ->
             anchor(point) {

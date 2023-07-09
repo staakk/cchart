@@ -12,31 +12,33 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.renderer.axis.Axis
-import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.features
-import io.github.staakk.cchart.style.lineStyle
-import io.github.staakk.cchart.grid.GridOrientation
-import io.github.staakk.cchart.grid.gridRenderer
 import io.github.staakk.cchart.label.LabelOrientation
+import io.github.staakk.cchart.label.Labels.Companion.horizontalLabels
+import io.github.staakk.cchart.label.Labels.Companion.labels
+import io.github.staakk.cchart.label.Labels.Companion.verticalLabels
 import io.github.staakk.cchart.label.LabelsProvider
-import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
-import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
-import io.github.staakk.cchart.label.labelRenderer
 import io.github.staakk.cchart.renderer.*
+import io.github.staakk.cchart.renderer.axis.Axis
+import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.renderer.bar.BarProcessor
+import io.github.staakk.cchart.renderer.grid.Grid
+import io.github.staakk.cchart.renderer.grid.GridOrientation
 import io.github.staakk.cchart.renderer.line.DrawLine
 import io.github.staakk.cchart.renderer.point.DrawPoints
+import io.github.staakk.cchart.style.LabelStyle
 import io.github.staakk.cchart.style.LineStyle
 import io.github.staakk.cchart.style.PrimitiveStyle
+import io.github.staakk.cchart.style.lineStyle
 import org.junit.Rule
 import org.junit.Test
 import java.time.LocalDate
@@ -65,9 +67,10 @@ class ReadmeGalleryTest {
     fun lineChart() {
         paparazzi.snapshot {
             //tag=line_chart
-            val labels = listOf(
-                defaultHorizontalLabelRenderer(),
-                defaultVerticalLabelRenderer(),
+            @OptIn(ExperimentalTextApi::class)
+            val labels = arrayOf(
+                horizontalLabels(),
+                verticalLabels(),
             )
             Chart(
                 modifier = Modifier
@@ -96,16 +99,12 @@ class ReadmeGalleryTest {
                 val lineStyle = lineStyle { brush = SolidColor(DarkGrey) }
                 features(
                     Axis(AxisOrientation.Horizontal, 0.0f, lineStyle),
-                    Axis(AxisOrientation.Vertical, 0.0f, lineStyle)
-                )
-
-                labels.forEach { label(it) }
-
-                grid(
-                    gridRenderer(
-                        orientation = GridOrientation.HORIZONTAL,
+                    Axis(AxisOrientation.Vertical, 0.0f, lineStyle),
+                    Grid(
+                        orientation = GridOrientation.Horizontal,
                         lineStyle = lineStyle { brush = SolidColor(LightGrey) }
-                    )
+                    ),
+                    *labels,
                 )
             }
             //endtag=line_chart
@@ -114,10 +113,12 @@ class ReadmeGalleryTest {
 
     @Test
     fun barChart() {
+        @OptIn(ExperimentalTextApi::class)
         paparazzi.snapshot {
             //tag=bar_chart
-            val horizontalLabelRenderer = labelRenderer(
+            val horizontalLabelRenderer = labels(
                 orientation = LabelOrientation.Horizontal,
+                locationPercent = 0f,
                 labelsProvider = object : LabelsProvider {
                     private val pattern = "MMMM \nyyyy"
                     private val formatter = DateTimeFormatter.ofPattern(pattern)
@@ -141,8 +142,9 @@ class ReadmeGalleryTest {
                     }
                 }
             )
-            val verticalLabelRenderer = labelRenderer(
+            val verticalLabelRenderer = labels(
                 orientation = LabelOrientation.Vertical,
+                locationPercent = 0f,
                 labelsProvider = { min, max ->
                     (min.toInt()..max.toInt())
                         .filter { it % 25 == 0 }
@@ -183,7 +185,9 @@ class ReadmeGalleryTest {
                 val lineStyle = lineStyle { brush = SolidColor(DarkGrey) }
                 features(
                     Axis(AxisOrientation.Horizontal, 0.0f, lineStyle),
-                    Axis(AxisOrientation.Vertical, 0.0f, lineStyle)
+                    Axis(AxisOrientation.Vertical, 0.0f, lineStyle),
+                    verticalLabelRenderer,
+                    horizontalLabelRenderer,
                 )
 
                 dataLabels {
@@ -193,9 +197,6 @@ class ReadmeGalleryTest {
                         style = TextStyle(fontSize = 12.sp)
                     )
                 }
-
-                label(verticalLabelRenderer)
-                label(horizontalLabelRenderer)
             }
             //endtag=bar_chart
         }
@@ -203,23 +204,28 @@ class ReadmeGalleryTest {
 
     @Test
     fun twoAxisChart() {
+        @OptIn(ExperimentalTextApi::class)
         paparazzi.snapshot {
             //tag=two_axis_chart
-            val horizontalLabelRenderer = defaultHorizontalLabelRenderer()
+            val horizontalLabel = horizontalLabels()
             val density = LocalDensity.current
-            val verticalLabelRenderer1 = labelRenderer(
+            val verticalLabel1 = labels(
                 orientation = LabelOrientation.Vertical,
-                brush = SolidColor(Blue),
-                textStyle = TextStyle(fontSize = 12.sp),
                 locationPercent = 0f,
-                alignment = Alignment.CenterEnd
+                labelStyle = LabelStyle(
+                    brush = SolidColor(Blue),
+                    textStyle = TextStyle(fontSize = 12.sp),
+                    alignment = Alignment.CenterEnd,
+                )
             )
-            val verticalLabelRenderer2 = labelRenderer(
+            val verticalLabel2 = labels(
                 orientation = LabelOrientation.Vertical,
-                brush = SolidColor(Green),
                 locationPercent = 1f,
-                alignment = Alignment.CenterStart,
-                labelOffset = Offset(12f, 0f),
+                labelStyle = LabelStyle(
+                    brush = SolidColor(Green),
+                    alignment = Alignment.CenterStart,
+                    labelOffset = Offset(12f, 0f),
+                ),
                 labelsProvider = { min, max ->
                     (min.toInt()..(max.toInt() + 1))
                         .map { "${it * 2}" to it.toFloat() }
@@ -289,21 +295,18 @@ class ReadmeGalleryTest {
                     Axis(
                         AxisOrientation.Horizontal,
                         0.0f,
-                        lineStyle { brush = SolidColor(DarkGrey) }),
-                )
-
-                label(verticalLabelRenderer1)
-
-                label(verticalLabelRenderer2)
-
-                label(horizontalLabelRenderer)
-
-                grid(
-                    gridRenderer(
-                        orientation = GridOrientation.HORIZONTAL,
+                        lineStyle { brush = SolidColor(DarkGrey) }
+                    ),
+                    Grid(
+                        orientation = GridOrientation.Horizontal,
                         lineStyle = lineStyle { brush = SolidColor(LightGrey) }
-                    )
+                    ),
+                    verticalLabel1,
+                    verticalLabel2,
+                    horizontalLabel,
                 )
+
+
             }
             //endtag=two_axis_chart
         }

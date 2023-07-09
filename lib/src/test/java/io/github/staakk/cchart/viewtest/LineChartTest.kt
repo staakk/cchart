@@ -5,16 +5,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.renderer.axis.Axis
-import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.features
-import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
-import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
+import io.github.staakk.cchart.label.Labels.Companion.horizontalLabels
+import io.github.staakk.cchart.label.Labels.Companion.verticalLabels
+import io.github.staakk.cchart.renderer.axis.Axis
+import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.renderer.line.DrawLine
 import io.github.staakk.cchart.style.LineStyle
 import org.junit.Rule
@@ -27,9 +28,10 @@ class LineChartTest {
     @Test
     fun lineChart() {
         paparazzi.snapshot {
-            val labels = listOf(
-                defaultHorizontalLabelRenderer(),
-                defaultVerticalLabelRenderer(),
+            @OptIn(ExperimentalTextApi::class)
+            val labels = arrayOf(
+                horizontalLabels(),
+                verticalLabels(),
             )
             Chart(
                 modifier = Modifier
@@ -54,10 +56,9 @@ class LineChartTest {
 
                 features(
                     Axis(AxisOrientation.Horizontal, 0.0f),
-                    Axis(AxisOrientation.Vertical, 0.0f)
+                    Axis(AxisOrientation.Vertical, 0.0f),
+                    *labels,
                 )
-
-                labels.forEach { label(it) }
             }
         }
     }

@@ -6,26 +6,28 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.renderer.axis.Axis
-import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.features
-import io.github.staakk.cchart.grid.GridOrientation
-import io.github.staakk.cchart.grid.gridRenderer
-import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
-import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
+import io.github.staakk.cchart.label.Labels.Companion.horizontalLabels
+import io.github.staakk.cchart.label.Labels.Companion.verticalLabels
+import io.github.staakk.cchart.renderer.axis.Axis
+import io.github.staakk.cchart.renderer.axis.AxisOrientation
+import io.github.staakk.cchart.renderer.grid.Grid
+import io.github.staakk.cchart.renderer.grid.GridOrientation
 import io.github.staakk.cchart.renderer.line.DrawLine
 import io.github.staakk.cchart.style.LineStyle
 
 @Composable
 fun GridChartScreen() {
-    val labels = listOf(
-        defaultHorizontalLabelRenderer(),
-        defaultVerticalLabelRenderer(),
+    @OptIn(ExperimentalTextApi::class)
+    val labels = arrayOf(
+        horizontalLabels(),
+        verticalLabels(),
     )
     Chart(
         modifier = Modifier
@@ -45,13 +47,11 @@ fun GridChartScreen() {
 
         features(
             Axis(AxisOrientation.Horizontal, 0.0f),
-            Axis(AxisOrientation.Vertical, 0.0f)
+            Axis(AxisOrientation.Vertical, 0.0f),
+            Grid(GridOrientation.Horizontal),
+            Grid(GridOrientation.Vertical),
+            *labels,
         )
-
-        labels.forEach { label(it) }
-
-        grid(gridRenderer(orientation = GridOrientation.HORIZONTAL))
-        grid(gridRenderer(orientation = GridOrientation.VERTICAL))
     }
 }
 

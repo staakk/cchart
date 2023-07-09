@@ -136,7 +136,6 @@ private fun Chart(
         ) drawScope@{
             val rendererScope = RendererScope(this, rendererContext)
             scope.renderers.forEach { with(it) { rendererScope.draw() } }
-            scope.gridRenderers.forEach { with(it) { rendererScope.render() } }
             renderedPoints.value = scope
                 .series
                 .flatMap { (series, other) ->
@@ -147,8 +146,6 @@ private fun Chart(
                     with(drawer) { rendererScope.draw(rendererPoints) }
                     boundsProvider.provide(rendererPoints)
                 }
-
-            scope.labelsRenderers.forEach { with(it) { rendererScope.render() } }
         }
 
         scope.dataLabels.forEach {

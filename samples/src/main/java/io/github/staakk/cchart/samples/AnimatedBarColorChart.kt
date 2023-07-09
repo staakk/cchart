@@ -12,25 +12,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.renderer.axis.Axis
-import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.features
-import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
-import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
+import io.github.staakk.cchart.label.Labels.Companion.horizontalLabels
+import io.github.staakk.cchart.label.Labels.Companion.verticalLabels
+import io.github.staakk.cchart.renderer.axis.Axis
+import io.github.staakk.cchart.renderer.axis.AxisOrientation
 import io.github.staakk.cchart.renderer.bar.BarProcessor
 import io.github.staakk.cchart.style.PrimitiveStyle
 
 @Composable
 fun AnimatedBarColorChartScreen() {
-    val labelRenderers = listOf(
-        defaultHorizontalLabelRenderer(),
-        defaultVerticalLabelRenderer()
+    @OptIn(ExperimentalTextApi::class)
+    val labels = arrayOf(
+        horizontalLabels(),
+        verticalLabels(),
     )
 
     val color0 = remember { Animatable(Color.DarkGray) }
@@ -81,10 +83,9 @@ fun AnimatedBarColorChartScreen() {
 
         features(
             Axis(AxisOrientation.Horizontal, 0.0f),
-            Axis(AxisOrientation.Vertical, 0.0f)
+            Axis(AxisOrientation.Vertical, 0.0f),
+            *labels,
         )
-
-        labelRenderers.forEach { label(it) }
     }
 }
 

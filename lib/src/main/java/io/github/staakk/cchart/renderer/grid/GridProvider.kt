@@ -1,6 +1,6 @@
-package io.github.staakk.cchart.grid
+package io.github.staakk.cchart.renderer.grid
 
-fun interface GridLinesProvider {
+fun interface GridProvider {
 
     /**
      * Provides grid lines position on the chart.
@@ -14,11 +14,11 @@ fun interface GridLinesProvider {
 
 object GridLinesProviders {
 
-    val intGrid = GridLinesProvider { min, max ->
+    val intGrid = GridProvider { min, max ->
         (min.toInt()..max.toInt()).map(Int::toFloat)
     }
 
-    fun multiple(value: Float) = GridLinesProvider { min, max ->
+    fun multiple(value: Float) = GridProvider { min, max ->
         var current = min - min % value
         val result = mutableListOf<Float>()
         while (current <= max) {
