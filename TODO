@@ -1,6 +1,0 @@
-# TODO
-
-* Update dependencies
-* Review samples
-* Review and unify drawing logic
-* Make the API more declarative, especially configurable renderers
