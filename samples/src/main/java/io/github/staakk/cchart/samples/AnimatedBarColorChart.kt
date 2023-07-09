@@ -16,13 +16,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Viewport
-import io.github.staakk.cchart.data.groupedSeriesOf
 import io.github.staakk.cchart.data.pointOf
+import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.horizontalAxis
 import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
 import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
-import io.github.staakk.cchart.renderer.barDrawer
-import io.github.staakk.cchart.renderer.barGroupRenderer
+import io.github.staakk.cchart.renderer.bar.BarProcessor
+import io.github.staakk.cchart.style.PrimitiveStyle
 import io.github.staakk.cchart.verticalAxis
 
 @Composable
@@ -54,41 +54,28 @@ fun AnimatedBarColorChartScreen() {
             .aspectRatio(1f, false),
         viewport = Viewport(0f, 6f, 0f, 5f)
     ) {
+        val styles = listOf(
+            PrimitiveStyle(brush = SolidColor(color0.value)),
+            PrimitiveStyle(brush = SolidColor(color1.value))
+        )
+        val barProcessor = BarProcessor(
+            preferredWidth = 64f,
+            style = { index, _ -> styles[index] },
+        )
         series(
-            groupedSeriesOf(
-                listOf(
-                    pointOf(1f, 1f),
-                    pointOf(1f, 1.5f),
-                ),
-                listOf(
-                    pointOf(2f, 1.5f),
-                    pointOf(2f, 1f),
-                ),
-                listOf(
-                    pointOf(3f, 4f),
-                    pointOf(3f, 4.5f),
-                ),
-                listOf(
-                    pointOf(4f, 3.5f),
-                    pointOf(4f, 3.5f),
-                ),
-                listOf(
-                    pointOf(5f, 2f),
-                    pointOf(5f, 1f)
-                )
+            seriesOf(
+                pointOf(1f, 1f),
+                pointOf(1f, 1.5f),
+                pointOf(2f, 1.5f),
+                pointOf(2f, 1f),
+                pointOf(3f, 4f),
+                pointOf(3f, 4.5f),
+                pointOf(4f, 3.5f),
+                pointOf(4f, 3.5f),
+                pointOf(5f, 2f),
+                pointOf(5f, 1f)
             ),
-            renderer = barGroupRenderer(
-                preferredWidth = 64f,
-                barDrawer = barDrawer { index, _ ->
-                    SolidColor(
-                        when (index) {
-                            0 -> color0.value
-                            1 -> color1.value
-                            else -> Colors.Pink
-                        }
-                    )
-                }
-            )
+            barProcessor,
         )
 
         horizontalAxis()

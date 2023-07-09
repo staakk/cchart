@@ -8,13 +8,13 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Viewport
-import io.github.staakk.cchart.data.groupedSeriesOf
 import io.github.staakk.cchart.data.pointOf
+import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.horizontalAxis
 import io.github.staakk.cchart.label.defaultHorizontalLabelRenderer
 import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
-import io.github.staakk.cchart.renderer.barDrawer
-import io.github.staakk.cchart.renderer.barGroupRenderer
+import io.github.staakk.cchart.renderer.bar.BarProcessor
+import io.github.staakk.cchart.style.PrimitiveStyle
 import io.github.staakk.cchart.verticalAxis
 import org.junit.Rule
 import org.junit.Test
@@ -37,7 +37,7 @@ class BarChartTest {
                 viewport = Viewport(0f, 10f, 0f, 5f)
             ) {
                 series(
-                    groupedSeriesOf(
+                    seriesOf(
                         pointOf(1f, 1f),
                         pointOf(2f, 1.5f),
                         pointOf(3f, 4f),
@@ -48,9 +48,9 @@ class BarChartTest {
                         pointOf(8f, 4.5f),
                         pointOf(9f, 4.7f),
                     ),
-                    renderer = barGroupRenderer(
+                    BarProcessor(
                         preferredWidth = 50f,
-                        barDrawer = barDrawer { _, _ -> SolidColor(Color.Blue) }
+                        style = { _, _ -> PrimitiveStyle(brush = SolidColor(Color.Blue)) }
                     )
                 )
 
@@ -70,6 +70,10 @@ class BarChartTest {
                 defaultHorizontalLabelRenderer(),
                 defaultVerticalLabelRenderer(),
             )
+            val styles = listOf(
+                PrimitiveStyle(brush = SolidColor(Color.Blue)),
+                PrimitiveStyle(brush = SolidColor(Color.Green))
+            )
             Chart(
                 modifier = Modifier
                     .padding(start = 32.dp, bottom = 32.dp)
@@ -77,54 +81,29 @@ class BarChartTest {
                 viewport = Viewport(0f, 10f, 0f, 5f)
             ) {
                 series(
-                    groupedSeriesOf(
-                        listOf(
-                            pointOf(1f, 1f),
-                            pointOf(1f, 1f),
-                        ),
-                        listOf(
-                            pointOf(2f, 1.5f),
-                            pointOf(2f, 1.5f),
-                        ),
-                        listOf(
-                            pointOf(3f, 4f),
-                            pointOf(3f, 4f),
-                        ),
-                        listOf(
-                            pointOf(4f, 3.5f),
-                            pointOf(4f, 3.5f),
-                        ),
-                        listOf(
-                            pointOf(5f, 2f),
-                            pointOf(5f, 2f),
-                        ),
-                        listOf(
-                            pointOf(6f, 1.3f),
-                            pointOf(6f, 1.3f),
-                        ),
-                        listOf(
-                            pointOf(7f, 4f),
-                            pointOf(7f, 4f),
-                        ),
-                        listOf(
-                            pointOf(8f, 4.5f),
-                            pointOf(8f, 4.5f),
-                        ),
-                        listOf(
-                            pointOf(9f, 4.7f),
-                            pointOf(9f, 4.7f),
-                        )
+                    seriesOf(
+                        pointOf(1f, 1f),
+                        pointOf(1f, 1f),
+                        pointOf(2f, 1.5f),
+                        pointOf(2f, 1.5f),
+                        pointOf(3f, 4f),
+                        pointOf(3f, 4f),
+                        pointOf(4f, 3.5f),
+                        pointOf(4f, 3.5f),
+                        pointOf(5f, 2f),
+                        pointOf(5f, 2f),
+                        pointOf(6f, 1.3f),
+                        pointOf(6f, 1.3f),
+                        pointOf(7f, 4f),
+                        pointOf(7f, 4f),
+                        pointOf(8f, 4.5f),
+                        pointOf(8f, 4.5f),
+                        pointOf(9f, 4.7f),
+                        pointOf(9f, 4.7f),
                     ),
-                    renderer = barGroupRenderer(
+                    BarProcessor(
                         preferredWidth = 50f,
-                        barDrawer = barDrawer { index, _ ->
-                            val color = when (index) {
-                                0 -> Color.Blue
-                                1 -> Color.Green
-                                else -> Color.Red
-                            }
-                            SolidColor(color)
-                        },
+                        style = { index, _ -> styles[index] },
                     )
                 )
 
@@ -143,6 +122,10 @@ class BarChartTest {
                 defaultHorizontalLabelRenderer(),
                 defaultVerticalLabelRenderer(),
             )
+            val styles = listOf(
+                PrimitiveStyle(brush = SolidColor(Color.Blue)),
+                PrimitiveStyle(brush = SolidColor(Color.Green))
+            )
             Chart(
                 modifier = Modifier
                     .padding(start = 32.dp, bottom = 32.dp)
@@ -150,55 +133,30 @@ class BarChartTest {
                 viewport = Viewport(0f, 10f, 0f, 5f)
             ) {
                 series(
-                    groupedSeriesOf(
-                        listOf(
-                            pointOf(1f, 1f),
-                            pointOf(1f, 1f),
-                        ),
-                        listOf(
-                            pointOf(2f, 1.5f),
-                            pointOf(2f, 1.5f),
-                        ),
-                        listOf(
-                            pointOf(3f, 4f),
-                            pointOf(3f, 4f),
-                        ),
-                        listOf(
-                            pointOf(4f, 3.5f),
-                            pointOf(4f, 3.5f),
-                        ),
-                        listOf(
-                            pointOf(5f, 2f),
-                            pointOf(5f, 2f),
-                        ),
-                        listOf(
-                            pointOf(6f, 1.3f),
-                            pointOf(6f, 1.3f),
-                        ),
-                        listOf(
-                            pointOf(7f, 4f),
-                            pointOf(7f, 4f),
-                        ),
-                        listOf(
-                            pointOf(8f, 4.5f),
-                            pointOf(8f, 4.5f),
-                        ),
-                        listOf(
-                            pointOf(9f, 4.7f),
-                            pointOf(9f, 4.7f),
-                        )
+                    seriesOf(
+                        pointOf(1f, 1f),
+                        pointOf(1f, 1f),
+                        pointOf(2f, 1.5f),
+                        pointOf(2f, 1.5f),
+                        pointOf(3f, 4f),
+                        pointOf(3f, 4f),
+                        pointOf(4f, 3.5f),
+                        pointOf(4f, 3.5f),
+                        pointOf(5f, 2f),
+                        pointOf(5f, 2f),
+                        pointOf(6f, 1.3f),
+                        pointOf(6f, 1.3f),
+                        pointOf(7f, 4f),
+                        pointOf(7f, 4f),
+                        pointOf(8f, 4.5f),
+                        pointOf(8f, 4.5f),
+                        pointOf(9f, 4.7f),
+                        pointOf(9f, 4.7f),
                     ),
-                    renderer = barGroupRenderer(
+                    BarProcessor(
                         preferredWidth = 50f,
                         minimalSpacing = 50f,
-                        barDrawer = barDrawer { index, _ ->
-                            val color = when (index) {
-                                0 -> Color.Blue
-                                1 -> Color.Green
-                                else -> Color.Red
-                            }
-                            SolidColor(color)
-                        }
+                        style = { index, _ -> styles[index] }
                     )
                 )
 

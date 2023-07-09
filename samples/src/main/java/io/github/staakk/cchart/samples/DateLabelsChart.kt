@@ -10,15 +10,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Viewport
-import io.github.staakk.cchart.data.groupedSeriesOf
 import io.github.staakk.cchart.data.pointOf
+import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.horizontalAxis
 import io.github.staakk.cchart.label.LabelOrientation
 import io.github.staakk.cchart.label.LabelsProvider
 import io.github.staakk.cchart.label.defaultVerticalLabelRenderer
 import io.github.staakk.cchart.label.labelRenderer
-import io.github.staakk.cchart.renderer.barDrawer
-import io.github.staakk.cchart.renderer.barGroupRenderer
+import io.github.staakk.cchart.renderer.bar.BarProcessor
+import io.github.staakk.cchart.style.PrimitiveStyle
 import io.github.staakk.cchart.verticalAxis
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -26,7 +26,10 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun DateLabelsChartScreen() {
     val labels = listOf(
-        labelRenderer(orientation = LabelOrientation.Horizontal, labelsProvider = DateLabelsProvider),
+        labelRenderer(
+            orientation = LabelOrientation.Horizontal,
+            labelsProvider = DateLabelsProvider
+        ),
         defaultVerticalLabelRenderer(),
     )
 
@@ -41,33 +44,25 @@ fun DateLabelsChartScreen() {
             maxY = 20f
         )
     ) {
+
+        val styles = listOf(
+            PrimitiveStyle(brush = SolidColor(Colors.DeepPurple)),
+            PrimitiveStyle(brush = SolidColor(Colors.Green))
+        )
+        val barProcessor = BarProcessor(
+            preferredWidth = 64f,
+            style = { index, _ -> styles[index] },
+        )
         series(
-            groupedSeriesOf(
-                listOf(
-                    pointOf(LocalDate.of(2020, 10, 1).toEpochDay(), 6f),
-                    pointOf(LocalDate.of(2020, 10, 1).toEpochDay(), 6.9f),
-                ),
-                listOf(
-                    pointOf(LocalDate.of(2020, 11, 1).toEpochDay(), 12f),
-                    pointOf(LocalDate.of(2020, 11, 1).toEpochDay(), 14f),
-                ),
-                listOf(
-                    pointOf(LocalDate.of(2020, 12, 1).toEpochDay(), 15f),
-                    pointOf(LocalDate.of(2020, 12, 1).toEpochDay(), 13.8f),
-                )
+            seriesOf(
+                pointOf(LocalDate.of(2020, 10, 1).toEpochDay(), 6f),
+                pointOf(LocalDate.of(2020, 10, 1).toEpochDay(), 6.9f),
+                pointOf(LocalDate.of(2020, 11, 1).toEpochDay(), 12f),
+                pointOf(LocalDate.of(2020, 11, 1).toEpochDay(), 14f),
+                pointOf(LocalDate.of(2020, 12, 1).toEpochDay(), 15f),
+                pointOf(LocalDate.of(2020, 12, 1).toEpochDay(), 13.8f),
             ),
-            barGroupRenderer(
-                barDrawer = barDrawer { index, _ ->
-                    SolidColor(
-                        when (index) {
-                            0 -> Colors.DeepPurple
-                            1 -> Colors.Green
-                            else -> Colors.Pink
-                        }
-                    )
-                },
-                preferredWidth = 64f,
-            )
+            barProcessor,
         )
 
         horizontalAxis()

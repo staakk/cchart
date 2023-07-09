@@ -8,14 +8,16 @@ class LineBoundingShapeProvider(
     private val radius: Float = 20f,
 ) : BoundingShapeProvider {
 
-    override fun provide(index: Int, rendererPoints: List<RendererPoint<*>>): BoundingShape {
+    override fun provide(index: Int, rendererPoints: List<RendererPoint<*>>): List<BoundingShape> {
         val it = rendererPoints[index]
-        return BoundingShape.Circle(
-            data = it.data,
-            labelAnchorX = it.x,
-            labelAnchorY = it.y,
-            center = it.toOffset(),
-            radius = radius
+        return listOf(
+            BoundingShape.Circle(
+                data = it.data,
+                labelAnchorX = it.x,
+                labelAnchorY = it.y,
+                center = it.toOffset(),
+                radius = radius
+            )
         )
     }
 }

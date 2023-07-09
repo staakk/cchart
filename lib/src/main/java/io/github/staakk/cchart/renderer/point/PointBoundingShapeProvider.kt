@@ -8,14 +8,16 @@ import io.github.staakk.cchart.renderer.RendererPoint
 class SimplePointBoundingShapeProvider(
     private val size: Size,
 ) : BoundingShapeProvider {
-    override fun provide(index: Int, rendererPoints: List<RendererPoint<*>>): BoundingShape {
+    override fun provide(index: Int, rendererPoints: List<RendererPoint<*>>): List<BoundingShape> {
         val point = rendererPoints[index]
-        return BoundingShape.Circle(
-            data = point.data,
-            labelAnchorX = point.x,
-            labelAnchorY = point.y,
-            center = point.toOffset(),
-            radius = size.width / 2
+        return listOf(
+            BoundingShape.Circle(
+                data = point.data,
+                labelAnchorX = point.x,
+                labelAnchorY = point.y,
+                center = point.toOffset(),
+                radius = size.width / 2
+            )
         )
     }
 }
