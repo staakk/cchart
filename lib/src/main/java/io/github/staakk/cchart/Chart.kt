@@ -10,7 +10,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import io.github.staakk.cchart.data.*
@@ -136,23 +135,17 @@ private fun Chart(
                 }
         ) drawScope@{
             val rendererScope = RendererScope(this, rendererContext)
+            scope.gridRenderers.forEach { with(it) { rendererScope.render() } }
+            renderedPoints.value = scope
+                .newSeries
+                .flatMap { (series, other) ->
+                    val (drawer, boundsProvider) = other
+                    val rendererPoints = series
+                        .map { with(it) { toRendererPoint(rendererScope.chartContext) } }
 
-            clipRect {
-                scope.gridRenderers.forEach { with(it) { rendererScope.render() } }
-                renderedPoints.value = scope
-                    .newSeries
-                    .flatMap { (series, other) ->
-                        val (drawer, boundsProvider) = other
-                        val rendererPoints = series
-                            .map { with(it) { toRendererPoint(rendererScope.chartContext) } }
-
-                        rendererPoints.flatMapIndexed { index, _ ->
-                            // TODO process whole series at once, no need to render separately?
-                            with(drawer) { rendererScope.draw(index, rendererPoints) }
-                            boundsProvider.provide(index, rendererPoints)
-                        }
-                    }
-            }
+                    with(drawer) { rendererScope.draw(rendererPoints) }
+                    boundsProvider.provide(rendererPoints)
+                }
 
             scope.axisRenderers.forEach { with(it) { rendererScope.render() } }
             scope.labelsRenderers.forEach { with(it) { rendererScope.render() } }

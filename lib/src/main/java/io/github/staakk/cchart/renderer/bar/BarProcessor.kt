@@ -2,6 +2,7 @@ package io.github.staakk.cchart.renderer.bar
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.drawscope.clipRect
 import io.github.staakk.cchart.renderer.BoundingShape
 import io.github.staakk.cchart.renderer.BoundingShapeProvider
 import io.github.staakk.cchart.renderer.ChartContext
@@ -20,13 +21,9 @@ class BarProcessor(
 ) : Drawer, BoundingShapeProvider {
     private var lastDrawnShapes: List<BoundingShape> = emptyList()
 
-    // TODO return boolean indicating whether there's more to draw?
-    override fun RendererScope.draw(index: Int, rendererPoints: List<RendererPoint<*>>) {
-        // Draw everything on first draw call.
-        if (index != 0) return
-
+    override fun RendererScope.draw(rendererPoints: List<RendererPoint<*>>) = clipRect {
         val groups = rendererPoints.groupByTo(sortedMapOf(), RendererPoint<*>::x)
-        val width = getBarWidth(groups, chartContext)
+        val width = getBarWidth(groups, this@draw.chartContext)
         val drawnShapes = mutableListOf<BoundingShape>()
         groups.forEach { (rendererX, points) ->
             points.forEachIndexed { indexInGroup, point ->
@@ -36,9 +33,9 @@ class BarProcessor(
                 val oddOffset = (points.size % 2) * halfWidth
 
                 val x = rendererX + barPositionInGroup - oddOffset
-                val y = chartContext.toRendererHeight(point.data.y)
+                val y = this@draw.chartContext.toRendererHeight(point.data.y)
 
-                val baseLeft = Offset(x, chartContext.toRendererY(0f))
+                val baseLeft = Offset(x, this@draw.chartContext.toRendererY(0f))
                 val barSize = sizeTransform(Size(width, y))
 
                 with(style(indexInGroup, point)) {
@@ -83,8 +80,5 @@ class BarProcessor(
             .minOrNull()
             ?: Float.MAX_VALUE
 
-    override fun provide(index: Int, rendererPoints: List<RendererPoint<*>>): List<BoundingShape> {
-        return if (index != 0) emptyList()
-        else lastDrawnShapes
-    }
+    override fun provide(rendererPoints: List<RendererPoint<*>>) = lastDrawnShapes
 }

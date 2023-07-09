@@ -1,6 +1,7 @@
 package io.github.staakk.cchart.renderer.point
 
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.drawscope.clipRect
 import io.github.staakk.cchart.renderer.Drawer
 import io.github.staakk.cchart.renderer.RendererPoint
 import io.github.staakk.cchart.renderer.RendererScope
@@ -11,17 +12,19 @@ class DrawPoints(
     private val style: PrimitiveStyle = PrimitiveStyle(),
 ) : Drawer {
 
-    override fun RendererScope.draw(index: Int, rendererPoints: List<RendererPoint<*>>) {
-        with(style) {
-            drawCircle(
-                radius = pointSize.height / 2,
-                center = rendererPoints[index].toOffset(),
-                alpha = alpha,
-                brush = brush,
-                style = style,
-                colorFilter = colorFilter,
-                blendMode = blendMode,
-            )
+    override fun RendererScope.draw(rendererPoints: List<RendererPoint<*>>) = clipRect {
+        rendererPoints.forEach {
+            with(style) {
+                drawCircle(
+                    radius = pointSize.height / 2,
+                    center = it.toOffset(),
+                    alpha = alpha,
+                    brush = brush,
+                    style = style,
+                    colorFilter = colorFilter,
+                    blendMode = blendMode,
+                )
+            }
         }
     }
 }

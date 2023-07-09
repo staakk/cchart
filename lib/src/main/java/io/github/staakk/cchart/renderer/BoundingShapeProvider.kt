@@ -1,8 +1,8 @@
 package io.github.staakk.cchart.renderer
 
-val NoBoundingShape = BoundingShapeProvider { _, _ -> listOf(BoundingShape.None) }
+val NoBoundingShape = BoundingShapeProvider { listOf(BoundingShape.None) }
 
 fun interface BoundingShapeProvider {
 
-    fun provide(index: Int, rendererPoints: List<RendererPoint<*>>): List<BoundingShape>
+    fun provide(rendererPoints: List<RendererPoint<*>>): List<BoundingShape>
 }
