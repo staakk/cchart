@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.style.LineStyle
 import io.github.staakk.cchart.renderer.ChartContext
+import io.github.staakk.cchart.renderer.RendererScope
 
 private class SimpleGridRenderer(
     private val orientation: GridOrientation,
@@ -12,17 +13,17 @@ private class SimpleGridRenderer(
     private val lineStyle: LineStyle,
 ) : GridRenderer {
 
-    override fun DrawScope.render(context: ChartContext) {
+    override fun RendererScope.render() {
         gridLinesProvider
             .provide(
-                orientation.getMin(context.viewport),
-                orientation.getMax(context.viewport)
+                orientation.getMin(chartContext.viewport),
+                orientation.getMax(chartContext.viewport)
             )
             .forEach {
                 with(lineStyle) {
                     drawLine(
-                        start = orientation.getStart(this@render, context, it),
-                        end = orientation.getEnd(this@render, context, it),
+                        start = orientation.getStart(this@render, chartContext, it),
+                        end = orientation.getEnd(this@render, chartContext, it),
                         cap = cap,
                         pathEffect = pathEffect,
                         alpha = alpha,

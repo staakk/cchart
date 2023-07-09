@@ -15,7 +15,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import io.github.staakk.cchart.data.*
 import io.github.staakk.cchart.data.Viewport.Companion.getViewport
-import io.github.staakk.cchart.data.Viewport.Companion.getViewportFromGroupedSeries
 import io.github.staakk.cchart.renderer.*
 import io.github.staakk.cchart.util.detectTransformGestures
 
@@ -136,37 +135,35 @@ private fun Chart(
                     }
                 }
         ) drawScope@{
+            val rendererScope = RendererScope(this, rendererContext)
+
             clipRect {
-                scope.gridRenderers.forEach { renderer ->
-                    with(renderer) { this@drawScope.render(rendererContext) }
-                }
-
                 val points = mutableListOf<BoundingShape>()
-                // TODO this can be used to simplify other calls e.g. rendering grid
-                with(RendererScope(this, rendererContext)) {
-                    scope
-                        .newSeries
-                        .onEach { (series, other) ->
-                            val (drawer, boundsProvider) = other
-                            val rendererPoints = series
-                                .map { with(it) { toRendererPoint(chartContext) } }
-
-                            rendererPoints.forEachIndexed { index, _ ->
-                                // TODO process whole series at once, no need to render separately?
-                                with(drawer) { draw(index, rendererPoints) }
-                                points += boundsProvider.provide(index, rendererPoints)
-                            }
-                        }
+                scope.gridRenderers.forEach { renderer ->
+                    with(renderer) { rendererScope.render() }
                 }
+                scope
+                    .newSeries
+                    .onEach { (series, other) ->
+                        val (drawer, boundsProvider) = other
+                        val rendererPoints = series
+                            .map { with(it) { toRendererPoint(rendererScope.chartContext) } }
+
+                        rendererPoints.forEachIndexed { index, _ ->
+                            // TODO process whole series at once, no need to render separately?
+                            with(drawer) { rendererScope.draw(index, rendererPoints) }
+                            points += boundsProvider.provide(index, rendererPoints)
+                        }
+                    }
                 renderedPoints.value = points
             }
 
             scope.axisRenderers.forEach {
-                with(it) { this@drawScope.render(rendererContext) }
+                with(it) { rendererScope.render() }
             }
 
             scope.labelsRenderers.forEach {
-                with(it) { this@drawScope.render(rendererContext) }
+                with(it) { rendererScope.render() }
             }
         }
 

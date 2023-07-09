@@ -17,11 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.renderer.ChartContext
+import io.github.staakk.cchart.renderer.RendererScope
 import io.github.staakk.cchart.util.applyExtendedClipping
 import io.github.staakk.cchart.util.drawText
 
 fun interface LabelRenderer {
-    fun DrawScope.render(context: ChartContext)
+    fun RendererScope.render()
 }
 
 @Composable
@@ -67,12 +68,13 @@ fun labelRenderer(
     labelsProvider: LabelsProvider = IntLabelsProvider,
     clipExtension: Size,
     labelDataLocationToRenderer: DrawScope.(ChartContext, Float) -> Offset,
-): LabelRenderer = LabelRenderer { context ->
+): LabelRenderer = LabelRenderer {
+    val chartContext = chartContext
     applyExtendedClipping(
         enabled = clipExtension != Size.Zero,
         extension = clipExtension,
     ) {
-        val range = orientation.getRange(context.viewport)
+        val range = orientation.getRange(chartContext.viewport)
         labelsProvider
             .provide(range.start, range.endInclusive)
             .forEach { (text, offset) ->
@@ -80,7 +82,7 @@ fun labelRenderer(
                     textMeasurer = textMeasurer,
                     text = text,
                     style = style,
-                    position = labelDataLocationToRenderer(context, offset) + labelOffset,
+                    position = labelDataLocationToRenderer(chartContext, offset) + labelOffset,
                     alignment = alignment,
                     brush = brush,
                 )

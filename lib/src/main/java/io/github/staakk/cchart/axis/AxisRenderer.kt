@@ -1,9 +1,8 @@
 package io.github.staakk.cchart.axis
 
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import io.github.staakk.cchart.style.LineStyle
-import io.github.staakk.cchart.renderer.ChartContext
+import io.github.staakk.cchart.renderer.RendererScope
 
 /**
  * Interface for axis renderers.
@@ -12,7 +11,7 @@ fun interface AxisRenderer {
     /**
      * Function called when axis needs to be drawn.
      */
-    fun DrawScope.render(context: ChartContext)
+    fun RendererScope.render()
 }
 
 fun axisRenderer(
