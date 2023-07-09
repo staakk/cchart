@@ -138,33 +138,24 @@ private fun Chart(
             val rendererScope = RendererScope(this, rendererContext)
 
             clipRect {
-                val points = mutableListOf<BoundingShape>()
-                scope.gridRenderers.forEach { renderer ->
-                    with(renderer) { rendererScope.render() }
-                }
-                scope
+                scope.gridRenderers.forEach { with(it) { rendererScope.render() } }
+                renderedPoints.value = scope
                     .newSeries
-                    .onEach { (series, other) ->
+                    .flatMap { (series, other) ->
                         val (drawer, boundsProvider) = other
                         val rendererPoints = series
                             .map { with(it) { toRendererPoint(rendererScope.chartContext) } }
 
-                        rendererPoints.forEachIndexed { index, _ ->
+                        rendererPoints.flatMapIndexed { index, _ ->
                             // TODO process whole series at once, no need to render separately?
                             with(drawer) { rendererScope.draw(index, rendererPoints) }
-                            points += boundsProvider.provide(index, rendererPoints)
+                            boundsProvider.provide(index, rendererPoints)
                         }
                     }
-                renderedPoints.value = points
             }
 
-            scope.axisRenderers.forEach {
-                with(it) { rendererScope.render() }
-            }
-
-            scope.labelsRenderers.forEach {
-                with(it) { rendererScope.render() }
-            }
+            scope.axisRenderers.forEach { with(it) { rendererScope.render() } }
+            scope.labelsRenderers.forEach { with(it) { rendererScope.render() } }
         }
 
         scope.dataLabels.forEach {
