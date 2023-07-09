@@ -6,15 +6,12 @@ import io.github.staakk.cchart.axis.AxisOrientation
 import io.github.staakk.cchart.axis.axisDrawer
 import io.github.staakk.cchart.axis.axisRenderer
 import io.github.staakk.cchart.data.Data
-import io.github.staakk.cchart.data.GroupedSeries
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.grid.GridRenderer
 import io.github.staakk.cchart.label.LabelRenderer
 import io.github.staakk.cchart.renderer.BoundingShapeProvider
 import io.github.staakk.cchart.renderer.Drawer
-import io.github.staakk.cchart.renderer.GroupedSeriesRenderer
 import io.github.staakk.cchart.renderer.NoBoundingShape
-import io.github.staakk.cchart.renderer.SeriesRenderer
 import io.github.staakk.cchart.style.LineStyle
 
 /**
@@ -36,21 +33,11 @@ interface ChartScope {
 
     fun label(labelRenderer: LabelRenderer)
 
-    /**
-     * Adds series of data to the chart.
-     */
-    fun series(series: Series, renderer: SeriesRenderer)
-
     fun series(
         series: Series,
         drawer: Drawer,
         boundingShapeProvider: BoundingShapeProvider = NoBoundingShape,
     )
-
-    /**
-     * Adds series of data to the chart.
-     */
-    fun series(series: GroupedSeries, renderer: GroupedSeriesRenderer)
 
     /**
      * Adds composable view at the place represented by [data].
@@ -102,10 +89,6 @@ internal class ChartScopeImpl : ChartScope {
 
     val labelsRenderers = mutableListOf<LabelRenderer>()
 
-    val series = mutableMapOf<Series, SeriesRenderer>()
-
-    val groupedSeries = mutableMapOf<GroupedSeries, GroupedSeriesRenderer> ()
-
     val anchors = mutableMapOf<Data<*>, @Composable AnchorScope.() -> Unit>()
 
     val dataLabels = mutableListOf<@Composable AnchorScope.() -> Unit>()
@@ -120,14 +103,6 @@ internal class ChartScopeImpl : ChartScope {
 
     override fun label(labelRenderer: LabelRenderer) {
         labelsRenderers += labelRenderer
-    }
-
-    override fun series(series: Series, renderer: SeriesRenderer) {
-        this.series[series] = renderer
-    }
-
-    override fun series(series: GroupedSeries, renderer: GroupedSeriesRenderer) {
-        groupedSeries[series] = renderer
     }
 
     override fun series(

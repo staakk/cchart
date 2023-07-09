@@ -45,10 +45,7 @@ fun Chart(
     scope.content()
 
     val viewportState = remember {
-        mutableStateOf(
-            viewport
-                ?: (scope.series.keys.getViewport() + scope.groupedSeries.keys.getViewportFromGroupedSeries())
-        )
+        mutableStateOf(viewport ?: (scope.newSeries.keys.getViewport()))
     }
     Chart(
         modifier = modifier,
@@ -147,13 +144,6 @@ private fun Chart(
                 val points = mutableListOf<BoundingShape>()
                 // TODO this can be used to simplify other calls e.g. rendering grid
                 with(RendererScope(this, rendererContext)) {
-                    points += scope.series.flatMap { (series, renderer) ->
-                        with(renderer) { render(series) }
-                    }
-                    points += scope.groupedSeries.flatMap { (series, renderer) ->
-                        with(renderer) { render(series) }
-                    }
-
                     scope
                         .newSeries
                         .onEach { (series, other) ->
@@ -161,7 +151,8 @@ private fun Chart(
                             val rendererPoints = series
                                 .map { with(it) { toRendererPoint(chartContext) } }
 
-                            rendererPoints.forEachIndexed { index, point ->
+                            rendererPoints.forEachIndexed { index, _ ->
+                                // TODO process whole series at once, no need to render separately?
                                 with(drawer) { draw(index, rendererPoints) }
                                 points += boundsProvider.provide(index, rendererPoints)
                             }
