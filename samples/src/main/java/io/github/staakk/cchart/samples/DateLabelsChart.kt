@@ -77,13 +77,13 @@ object DateLabelsProvider : LabelsProvider {
     private val formatter = DateTimeFormatter.ofPattern(pattern)
 
     override fun provide(min: Float, max: Float): List<Pair<String, Float>> {
-        var currentDate = LocalDate.ofEpochDay(min.toLong()).withDayOfMonth(1)
-        val endDate = LocalDate.ofEpochDay(max.toLong()).withDayOfMonth(1)
+        var startDate = LocalDate.of(2020, 10, 1)
+        val endDate = LocalDate.of(2020, 12, 1)
 
         val labels = mutableListOf<Pair<String, Float>>()
-        while (currentDate.isBefore(endDate)) {
-            labels.add(currentDate.format(formatter) to currentDate.toEpochDay().toFloat())
-            currentDate = currentDate.plusMonths(1)
+        while (startDate.isBefore(endDate.plusDays(1))) {
+            labels.add(startDate.format(formatter) to startDate.toEpochDay().toFloat())
+            startDate = startDate.plusMonths(1)
         }
         return labels
     }
