@@ -1,6 +1,6 @@
 package io.github.staakk.cchart.grid
 
-import io.github.staakk.cchart.renderer.grid.GridLinesProviders
+import io.github.staakk.cchart.grid.GridLinesProviders
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

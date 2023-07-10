@@ -7,10 +7,10 @@ import androidx.compose.ui.graphics.SolidColor
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.features
-import io.github.staakk.cchart.renderer.grid.Grid
+import io.github.staakk.cchart.grid.Grid
 import io.github.staakk.cchart.style.lineStyle
-import io.github.staakk.cchart.renderer.grid.GridLinesProviders
-import io.github.staakk.cchart.renderer.grid.GridOrientation
+import io.github.staakk.cchart.grid.GridLinesProviders
+import io.github.staakk.cchart.grid.GridOrientation
 import org.junit.Rule
 import org.junit.Test
 
