@@ -72,6 +72,6 @@ test-tools = [
 android-application = { id = "com.android.application", version.ref = "androidGradlePluginVersion" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePluginVersion" }
 
-dokka = { id = "org.jetbrains.dokka", version = "1.4.32" }
+dokka = { id = "org.jetbrains.dokka", version = "1.8.20" }
 versions = { id = "com.github.ben-manes.versions", version = "0.39.0" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazziVersion" }

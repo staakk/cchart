@@ -12,15 +12,15 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.renderer.axis.Axis
-import io.github.staakk.cchart.renderer.axis.AxisOrientation.Companion.Horizontal
-import io.github.staakk.cchart.renderer.axis.AxisOrientation.Companion.Vertical
+import io.github.staakk.cchart.axis.Axis
+import io.github.staakk.cchart.axis.AxisOrientation.Companion.Horizontal
+import io.github.staakk.cchart.axis.AxisOrientation.Companion.Vertical
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.features
-import io.github.staakk.cchart.renderer.label.Labels.Companion.horizontalLabels
-import io.github.staakk.cchart.renderer.label.Labels.Companion.verticalLabels
-import io.github.staakk.cchart.renderer.point.DrawPoints
+import io.github.staakk.cchart.label.Labels.Companion.horizontalLabels
+import io.github.staakk.cchart.label.Labels.Companion.verticalLabels
+import io.github.staakk.cchart.point.DrawPoints
 import io.github.staakk.cchart.style.PrimitiveStyle
 
 @Composable

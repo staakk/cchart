@@ -14,10 +14,10 @@ import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
 import io.github.staakk.cchart.features
-import io.github.staakk.cchart.renderer.label.Labels
-import io.github.staakk.cchart.renderer.axis.Axis
-import io.github.staakk.cchart.renderer.axis.AxisOrientation
-import io.github.staakk.cchart.renderer.bar.BarProcessor
+import io.github.staakk.cchart.label.Labels
+import io.github.staakk.cchart.axis.Axis
+import io.github.staakk.cchart.axis.AxisOrientation
+import io.github.staakk.cchart.bar.BarProcessor
 import io.github.staakk.cchart.style.PrimitiveStyle
 
 @Composable

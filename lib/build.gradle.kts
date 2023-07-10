@@ -50,3 +50,9 @@ afterEvaluate {
         }
     }
 }
+tasks.dokkaHtml {
+    moduleName.set(project.rootProject.name)
+    moduleVersion.set(project.version.toString())
+    failOnWarning.set(false)
+    outputDirectory.set(File("${project.rootDir}/docs"))
+}

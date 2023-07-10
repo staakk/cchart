@@ -19,12 +19,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import io.github.staakk.cchart.data.Data
-import io.github.staakk.cchart.renderer.BoundingShape
+import io.github.staakk.cchart.bounds.Bounds
 
 @Composable
 internal fun DataLabels(
     modifier: Modifier,
-    renderedShapes: List<BoundingShape>,
+    renderedShapes: List<Bounds>,
     canvasSize: Size,
     labelContent: @Composable AnchorScope.() -> Unit,
 ) {

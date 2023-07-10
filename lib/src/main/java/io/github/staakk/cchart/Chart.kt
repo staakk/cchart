@@ -12,6 +12,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import io.github.staakk.cchart.bounds.Bounds
 import io.github.staakk.cchart.data.*
 import io.github.staakk.cchart.data.Viewport.Companion.getViewport
 import io.github.staakk.cchart.renderer.*
@@ -96,7 +97,7 @@ private fun Chart(
 ) {
     BoxWithConstraints(modifier = modifier) {
         val density = LocalDensity.current
-        val renderedPoints = remember { mutableStateOf(listOf<BoundingShape>()) }
+        val renderedPoints = remember { mutableStateOf(listOf<Bounds>()) }
         val canvasSize = with(density) { Size(width = maxWidth.toPx(), height = maxHeight.toPx()) }
         val rendererContext = chartContext(viewport.value, canvasSize)
 

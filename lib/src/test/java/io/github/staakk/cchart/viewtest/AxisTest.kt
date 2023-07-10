@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.renderer.axis.Axis
-import io.github.staakk.cchart.renderer.axis.AxisOrientation.Companion.Horizontal
-import io.github.staakk.cchart.renderer.axis.AxisOrientation.Companion.Vertical
+import io.github.staakk.cchart.axis.Axis
+import io.github.staakk.cchart.axis.AxisOrientation.Companion.Horizontal
+import io.github.staakk.cchart.axis.AxisOrientation.Companion.Vertical
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.features
 import org.junit.Rule

@@ -17,7 +17,7 @@ import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
 import io.github.staakk.cchart.data.seriesOf
-import io.github.staakk.cchart.renderer.point.DrawPoints
+import io.github.staakk.cchart.point.DrawPoints
 import io.github.staakk.cchart.style.PrimitiveStyle
 import org.junit.Rule
 import org.junit.Test

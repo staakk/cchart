@@ -1,10 +1,10 @@
 package io.github.staakk.cchart
 
 import androidx.compose.runtime.Composable
+import io.github.staakk.cchart.bounds.BoundsProvider
 import io.github.staakk.cchart.data.Data
 import io.github.staakk.cchart.data.Series
-import io.github.staakk.cchart.renderer.BoundingShapeProvider
-import io.github.staakk.cchart.renderer.NoBoundingShape
+import io.github.staakk.cchart.bounds.NoBounds
 import io.github.staakk.cchart.renderer.PointsRenderer
 import io.github.staakk.cchart.renderer.Renderer
 
@@ -16,7 +16,7 @@ interface ChartScope {
     fun series(
         series: Series,
         drawer: PointsRenderer,
-        boundingShapeProvider: BoundingShapeProvider = NoBoundingShape,
+        boundsProvider: BoundsProvider = NoBounds,
     )
 
     fun feature(renderer: Renderer)
@@ -38,7 +38,7 @@ fun ChartScope.features(vararg renderers: Renderer) {
 
 internal class ChartScopeImpl : ChartScope {
 
-    val series = mutableMapOf<Series, Pair<PointsRenderer, BoundingShapeProvider>>()
+    val series = mutableMapOf<Series, Pair<PointsRenderer, BoundsProvider>>()
 
     val renderers = mutableListOf<Renderer>()
 
@@ -53,9 +53,9 @@ internal class ChartScopeImpl : ChartScope {
     override fun series(
         series: Series,
         drawer: PointsRenderer,
-        boundingShapeProvider: BoundingShapeProvider
+        boundsProvider: BoundsProvider
     ) {
-        this.series[series] = drawer to boundingShapeProvider
+        this.series[series] = drawer to boundsProvider
     }
 
     override fun anchor(data: Data<*>, content: @Composable AnchorScope.() -> Unit) {

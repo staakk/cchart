@@ -1,6 +1,7 @@
 package io.github.staakk.cchart.renderer
 
 import androidx.compose.ui.geometry.Offset
+import io.github.staakk.cchart.ChartContext
 import io.github.staakk.cchart.data.Data
 
 data class RendererPoint<out T: Data<T>>(
