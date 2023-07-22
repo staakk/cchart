@@ -9,10 +9,10 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Fill
 
-class PrimitiveStyle constructor(
-    var alpha: Float = 1.0f,
-    var brush: Brush = SolidColor(Color.Black),
-    var style: DrawStyle = Fill,
-    var colorFilter: ColorFilter? = null,
-    var blendMode: BlendMode = DrawScope.DefaultBlendMode,
+data class PrimitiveStyle constructor(
+    val alpha: Float = 1.0f,
+    val brush: Brush = SolidColor(Color.Black),
+    val style: DrawStyle = Fill,
+    val colorFilter: ColorFilter? = null,
+    val blendMode: BlendMode = DrawScope.DefaultBlendMode,
 )

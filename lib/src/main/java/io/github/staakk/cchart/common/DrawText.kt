@@ -53,7 +53,7 @@ fun DrawScope.drawText(
 @Preview
 @Composable
 @OptIn(ExperimentalTextApi::class)
-fun PreviewDrawText() {
+private fun PreviewDrawText() {
     val density = LocalDensity.current
     val midPx = with(density) { 50.dp.toPx() }
     val textMeasurer = rememberTextMeasurer()

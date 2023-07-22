@@ -10,14 +10,12 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 
-fun lineStyle(builder: LineStyle.() -> Unit): LineStyle = LineStyle().apply(builder)
-
-class LineStyle constructor(
-    var alpha: Float = 1.0f,
-    var brush: Brush = SolidColor(Color.Black),
-    var strokeWidth: Float = Stroke.HairlineWidth,
-    var pathEffect: PathEffect? = null,
-    var cap: StrokeCap = Stroke.DefaultCap,
-    var colorFilter: ColorFilter? = null,
-    var blendMode: BlendMode = DrawScope.DefaultBlendMode,
+data class LineStyle constructor(
+    val alpha: Float = 1.0f,
+    val brush: Brush = SolidColor(Color.Black),
+    val strokeWidth: Float = Stroke.HairlineWidth,
+    val pathEffect: PathEffect? = null,
+    val cap: StrokeCap = Stroke.DefaultCap,
+    val colorFilter: ColorFilter? = null,
+    val blendMode: BlendMode = DrawScope.DefaultBlendMode,
 )

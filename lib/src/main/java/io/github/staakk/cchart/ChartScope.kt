@@ -1,10 +1,10 @@
 package io.github.staakk.cchart
 
 import androidx.compose.runtime.Composable
-import io.github.staakk.cchart.bounds.BoundsProvider
 import io.github.staakk.cchart.data.Point
 import io.github.staakk.cchart.data.Series
-import io.github.staakk.cchart.bounds.NoBounds
+import io.github.staakk.cchart.bounds.BoundsProvider
+import io.github.staakk.cchart.bounds.BoundsProvider.Companion.NoBounds
 import io.github.staakk.cchart.renderer.PointsRenderer
 import io.github.staakk.cchart.renderer.Renderer
 

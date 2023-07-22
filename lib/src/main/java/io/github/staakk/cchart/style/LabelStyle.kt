@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 
-class LabelStyle(
+data class LabelStyle(
     val brush: Brush = SolidColor(Color.Black),
     val textStyle: TextStyle = TextStyle.Default.copy(fontSize = 12.sp),
     val alignment: Alignment = Alignment.TopCenter,

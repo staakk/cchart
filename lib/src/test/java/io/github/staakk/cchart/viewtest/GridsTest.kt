@@ -8,9 +8,9 @@ import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.features
 import io.github.staakk.cchart.grid.Grid
-import io.github.staakk.cchart.style.lineStyle
 import io.github.staakk.cchart.grid.GridLinesProviders
 import io.github.staakk.cchart.grid.GridOrientation
+import io.github.staakk.cchart.style.LineStyle
 import org.junit.Rule
 import org.junit.Test
 
@@ -39,7 +39,7 @@ class GridsTest {
         Grid(
             orientation = GridOrientation.Vertical,
             gridLinesProvider = GridLinesProviders.multiple(1f / 3f),
-            lineStyle { brush = SolidColor(Color.Red) }
+            lineStyle = LineStyle(brush = SolidColor(Color.Red)),
         ),
     )
 
@@ -52,7 +52,7 @@ class GridsTest {
         Grid(
             orientation = GridOrientation.Horizontal,
             gridLinesProvider = GridLinesProviders.multiple(1f / 3f),
-            lineStyle { brush = SolidColor(Color.Red) }
+            lineStyle = LineStyle(brush = SolidColor(Color.Red)),
         ),
     )
 

@@ -38,7 +38,6 @@ import io.github.staakk.cchart.point.DrawPoints
 import io.github.staakk.cchart.style.LabelStyle
 import io.github.staakk.cchart.style.LineStyle
 import io.github.staakk.cchart.style.PrimitiveStyle
-import io.github.staakk.cchart.style.lineStyle
 import org.junit.Rule
 import org.junit.Test
 import java.time.LocalDate
@@ -96,18 +95,18 @@ class ReadmeGalleryTest {
                     DrawLine(LineStyle(brush = SolidColor(Blue), strokeWidth = 5f))
                 )
 
-                val lineStyle = lineStyle { brush = SolidColor(DarkGrey) }
+                val lineStyle = LineStyle(brush = SolidColor(DarkGrey))
                 features(
                     Axis(AxisOrientation.Horizontal, 0.0f, lineStyle),
                     Axis(AxisOrientation.Vertical, 0.0f, lineStyle),
                     Grid(
                         orientation = GridOrientation.Horizontal,
-                        lineStyle = lineStyle { brush = SolidColor(LightGrey) }
+                        lineStyle = LineStyle(brush = SolidColor(LightGrey))
                     ),
                     *labels,
                 )
             }
-            //endtag=line_chart
+            //ndtag=line_chart
         }
     }
 
@@ -182,7 +181,7 @@ class ReadmeGalleryTest {
                     )
                 )
 
-                val lineStyle = lineStyle { brush = SolidColor(DarkGrey) }
+                val lineStyle = LineStyle(brush = SolidColor(DarkGrey))
                 features(
                     Axis(AxisOrientation.Horizontal, 0.0f, lineStyle),
                     Axis(AxisOrientation.Vertical, 0.0f, lineStyle),
@@ -290,16 +289,16 @@ class ReadmeGalleryTest {
                 )
 
                 features(
-                    Axis(AxisOrientation.Vertical, 0.0f, lineStyle { brush = SolidColor(Blue) }),
-                    Axis(AxisOrientation.Vertical, 1.0f, lineStyle { brush = SolidColor(Green) }),
+                    Axis(AxisOrientation.Vertical, 0.0f, LineStyle(brush = SolidColor(Blue))),
+                    Axis(AxisOrientation.Vertical, 1.0f, LineStyle(brush = SolidColor(Green))),
                     Axis(
                         AxisOrientation.Horizontal,
                         0.0f,
-                        lineStyle { brush = SolidColor(DarkGrey) }
+                        LineStyle(brush = SolidColor(DarkGrey)),
                     ),
                     Grid(
                         orientation = GridOrientation.Horizontal,
-                        lineStyle = lineStyle { brush = SolidColor(LightGrey) }
+                        lineStyle = LineStyle(brush = SolidColor(LightGrey)),
                     ),
                     verticalLabel1,
                     verticalLabel2,
