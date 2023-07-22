@@ -27,7 +27,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized::class)
-class DataLabelsTest {
+class PointLabelsTest {
 
     companion object {
         @Parameterized.Parameters
@@ -87,7 +87,7 @@ class DataLabelsTest {
                 dataLabels {
                     Text(
                         modifier = Modifier.align(alignment),
-                        text = "(${data.x}, ${data.y})"
+                        text = "(${point.x}, ${point.y})"
                     )
                 }
             }

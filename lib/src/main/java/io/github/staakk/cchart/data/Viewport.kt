@@ -87,7 +87,7 @@ data class Viewport(
     }
 
     @Suppress("BooleanMethodIsAlwaysInverted")
-    fun contains(data: Data<*>) = data.x in minX..maxX && data.y in minY..maxY
+    fun contains(point: Point<*>) = point.x in minX..maxX && point.y in minY..maxY
 
     operator fun plus(other: Viewport) = Viewport(
         minX = min(minX, other.minX),

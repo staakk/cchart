@@ -193,7 +193,7 @@ class ReadmeGalleryTest {
                 dataLabels {
                     Text(
                         modifier = Modifier.align(Alignment.BottomCenter),
-                        text = "${data.y.toInt()}%",
+                        text = "${point.y.toInt()}%",
                         style = TextStyle(fontSize = 12.sp)
                     )
                 }

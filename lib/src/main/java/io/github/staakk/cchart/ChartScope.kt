@@ -2,7 +2,7 @@ package io.github.staakk.cchart
 
 import androidx.compose.runtime.Composable
 import io.github.staakk.cchart.bounds.BoundsProvider
-import io.github.staakk.cchart.data.Data
+import io.github.staakk.cchart.data.Point
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.bounds.NoBounds
 import io.github.staakk.cchart.renderer.PointsRenderer
@@ -22,9 +22,9 @@ interface ChartScope {
     fun feature(renderer: Renderer)
 
     /**
-     * Adds composable view at the place represented by [data].
+     * Adds composable view at the place represented by [point].
      */
-    fun anchor(data: Data<*>, content: @Composable AnchorScope.() -> Unit)
+    fun anchor(point: Point<*>, content: @Composable AnchorScope.() -> Unit)
 
     /**
      * Adds labels defined by [content] to the data on the chart.
@@ -42,7 +42,7 @@ internal class ChartScopeImpl : ChartScope {
 
     val renderers = mutableListOf<Renderer>()
 
-    val anchors = mutableMapOf<Data<*>, @Composable AnchorScope.() -> Unit>()
+    val anchors = mutableMapOf<Point<*>, @Composable AnchorScope.() -> Unit>()
 
     val dataLabels = mutableListOf<@Composable AnchorScope.() -> Unit>()
 
@@ -58,8 +58,8 @@ internal class ChartScopeImpl : ChartScope {
         this.series[series] = drawer to boundsProvider
     }
 
-    override fun anchor(data: Data<*>, content: @Composable AnchorScope.() -> Unit) {
-        anchors[data] = content
+    override fun anchor(point: Point<*>, content: @Composable AnchorScope.() -> Unit) {
+        anchors[point] = content
     }
 
     override fun dataLabels(content: @Composable AnchorScope.() -> Unit) {

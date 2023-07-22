@@ -65,7 +65,7 @@ fun LabeledPointsScreen() {
                 modifier = Modifier
                     .padding(bottom = 4.dp)
                     .align(Alignment.Center),
-                text = "(${String.format("%.2f", data.x)}, ${String.format("%.2f", data.y)})"
+                text = "(${String.format("%.2f", point.x)}, ${String.format("%.2f", point.y)})"
             )
         }
     }

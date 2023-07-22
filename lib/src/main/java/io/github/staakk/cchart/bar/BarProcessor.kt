@@ -33,7 +33,7 @@ class BarProcessor(
                 val oddOffset = (points.size % 2) * halfWidth
 
                 val x = rendererX + barPositionInGroup - oddOffset
-                val y = this@draw.chartContext.toRendererHeight(point.data.y)
+                val y = this@draw.chartContext.toRendererHeight(point.point.y)
 
                 val baseLeft = Offset(x, this@draw.chartContext.toRendererY(0f))
                 val barSize = sizeTransform(Size(width, y))
@@ -51,7 +51,7 @@ class BarProcessor(
                 }
 
                 drawnShapes += Bounds.Rect(
-                    data = point.data,
+                    point = point.point,
                     labelAnchorX = baseLeft.x + barSize.width / 2,
                     labelAnchorY = baseLeft.y - barSize.height,
                     topLeft = baseLeft.copy(y = baseLeft.y - barSize.height),

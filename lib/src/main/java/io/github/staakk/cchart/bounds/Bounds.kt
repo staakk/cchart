@@ -1,13 +1,13 @@
 package io.github.staakk.cchart.bounds
 
 import androidx.compose.ui.geometry.Offset
-import io.github.staakk.cchart.data.Data
+import io.github.staakk.cchart.data.Point
 import io.github.staakk.cchart.data.pointOf
 import kotlin.math.pow
 
 sealed class Bounds {
 
-    abstract val data: Data<*>
+    abstract val point: Point<*>
 
     /**
      * Horizontal position at which label should be anchored.
@@ -25,7 +25,7 @@ sealed class Bounds {
     abstract fun contains(offset: Offset): Boolean
 
     data class Circle(
-        override val data: Data<*>,
+        override val point: Point<*>,
         override val labelAnchorX: Float,
         override val labelAnchorY: Float,
         val center: Offset,
@@ -37,7 +37,7 @@ sealed class Bounds {
     }
 
     data class Rect(
-        override val data: Data<*>,
+        override val point: Point<*>,
         override val labelAnchorX: Float,
         override val labelAnchorY: Float,
         val topLeft: Offset,
@@ -50,7 +50,7 @@ sealed class Bounds {
     }
 
     object None: Bounds() {
-        override val data: Data<*> = pointOf(0, 0)
+        override val point: Point<*> = pointOf(0, 0)
         override val labelAnchorX: Float = 0f
         override val labelAnchorY: Float = 0f
         override fun contains(offset: Offset): Boolean = false

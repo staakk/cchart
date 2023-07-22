@@ -5,15 +5,13 @@ package io.github.staakk.cchart.data
  *
  * @param data Data in this series.
  */
-class Series(
-    data: List<Data<*>>,
-): List<Data<*>> by data
+class Series(data: List<Point<*>>): List<Point<*>> by data
 
-fun seriesOf(vararg data: Data<*>) = Series(data.toList())
+fun seriesOf(vararg data: Point<*>) = Series(data.toList())
 
 fun seriesOf(vararg data: Pair<Number, Number>) =
     Series(
         data
             .toList()
-            .map { (x, y) -> Data.Point(x.toFloat(), y.toFloat()) }
+            .map { (x, y) -> pointOf(x.toFloat(), y.toFloat()) }
     )

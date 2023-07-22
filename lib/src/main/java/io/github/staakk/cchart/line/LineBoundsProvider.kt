@@ -11,7 +11,7 @@ class LineBoundsProvider(
     override fun provide(rendererPoints: List<RendererPoint<*>>): List<Bounds> {
         return rendererPoints.map {
             Bounds.Circle(
-                data = it.data,
+                point = it.point,
                 labelAnchorX = it.x,
                 labelAnchorY = it.y,
                 center = it.toOffset(),

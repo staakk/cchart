@@ -20,7 +20,7 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
-import io.github.staakk.cchart.data.Data
+import io.github.staakk.cchart.data.Point
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.features
@@ -39,7 +39,7 @@ fun PopupChartScreen() {
         verticalLabels(),
     )
     val pointSize = with(LocalDensity.current) { Size(8.dp.toPx(), 8.dp.toPx()) }
-    val popupPosition = remember { mutableStateOf<Pair<Data<*>, Offset>?>(null)}
+    val popupPosition = remember { mutableStateOf<Pair<Point<*>, Offset>?>(null)}
     Chart(
         modifier = Modifier
             .padding(start = 32.dp, bottom = 32.dp)

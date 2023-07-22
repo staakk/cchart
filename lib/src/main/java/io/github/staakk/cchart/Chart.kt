@@ -37,7 +37,7 @@ fun Chart(
     minViewportSize: Size? = viewport?.size,
     maxViewportSize: Size? = viewport?.size,
     enableZoom: Boolean = false,
-    onClick: (Offset, Data<*>) -> Unit = { _, _ -> },
+    onClick: (Offset, Point<*>) -> Unit = { _, _ -> },
     content: ChartScope.() -> Unit
 ) {
     val scope = ChartScopeImpl()
@@ -66,7 +66,7 @@ fun Chart(
     minViewportSize: Size = chartState.viewport.size,
     maxViewportSize: Size = chartState.viewport.size,
     enableZoom: Boolean = false,
-    onClick: (Offset, Data<*>) -> Unit = { _, _ -> },
+    onClick: (Offset, Point<*>) -> Unit = { _, _ -> },
     content: ChartScope.() -> Unit
 ) {
     val scope = ChartScopeImpl()
@@ -92,7 +92,7 @@ private fun Chart(
     minViewportSize: Size = viewport.value.size,
     maxViewportSize: Size = viewport.value.size,
     enableZoom: Boolean = false,
-    onClick: (Offset, Data<*>) -> Unit,
+    onClick: (Offset, Point<*>) -> Unit,
     scope: ChartScopeImpl
 ) {
     BoxWithConstraints(modifier = modifier) {
@@ -126,7 +126,7 @@ private fun Chart(
                     detectTapGestures { offset ->
                         val point = renderedPoints.value
                             .firstOrNull { it.contains(offset) }
-                            ?.data
+                            ?.point
                             ?: pointOf(
                                 rendererContext.toChartX(offset.x),
                                 rendererContext.toChartY(offset.y)
@@ -142,7 +142,7 @@ private fun Chart(
                 .flatMap { (series, other) ->
                     val (drawer, boundsProvider) = other
                     val rendererPoints = series
-                        .map { with(it) { toRendererPoint(rendererScope.chartContext) } }
+                        .map { it.toRendererPoint(rendererScope.chartContext) }
 
                     with(drawer) { rendererScope.draw(rendererPoints) }
                     boundsProvider.provide(rendererPoints)
