@@ -21,6 +21,7 @@ import io.github.staakk.cchart.label.Labels
 import io.github.staakk.cchart.axis.Axis
 import io.github.staakk.cchart.axis.AxisOrientation
 import io.github.staakk.cchart.point.DrawPoints
+import io.github.staakk.cchart.point.PointBoundsProvider
 import io.github.staakk.cchart.style.PrimitiveStyle
 
 
@@ -51,7 +52,8 @@ fun LabeledPointsScreen() {
             DrawPoints(
                 pointSize,
                 PrimitiveStyle(brush = SolidColor(Colors.Red)),
-            )
+            ),
+            PointBoundsProvider(Size(1f, 1f))
         )
 
         features(

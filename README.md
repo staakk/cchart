@@ -6,6 +6,8 @@ Flexible and simple library for creating charts using Jetpack Compose.
 
 __Note__: currently this library is under development and is using some beta/alpha release components.
 
+![Image of the chart](lib/src/test/snapshots/images/io.github.staakk.cchart.readme_ReadmeImageTest_recordReadmeImage.png)
+
 ## How to use __cchart__
 
 You can find the documentation here [staakk.github.io/cchart/](https://staakk.github.io/cchart/)

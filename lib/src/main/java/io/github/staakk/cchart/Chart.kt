@@ -100,7 +100,6 @@ private fun Chart(
         val renderedPoints = remember { mutableStateOf(listOf<Bounds>()) }
         val canvasSize = with(density) { Size(width = maxWidth.toPx(), height = maxHeight.toPx()) }
         val rendererContext = chartContext(viewport.value, canvasSize)
-
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
