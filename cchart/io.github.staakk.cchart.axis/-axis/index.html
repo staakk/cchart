@@ -58,7 +58,40 @@
   <div class="breadcrumbs"><a href="../../../index.html">cchart</a><span class="delimiter">/</span><a href="../index.html">io.github.staakk.cchart.axis</a><span class="delimiter">/</span><span class="current">Axis</span></div>
   <div class="cover ">
     <h1 class="cover"><span><span>Axis</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":lib:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">Axis</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">orientation<span class="token operator">: </span><a href="../-axis-orientation/index.html">AxisOrientation</a><span class="token punctuation">, </span></span><span class="parameter ">positionPercent<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">style<span class="token operator">: </span><a href="../../io.github.staakk.cchart.style/-line-style/index.html">LineStyle</a><span class="token operator"> = </span>LineStyle()</span></span><span class="token punctuation">)</span> : <a href="../../io.github.staakk.cchart.renderer/-renderer/index.html">Renderer</a></div><p class="paragraph">Axis to render on the chart.</p><h4 class="">Samples</h4>io.github.staakk.cchart.axis.AxisTest.AxisSample</div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":lib:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">Axis</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">orientation<span class="token operator">: </span><a href="../-axis-orientation/index.html">AxisOrientation</a><span class="token punctuation">, </span></span><span class="parameter ">positionPercent<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">style<span class="token operator">: </span><a href="../../io.github.staakk.cchart.style/-line-style/index.html">LineStyle</a><span class="token operator"> = </span>LineStyle()</span></span><span class="token punctuation">)</span> : <a href="../../io.github.staakk.cchart.renderer/-renderer/index.html">Renderer</a></div><p class="paragraph">Axis to render on the chart.</p><h4 class="">Samples</h4><div class="sample-container"><pre><code class="runnablesample monospace block lang-kotlin" theme="idea">import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
+import io.github.staakk.cchart.Chart
+import io.github.staakk.cchart.data.Viewport
+import io.github.staakk.cchart.features
+import io.github.staakk.cchart.style.LineStyle
+fun main() { 
+   //sampleStart 
+   val strokeWidth = with(LocalDensity.current) { 2.dp.toPx() }
+Chart(
+    modifier = Modifier.aspectRatio(1f, false),
+    viewport = Viewport(0f, 10f, 0f, 5f)
+) {
+    // Rest of the chart configuration
+
+    features(
+        // Creates horizontal axis at the left side with 2dp width and black color.
+        Axis(
+            orientation = AxisOrientation.Horizontal,
+            positionPercent = 0f,
+            style = LineStyle(
+                strokeWidth = strokeWidth,
+                brush = SolidColor(Color.Black),
+            )
+        )
+    )
+} 
+   //sampleEnd
+}</code></pre></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
