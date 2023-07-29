@@ -54,4 +54,9 @@ tasks.dokkaHtml {
     moduleName.set(project.rootProject.name)
     moduleVersion.set(project.version.toString())
     failOnWarning.set(false)
+    dokkaSourceSets {
+        configureEach {
+            samples.from("$projectDir/src/test/java")
+        }
+    }
 }

@@ -24,7 +24,7 @@ import org.junit.Test
 
 class BarChartTest {
     @get:Rule
-    val paparazzi = createPaparazziRule()
+    val paparazzi = createFullScreenPaparazziRule()
 
     @Test
     fun barChart() {

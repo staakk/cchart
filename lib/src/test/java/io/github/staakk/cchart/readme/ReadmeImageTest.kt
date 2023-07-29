@@ -12,6 +12,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
@@ -19,7 +20,6 @@ import androidx.compose.ui.unit.sp
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.axis.Axis
 import io.github.staakk.cchart.axis.AxisOrientation
-import io.github.staakk.cchart.createPaparazziRule
 import io.github.staakk.cchart.data.Series
 import io.github.staakk.cchart.data.Viewport
 import io.github.staakk.cchart.data.pointOf
@@ -33,6 +33,7 @@ import io.github.staakk.cchart.point.PointBoundsProvider
 import io.github.staakk.cchart.style.LabelStyle
 import io.github.staakk.cchart.style.LineStyle
 import io.github.staakk.cchart.style.PrimitiveStyle
+import io.github.staakk.cchart.viewtest.createViewPaparazziRule
 import org.junit.Rule
 import org.junit.Test
 
@@ -47,11 +48,12 @@ private val data = (1..10)
 class ReadmeImageTest {
 
     @get:Rule
-    val paparazzi = createPaparazziRule()
+    val paparazzi = createViewPaparazziRule()
 
     @Test
     fun recordReadmeImage() {
-        paparazzi.snapshot {
+        val hostView = ComposeView(paparazzi.context)
+        hostView.setContent {
             val pointSize: Size
             val strokeWidth: Float
             val axisWidth: Float
@@ -143,5 +145,6 @@ class ReadmeImageTest {
                 }
             }
         }
+        paparazzi.snapshot(hostView)
     }
 }

@@ -60,7 +60,7 @@ private val LightGrey = Color(0xFF424242)
 
 class ReadmeGalleryTest {
     @get:Rule
-    val paparazzi = createPaparazziRule()
+    val paparazzi = createFullScreenPaparazziRule()
 
     @Test
     fun lineChart() {

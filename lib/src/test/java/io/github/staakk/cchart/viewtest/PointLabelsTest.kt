@@ -49,7 +49,7 @@ class PointLabelsTest {
     lateinit var alignment: Alignment
 
     @get:Rule
-    val paparazzi = createPaparazziRule()
+    val paparazzi = createFullScreenPaparazziRule()
 
     @Test
     fun dataLabels() {

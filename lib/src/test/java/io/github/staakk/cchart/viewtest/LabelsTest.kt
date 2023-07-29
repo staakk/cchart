@@ -25,7 +25,7 @@ import org.junit.Test
 
 class LabelsTest {
     @get:Rule
-    val paparazzi = createPaparazziRule()
+    val paparazzi = createFullScreenPaparazziRule()
 
     @Test
     fun labelsOptions() {

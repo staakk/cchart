@@ -23,7 +23,7 @@ import org.junit.Test
 
 class LineChartTest {
     @get:Rule
-    val paparazzi = createPaparazziRule()
+    val paparazzi = createFullScreenPaparazziRule()
 
     @Test
     fun lineChart() {

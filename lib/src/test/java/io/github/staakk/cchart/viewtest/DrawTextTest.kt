@@ -41,7 +41,7 @@ class DrawTextTest {
     lateinit var legacyAlignment: Pair<Alignment, String>
 
     @get:Rule
-    val paparazzi = createPaparazziRule()
+    val paparazzi = createFullScreenPaparazziRule()
 
     @Test
     @OptIn(ExperimentalTextApi::class)

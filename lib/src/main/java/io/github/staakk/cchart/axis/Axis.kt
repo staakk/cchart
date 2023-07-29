@@ -5,6 +5,11 @@ import io.github.staakk.cchart.renderer.Renderer
 import io.github.staakk.cchart.renderer.RendererScope
 import io.github.staakk.cchart.style.LineStyle
 
+/**
+ * Axis to render on the chart.
+ *
+ * @sample io.github.staakk.cchart.axis.AxisSample
+ */
 class Axis(
     private val orientation: AxisOrientation,
     private val positionPercent: Float,

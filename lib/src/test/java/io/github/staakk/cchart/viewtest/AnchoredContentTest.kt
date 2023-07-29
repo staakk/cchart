@@ -24,7 +24,7 @@ import org.junit.Test
 
 class AnchoredContentTest {
     @get:Rule
-    val paparazzi = createPaparazziRule()
+    val paparazzi = createFullScreenPaparazziRule()
 
     @Test
     fun anchoredContentTest() {

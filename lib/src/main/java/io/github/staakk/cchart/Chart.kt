@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -95,9 +97,9 @@ private fun Chart(
     onClick: (Offset, Point<*>) -> Unit,
     scope: ChartScopeImpl
 ) {
+    var renderedPoints by remember { mutableStateOf(listOf<Bounds>()) }
     BoxWithConstraints(modifier = modifier) {
         val density = LocalDensity.current
-        val renderedPoints = remember { mutableStateOf(listOf<Bounds>()) }
         val canvasSize = with(density) { Size(width = maxWidth.toPx(), height = maxHeight.toPx()) }
         val rendererContext = chartContext(viewport.value, canvasSize)
         Canvas(
@@ -123,7 +125,7 @@ private fun Chart(
                 }
                 .pointerInput(renderedPoints) {
                     detectTapGestures { offset ->
-                        val point = renderedPoints.value
+                        val point = renderedPoints
                             .firstOrNull { it.contains(offset) }
                             ?.point
                             ?: pointOf(
@@ -136,7 +138,7 @@ private fun Chart(
         ) drawScope@{
             val rendererScope = RendererScope(this, rendererContext)
             scope.renderers.forEach { with(it) { rendererScope.draw() } }
-            renderedPoints.value = scope
+            renderedPoints = scope
                 .series
                 .flatMap { (series, other) ->
                     val (drawer, boundsProvider) = other
@@ -151,7 +153,7 @@ private fun Chart(
         scope.dataLabels.forEach {
             DataLabels(
                 modifier = Modifier,
-                renderedShapes = renderedPoints.value,
+                renderedShapes = renderedPoints,
                 canvasSize = canvasSize,
                 labelContent = it
             )

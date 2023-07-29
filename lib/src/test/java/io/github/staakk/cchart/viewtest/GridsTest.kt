@@ -16,7 +16,7 @@ import org.junit.Test
 
 class GridsTest {
     @get:Rule
-    val paparazzi = createPaparazziRule()
+    val paparazzi = createFullScreenPaparazziRule()
 
     @Test
     fun verticalGrid() = runTestFor(Grid(orientation = GridOrientation.Vertical))
