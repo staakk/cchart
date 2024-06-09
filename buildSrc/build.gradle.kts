@@ -18,10 +18,6 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        register("application") {
-            id = "staakk.android.application"
-            implementationClass = "AndroidApplicationConventionPlugin"
-        }
         register("library") {
             id = "staakk.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"

@@ -1,7 +1,8 @@
 @Suppress("DSL_SCOPE_VIOLATION") // Until Gradle 8.1
 plugins {
-    id("staakk.android.library")
-    id("staakk.android.compose")
+    id("cchart.versions-convention")
+    id("cchart.lib-android-convention")
+    id("cchart.kotlin-convention")
     alias(libs.plugins.dokka)
     alias(libs.plugins.versions)
     id("maven-publish")
@@ -16,9 +17,12 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring(libs.android.desugar)
     implementation(libs.bundles.androidx)
     implementation(libs.material)
+    implementation(libs.bundles.compose)
 
+    testImplementation(libs.bundles.compose.test)
     testImplementation(libs.bundles.test.tools)
     testImplementation(libs.bundles.androidx.test)
 }
@@ -42,7 +46,7 @@ afterEvaluate {
 
                 groupId = "io.github.staakk"
                 artifactId = "cchart"
-                version = Config.versionName
+                version = extra["versionName"] as String
 
                 artifact(sourcesJar)
                 artifact(javadocJar)
