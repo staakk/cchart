@@ -36,6 +36,4 @@ dependencies {
     implementation(compose.material)
     implementation(compose.ui)
     implementation(compose.components.uiToolingPreview)
-
-    testImplementation(libs.bundles.compose.test)
 }

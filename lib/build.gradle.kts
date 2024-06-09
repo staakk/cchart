@@ -1,3 +1,5 @@
+import org.jetbrains.compose.ExperimentalComposeLibrary
+
 plugins {
     id("cchart.versions-convention")
     id("cchart.lib-android-convention")
@@ -28,7 +30,9 @@ dependencies {
     implementation(compose.ui)
     implementation(compose.components.uiToolingPreview)
 
-    testImplementation(libs.bundles.compose.test)
+    @OptIn(ExperimentalComposeLibrary::class)
+    testImplementation(compose.uiTest)
+
     testImplementation(libs.bundles.test.tools)
     testImplementation(libs.bundles.androidx.test)
 }
