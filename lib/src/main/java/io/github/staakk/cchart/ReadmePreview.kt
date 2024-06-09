@@ -31,6 +31,7 @@ import io.github.staakk.cchart.style.LabelStyle
 import io.github.staakk.cchart.style.LineStyle
 import io.github.staakk.cchart.style.PrimitiveStyle
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import java.util.Locale
 
 private val Blue = Color(0xFF64B5F6)
 private val Green = Color(0xFF81C784)
@@ -125,7 +126,7 @@ private fun PreviewReadmeImage() {
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(bottom = 4.dp),
-                    text = "${String.format("%.0f", point.x)}, ${String.format("%.0f", point.y)}",
+                    text = "${String.format(Locale.US,"%.0f", point.x)}, ${String.format(Locale.US, "%.0f", point.y)}",
                     color = White,
                     fontSize = 10.sp
                 )

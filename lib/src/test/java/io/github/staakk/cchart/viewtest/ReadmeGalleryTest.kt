@@ -26,7 +26,6 @@ import io.github.staakk.cchart.label.Labels.Companion.horizontalLabels
 import io.github.staakk.cchart.label.Labels.Companion.labels
 import io.github.staakk.cchart.label.Labels.Companion.verticalLabels
 import io.github.staakk.cchart.label.LabelsProvider
-import io.github.staakk.cchart.*
 import io.github.staakk.cchart.axis.Axis
 import io.github.staakk.cchart.axis.AxisOrientation
 import io.github.staakk.cchart.bar.BarProcessor

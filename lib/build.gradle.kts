@@ -18,7 +18,6 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.android.desugar)
     implementation(libs.bundles.androidx)
     implementation(libs.material)
 
@@ -61,6 +60,7 @@ afterEvaluate {
         }
     }
 }
+
 tasks.dokkaHtml {
     moduleName.set(project.rootProject.name)
     moduleVersion.set(project.version.toString())

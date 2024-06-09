@@ -5,5 +5,5 @@ plugins {
 }
 
 android {
-    configureAndroid(project)
+    configureAndroid(project, desugar = false)
 }

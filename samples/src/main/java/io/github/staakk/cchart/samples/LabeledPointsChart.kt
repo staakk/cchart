@@ -22,6 +22,7 @@ import io.github.staakk.cchart.point.DrawPoints
 import io.github.staakk.cchart.point.PointBoundsProvider
 import io.github.staakk.cchart.style.PrimitiveStyle
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import java.util.Locale
 
 
 @Composable
@@ -65,7 +66,7 @@ fun LabeledPointsScreen() {
                 modifier = Modifier
                     .padding(bottom = 4.dp)
                     .align(Alignment.Center),
-                text = "(${String.format("%.2f", point.x)}, ${String.format("%.2f", point.y)})"
+                text = "(${String.format(Locale.US, "%.2f", point.x)}, ${String.format(Locale.US, "%.2f", point.y)})"
             )
         }
     }
