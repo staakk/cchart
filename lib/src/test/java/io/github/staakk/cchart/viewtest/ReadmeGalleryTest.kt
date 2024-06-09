@@ -12,7 +12,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -66,7 +65,6 @@ class ReadmeGalleryTest {
     fun lineChart() {
         paparazzi.snapshot {
             //tag=line_chart
-            @OptIn(ExperimentalTextApi::class)
             val labels = arrayOf(
                 horizontalLabels(),
                 verticalLabels(),
@@ -112,7 +110,6 @@ class ReadmeGalleryTest {
 
     @Test
     fun barChart() {
-        @OptIn(ExperimentalTextApi::class)
         paparazzi.snapshot {
             //tag=bar_chart
             val horizontalLabelRenderer = labels(
@@ -203,7 +200,6 @@ class ReadmeGalleryTest {
 
     @Test
     fun twoAxisChart() {
-        @OptIn(ExperimentalTextApi::class)
         paparazzi.snapshot {
             //tag=two_axis_chart
             val horizontalLabel = horizontalLabels()

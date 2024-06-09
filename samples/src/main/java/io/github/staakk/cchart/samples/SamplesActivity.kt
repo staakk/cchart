@@ -12,8 +12,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -50,8 +52,8 @@ class SamplesActivity : AppCompatActivity() {
 
 @Composable
 fun Content() {
-    val selected = remember { mutableStateOf(0) }
-    screens[selected.value].first()
+    var selected by remember { mutableIntStateOf(0) }
+    screens[selected].first()
 
     Text(
         modifier = Modifier
@@ -66,7 +68,7 @@ fun Content() {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { selected.value = index }
+                        .clickable { selected = index }
                         .padding(16.dp),
                     text = name,
                     style = TextStyle(fontSize = 14.sp)

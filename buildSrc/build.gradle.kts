@@ -15,17 +15,3 @@ dependencies {
     implementation(libs.kotlin.gradle)
     implementation(kotlin("android-extensions"))
 }
-
-gradlePlugin {
-    plugins {
-        register("library") {
-            id = "staakk.android.library"
-            implementationClass = "AndroidLibraryConventionPlugin"
-        }
-        register("compose") {
-            id = "staakk.android.compose"
-            implementationClass = "AndroidComposeConventionPlugin"
-        }
-    }
-}
-

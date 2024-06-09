@@ -7,8 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Series
@@ -20,10 +18,10 @@ import io.github.staakk.cchart.axis.Axis
 import io.github.staakk.cchart.axis.AxisOrientation
 import io.github.staakk.cchart.line.DrawLine
 import io.github.staakk.cchart.style.LineStyle
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun LineChartScreen() {
-    @OptIn(ExperimentalTextApi::class)
     val labels = arrayOf(
         horizontalLabels(),
         verticalLabels(),

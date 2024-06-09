@@ -10,8 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Series
@@ -23,11 +21,11 @@ import io.github.staakk.cchart.axis.AxisOrientation
 import io.github.staakk.cchart.point.DrawPoints
 import io.github.staakk.cchart.point.PointBoundsProvider
 import io.github.staakk.cchart.style.PrimitiveStyle
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
 @Composable
 fun LabeledPointsScreen() {
-    @OptIn(ExperimentalTextApi::class)
     val labels = arrayOf(
         Labels.horizontalLabels(),
         Labels.verticalLabels(),

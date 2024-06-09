@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION") // Until Gradle 8.1
 plugins {
     id("cchart.versions-convention")
     id("cchart.lib-android-convention")
@@ -7,6 +6,8 @@ plugins {
     alias(libs.plugins.versions)
     id("maven-publish")
     id(libs.plugins.paparazzi.get().pluginId)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -20,7 +21,13 @@ dependencies {
     coreLibraryDesugaring(libs.android.desugar)
     implementation(libs.bundles.androidx)
     implementation(libs.material)
-    implementation(libs.bundles.compose)
+
+    implementation(compose.animation)
+    implementation(compose.runtime)
+    implementation(compose.foundation)
+    implementation(compose.material)
+    implementation(compose.ui)
+    implementation(compose.components.uiToolingPreview)
 
     testImplementation(libs.bundles.compose.test)
     testImplementation(libs.bundles.test.tools)

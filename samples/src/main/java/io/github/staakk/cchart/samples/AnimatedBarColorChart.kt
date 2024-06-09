@@ -12,8 +12,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Viewport
@@ -26,10 +24,10 @@ import io.github.staakk.cchart.axis.Axis
 import io.github.staakk.cchart.axis.AxisOrientation
 import io.github.staakk.cchart.bar.BarProcessor
 import io.github.staakk.cchart.style.PrimitiveStyle
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AnimatedBarColorChartScreen() {
-    @OptIn(ExperimentalTextApi::class)
     val labels = arrayOf(
         horizontalLabels(),
         verticalLabels(),

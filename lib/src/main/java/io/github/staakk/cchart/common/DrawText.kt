@@ -13,21 +13,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toOffset
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
-@OptIn(ExperimentalTextApi::class)
 fun DrawScope.drawText(
     textMeasurer: TextMeasurer,
     text: String,
@@ -52,7 +50,6 @@ fun DrawScope.drawText(
 
 @Preview
 @Composable
-@OptIn(ExperimentalTextApi::class)
 private fun PreviewDrawText() {
     val density = LocalDensity.current
     val midPx = with(density) { 50.dp.toPx() }

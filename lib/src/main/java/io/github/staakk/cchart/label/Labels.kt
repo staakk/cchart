@@ -5,7 +5,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
@@ -15,7 +14,6 @@ import io.github.staakk.cchart.style.LabelStyle
 import io.github.staakk.cchart.common.applyExtendedClipping
 import io.github.staakk.cchart.common.drawText
 
-@OptIn(ExperimentalTextApi::class)
 class Labels constructor(
     private val textMeasurer: TextMeasurer,
     private val orientation: LabelOrientation,

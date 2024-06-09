@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.staakk.cchart.Chart
@@ -70,7 +69,6 @@ class ReadmeImageTest {
             val labelStyle = LabelStyle(brush = SolidColor(White))
             Surface(modifier = Modifier.background(color = LightGrey)) {
 
-                @OptIn(ExperimentalTextApi::class)
                 val labels = arrayOf(
                     Labels.horizontalLabels(
                         labelStyle = labelStyle,

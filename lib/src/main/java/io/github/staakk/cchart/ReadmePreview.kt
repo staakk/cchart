@@ -14,8 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.staakk.cchart.axis.Axis
@@ -32,6 +30,7 @@ import io.github.staakk.cchart.point.PointBoundsProvider
 import io.github.staakk.cchart.style.LabelStyle
 import io.github.staakk.cchart.style.LineStyle
 import io.github.staakk.cchart.style.PrimitiveStyle
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private val Blue = Color(0xFF64B5F6)
 private val Green = Color(0xFF81C784)
@@ -60,7 +59,6 @@ private fun PreviewReadmeImage() {
     val labelStyle = LabelStyle(brush = SolidColor(White))
     Surface(modifier = Modifier.background(color = LightGrey)) {
 
-        @OptIn(ExperimentalTextApi::class)
         val labels = arrayOf(
             Labels.horizontalLabels(
                 labelStyle = labelStyle,

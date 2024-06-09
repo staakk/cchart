@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Viewport
@@ -29,7 +28,6 @@ class LabelsTest {
 
     @Test
     fun labelsOptions() {
-        @OptIn(ExperimentalTextApi::class)
         paparazzi.snapshot {
             val verticalLabels = verticalLabels()
             val rightSideVerticalLabels = labels(
@@ -95,7 +93,6 @@ class LabelsTest {
 
     @Test
     fun multiLineLabels() {
-        @OptIn(ExperimentalTextApi::class)
         paparazzi.snapshot {
             val verticalLabels = verticalLabels(
                 labelsProvider = MultiLineLabelsProvider,

@@ -8,8 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Viewport
@@ -22,11 +20,11 @@ import io.github.staakk.cchart.axis.AxisOrientation
 import io.github.staakk.cchart.point.DrawPoints
 import io.github.staakk.cchart.style.LabelStyle
 import io.github.staakk.cchart.style.PrimitiveStyle
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun PanAndZoomScreen() {
     val pointSize = with(LocalDensity.current) { Size(8.dp.toPx(), 8.dp.toPx()) }
-    @OptIn(ExperimentalTextApi::class)
     val labels = arrayOf(
         horizontalLabels(labelStyle = LabelStyle(clip = true)),
         verticalLabels(labelStyle = LabelStyle(clip = true)),

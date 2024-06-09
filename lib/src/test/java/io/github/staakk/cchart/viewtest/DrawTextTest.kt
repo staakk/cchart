@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.common.drawText
@@ -44,7 +43,6 @@ class DrawTextTest {
     val paparazzi = createFullScreenPaparazziRule()
 
     @Test
-    @OptIn(ExperimentalTextApi::class)
     fun drawText() {
         paparazzi.snapshot {
             val density = LocalDensity.current

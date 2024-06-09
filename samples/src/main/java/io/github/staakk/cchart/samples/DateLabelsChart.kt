@@ -6,8 +6,6 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Viewport
@@ -21,12 +19,12 @@ import io.github.staakk.cchart.axis.Axis
 import io.github.staakk.cchart.axis.AxisOrientation
 import io.github.staakk.cchart.bar.BarProcessor
 import io.github.staakk.cchart.style.PrimitiveStyle
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun DateLabelsChartScreen() {
-    @OptIn(ExperimentalTextApi::class)
     val labels = arrayOf(
         horizontalLabels(labelsProvider = DateLabelsProvider),
         verticalLabels(),

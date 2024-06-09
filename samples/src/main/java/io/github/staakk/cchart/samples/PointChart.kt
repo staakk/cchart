@@ -8,8 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.axis.Axis
@@ -22,12 +20,12 @@ import io.github.staakk.cchart.label.Labels.Companion.horizontalLabels
 import io.github.staakk.cchart.label.Labels.Companion.verticalLabels
 import io.github.staakk.cchart.point.DrawPoints
 import io.github.staakk.cchart.style.PrimitiveStyle
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun PointChartScreen() {
     val pointSize = with(LocalDensity.current) { Size(8.dp.toPx(), 8.dp.toPx()) }
 
-    @OptIn(ExperimentalTextApi::class)
     val labels = arrayOf(
         horizontalLabels(),
         verticalLabels(),

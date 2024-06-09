@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
 import io.github.staakk.cchart.Chart
 import io.github.staakk.cchart.data.Viewport
@@ -28,7 +27,6 @@ class LineChartTest {
     @Test
     fun lineChart() {
         paparazzi.snapshot {
-            @OptIn(ExperimentalTextApi::class)
             val labels = arrayOf(
                 horizontalLabels(),
                 verticalLabels(),

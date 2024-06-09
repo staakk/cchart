@@ -3,13 +3,11 @@ package io.github.staakk.cchart.label
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import io.github.staakk.cchart.ChartContext
 import io.github.staakk.cchart.data.Viewport
 
-@OptIn(ExperimentalTextApi::class)
 sealed class LabelOrientation {
     abstract fun getClipExtension(
         textMeasurer: TextMeasurer,

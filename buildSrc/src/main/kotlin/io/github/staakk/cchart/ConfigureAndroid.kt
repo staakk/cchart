@@ -5,7 +5,7 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.extra
 
-fun CommonExtension<*, *, *, *>.configureAndroid(project: Project) {
+fun CommonExtension<*, *, *, *, *>.configureAndroid(project: Project) {
     compileSdk = project.extra["compileSdkVersion"] as Int
     defaultConfig.minSdk = project.extra["minSdkVersion"] as Int
 
@@ -15,19 +15,13 @@ fun CommonExtension<*, *, *, *>.configureAndroid(project: Project) {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+    buildFeatures {
+        compose = true
+    }
+
     // Find a better place for this
-    packagingOptions.resources.excludes += listOf(
+    packaging.resources.excludes += listOf(
         "META-INF/AL2.0",
         "META-INF/LGPL2.1",
     )
-
-    buildFeatures.compose = true
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = project
-            .libs
-            .findVersion("composeVersion")
-            .get()
-            .toString()
-    }
 }

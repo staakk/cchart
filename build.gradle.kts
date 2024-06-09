@@ -1,3 +1,8 @@
+plugins {
+    alias(libs.plugins.jetbrainsCompose) apply false
+    alias(libs.plugins.compose.compiler) apply false
+}
+
 buildscript {
     repositories {
         google()
@@ -14,8 +19,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        @Suppress("JcenterRepositoryObsolete", "DEPRECATION") // Required by dokka plugin
-        jcenter()
     }
 }
 
