@@ -10,7 +10,6 @@ import io.github.staakk.cchart.renderer.PointsRenderer
 import io.github.staakk.cchart.renderer.RendererPoint
 import io.github.staakk.cchart.renderer.RendererScope
 import io.github.staakk.cchart.style.PrimitiveStyle
-import java.util.SortedMap
 import kotlin.math.abs
 
 class BarProcessor(
@@ -62,11 +61,11 @@ class BarProcessor(
     }
 
     private fun getBarWidth(
-        groups: SortedMap<Float, MutableList<RendererPoint<*>>>,
+        sortedGroups: Map<Float, MutableList<RendererPoint<*>>>,
         context: ChartContext,
     ): Float {
-        val minXDistance = context.toRendererWidth(groups.keys.getMinDistance())
-        val maxItemsNo = groups.maxOfOrNull { it.value.size } ?: 1
+        val minXDistance = context.toRendererWidth(sortedGroups.keys.getMinDistance())
+        val maxItemsNo = sortedGroups.maxOfOrNull { it.value.size } ?: 1
         val pointWidth = maxItemsNo * preferredWidth
         return if (minXDistance - pointWidth < minimalSpacing) {
             (minXDistance - minimalSpacing) / maxItemsNo
