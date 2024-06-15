@@ -5,14 +5,13 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.extra
 
-fun CommonExtension<*, *, *, *, *>.configureAndroid(project: Project, desugar: Boolean = true) {
+fun CommonExtension<*, *, *, *, *>.configureAndroid(project: Project) {
     compileSdk = project.extra["compileSdkVersion"] as Int
     defaultConfig.minSdk = project.extra["minSdkVersion"] as Int
 
     compileOptions {
-        isCoreLibraryDesugaringEnabled = desugar
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     buildFeatures {

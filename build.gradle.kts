@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.jetbrainsCompose) apply false
     alias(libs.plugins.compose.compiler) apply false
+    id(libs.plugins.kotlinMultiplatform.get().pluginId) apply false
 }
 
 buildscript {
