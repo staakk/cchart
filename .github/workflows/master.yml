@@ -19,6 +19,12 @@ jobs:
         with:
           lfs: true
 
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest
 
@@ -31,7 +37,7 @@ jobs:
         with:
           name: reports
           path: |
-            lib/build/reports/
+            cchart/build/reports/
 
       - name: Publish docs
         if: ${{ github.event_name == 'push' }}
@@ -40,7 +46,7 @@ jobs:
           CI_COMMIT_AUTHOR: CI Docs Scribe
         run: |
           ./gradlew dokkaHtml
-          cp -r lib/build/dokka/html ../docs
+          cp -r cchart/build/dokka/html ../docs
           git fetch origin docs
           git checkout docs
           rm -rf ./*
