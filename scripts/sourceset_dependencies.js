@@ -1,1 +1,1 @@
-sourceset_dependencies='{":lib:dokkaHtml/debug":[],":lib:dokkaHtml/main":[],":lib:dokkaHtml/release":[]}'
+sourceset_dependencies='{":cchart:dokkaHtml/androidDebug":[":cchart:dokkaHtml/commonMain"],":cchart:dokkaHtml/androidMain":[":cchart:dokkaHtml/commonMain"],":cchart:dokkaHtml/androidRelease":[":cchart:dokkaHtml/commonMain"],":cchart:dokkaHtml/commonMain":[],":cchart:dokkaHtml/jvmMain":[":cchart:dokkaHtml/commonMain"]}'
