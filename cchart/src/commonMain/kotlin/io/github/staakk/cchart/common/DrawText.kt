@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toOffset
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-
 fun DrawScope.drawText(
     textMeasurer: TextMeasurer,
     text: String,

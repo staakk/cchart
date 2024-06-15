@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Fill
 
-data class PrimitiveStyle constructor(
+data class PrimitiveStyle(
     val alpha: Float = 1.0f,
     val brush: Brush = SolidColor(Color.Black),
     val style: DrawStyle = Fill,

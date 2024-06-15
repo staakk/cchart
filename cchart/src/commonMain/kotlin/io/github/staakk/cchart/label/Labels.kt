@@ -14,7 +14,7 @@ import io.github.staakk.cchart.style.LabelStyle
 import io.github.staakk.cchart.common.applyExtendedClipping
 import io.github.staakk.cchart.common.drawText
 
-class Labels constructor(
+class Labels(
     private val textMeasurer: TextMeasurer,
     private val orientation: LabelOrientation,
     private val locationPercent: Float,

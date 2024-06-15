@@ -1,34 +1,29 @@
-import io.github.staakk.cchart.configureAndroid
 
 plugins {
-    id("com.android.application")
-    id("cchart.versions-convention")
-    id("cchart.kotlin-convention")
+    id("cchart.app-android-convention")
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
 }
 
 android {
-    configureAndroid(project)
-
     val basePackage = "io.github.staakk.cchart.samples"
     defaultConfig {
-        targetSdk = extra["targetSdkVersion"] as Int
-
-        versionCode = extra["version"] as Int
-        versionName = extra["versionName"] as String
         applicationId = basePackage
     }
-
     namespace = basePackage
+
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
 }
 
 dependencies {
     coreLibraryDesugaring(libs.android.desugar)
     implementation(libs.bundles.androidx)
+    implementation(libs.material)
 
-    implementation(project(":lib"))
-
+//    implementation(project(":cchart"))
+    implementation("io.github.staakk:cchart:1.0.0")
     implementation(libs.androidx.activity)
     implementation(compose.animation)
     implementation(compose.runtime)

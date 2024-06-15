@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 
-data class LineStyle constructor(
+data class LineStyle(
     val alpha: Float = 1.0f,
     val brush: Brush = SolidColor(Color.Black),
     val strokeWidth: Float = Stroke.HairlineWidth,
